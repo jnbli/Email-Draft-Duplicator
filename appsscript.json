@@ -1,0 +1,24 @@
+{
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/gmail.addons.execute",
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.modify",
+    "https://mail.google.com/",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/gmail.compose"
+  ],
+  "gmail": {
+    "name": "Gmail Draft Duplicator",
+    "logoUrl": "https://www.gstatic.com/images/icons/material/system/1x/label_googblue_24dp.png",
+    "contextualTriggers": [{
+      "unconditional": {
+      },
+      "onTriggerFunction": "buildAddOn"
+    }],
+    "openLinkUrlPrefixes": [
+      "https://mail.google.com/"
+    ],
+    "primaryColor": "#4285F4",
+    "secondaryColor": "#4285F4"
+  }
+}
