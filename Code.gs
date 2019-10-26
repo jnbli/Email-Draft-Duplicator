@@ -34,23 +34,24 @@ var textParagraph = CardService.newTextParagraph()
 
   var numberInput = CardService.newTextInput()
     .setFieldName("text_input_form_input_key")
-    .setTitle("Number of Copies")
-    .setHint("Enter a whole number");
+    .setTitle("Enter Number of Copies");
   
   var drafts = GmailApp.getDrafts();
   
   var checkboxGroup = CardService.newSelectionInput()
     .setType(CardService.SelectionInputType.DROPDOWN)
     .setTitle("Select Gmail Draft")
-    .setFieldName("checkbox_field")
-    .addItem("Amazon", "checkbox_one_value", false)
-    .addItem("Microsoft", "checkbox_two_value", true)
-    .addItem(drafts[0].getMessage().getSubject(), "checkbox_three_value", false);
+    .setFieldName("checkbox_field");
+  
+  for (var i=0; i<drafts.length; i++) {
+    checkboxGroup.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
+  }
   
   var textButton = CardService.newTextButton()
     .setText("Duplicate")
-    .setOpenLink(CardService.newOpenLink()
-        .setUrl("https://www.google.com"));
+    .setOnClickAction(CardService.newAction()
+        .setFunctionName("handleImageClick")
+        .setParameters({imageSrc: 'carImage'}));
   
   var radioGroup = CardService.newSelectionInput()
     .setType(CardService.SelectionInputType.RADIO_BUTTON)
@@ -69,7 +70,7 @@ var textParagraph = CardService.newTextParagraph()
   
 var cardSection = CardService.newCardSection()
     .addWidget(checkboxGroup)
-    .addWidget(radioGroup)
+    .addWidget(numberInput)
     .addWidget(textButton);
   
 var card = CardService.newCardBuilder()
@@ -78,7 +79,19 @@ var card = CardService.newCardBuilder()
     .build();
   
 return card;
-} 
+}
+
+function handleImageClick(e) {
+  
+  var image = CardService.newImage().setAltText("A nice image").setImageUrl("https://etoro-cdn.etorostatic.com/market-avatars/fb/150x150.png");
+
+  
+  var section = CardService.newCardSection()
+  .setHeader(JSON.stringify(e))
+  .addWidget(image);
+  return CardService.newCardBuilder().setName('Wings').addSection(section).build();
+}
+
 
 /**
  * Updates the labels on the current thread based on 
@@ -87,5 +100,9 @@ return card;
  *
  * @param {Object} e The data provided by the Gmail UI.
 */
+
+function test() {
+  Logger.log(GmailApp.getDraft('r-7826952942781815535').getMessage().getSubject()); 
+}
 
 
