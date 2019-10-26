@@ -1,6 +1,5 @@
 function buildAddOn(e) {
   
-  //return SuccessCard(1, "Amzn");
   return HomeCard();
   
 }
@@ -38,10 +37,16 @@ function HomeCard() {
     .setType(CardService.SelectionInputType.DROPDOWN)
     .setTitle("Select Gmail Draft")
     .setFieldName("draft_id");
-    var drafts = GmailApp.getDrafts();
+  var drafts = GmailApp.getDrafts();
+  if (drafts.length == 0) {
+    gmailDraft.addItem("", "", false);
+  }
+  else {
     for (var i=0; i<drafts.length; i++) {
       gmailDraft.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
     }
+  }
+    
   
   var numberInput = CardService.newTextInput()
     .setFieldName("number_of_copies")
@@ -70,14 +75,14 @@ function HomeCard() {
 function handleForm(e) {
   
   var n = e.formInputs.number_of_copies;
+  var draftId = e.formInputs.draft_id;
   
   var hasDecimal = (n - Math.floor(n)) !== 0;
   var gtZero = (n > 0);
   
   var textParagraph = CardService.newTextParagraph();
-  if (gtZero && !hasDecimal) {
+  if (gtZero && !hasDecimal && draftId != "") {
     
-    var draftId = e.formInputs.draft_id;
     createCopies(n, draftId);
     var draftSubject = GmailApp.getDraft(draftId).getMessage().getSubject();
     
