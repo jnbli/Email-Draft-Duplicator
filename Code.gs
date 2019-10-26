@@ -1,108 +1,117 @@
-/**
- * Copyright Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-// [START apps_script_gmail_quick_start]
-/**
- * Returns the array of cards that should be rendered for the current
- * e-mail thread. The name of this function is specified in the
- * manifest 'onTriggerFunction' field, indicating that this function
- * runs every time the add-on is started.
- *
- * @param {Object} e The data provided by the Gmail UI.
- * @return {Card[]}
- */
 function buildAddOn(e) {
   
-var image = CardService.newImage().setAltText("A nice image").setImageUrl("https://etoro-cdn.etorostatic.com/market-avatars/fb/150x150.png");
-// Build image ...
-var textParagraph = CardService.newTextParagraph()
-    .setText("Select Email Draft");
-// Build text paragraph ...
+  //return SuccessCard(1, "Amzn");
+  return HomeCard();
+  
+}
 
-  var numberInput = CardService.newTextInput()
-    .setFieldName("text_input_form_input_key")
-    .setTitle("Enter Number of Copies");
+function SuccessCard(x,y) {
   
-  var drafts = GmailApp.getDrafts();
-  
-  var checkboxGroup = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.DROPDOWN)
-    .setTitle("Select Gmail Draft")
-    .setFieldName("checkbox_field");
-  
-  for (var i=0; i<drafts.length; i++) {
-    checkboxGroup.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
+  var successParagraph = CardService.newTextParagraph(); 
+  if (x == 1) {
+    successParagraph.setText("Success! " + x + " copy of the draft \"" + y + "\" was made for you.");
   }
-  
-  var textButton = CardService.newTextButton()
-    .setText("Duplicate")
+  else {
+    successParagraph.setText("Success! " + x + " copies of the draft \"" + y + "\" were made for you.");
+  }
+      
+  var backButton = CardService.newTextButton()
+    .setText("Go back")
     .setOnClickAction(CardService.newAction()
-        .setFunctionName("handleImageClick")
-        .setParameters({imageSrc: 'carImage'}));
+                      .setFunctionName("HomeCard"));
   
-  var radioGroup = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.RADIO_BUTTON)
-    .setTitle("Choose number of copies")
-    .setFieldName("checkbox_field")
-    .addItem("1", "radio_one_value", true)
-    .addItem("2", "radio_two_value", true)
-    .addItem("3", "radio_three_value", false)
-    .addItem("4", "radio_three_value", true)
-    .addItem("5", "radio_three_value", true)
-    .addItem("6", "radio_three_value", true)
-    .addItem("7", "radio_three_value", true)
-    .addItem("8", "radio_three_value", true)
-    .addItem("9", "radio_three_value", true)
-    .addItem("10", "radio_three_value", true);
+  var congratsSection = CardService.newCardSection()
+    .addWidget(successParagraph)
+    .addWidget(backButton);
   
-var cardSection = CardService.newCardSection()
-    .addWidget(checkboxGroup)
-    .addWidget(numberInput)
-    .addWidget(textButton);
-  
-var card = CardService.newCardBuilder()
-    .setName("Card name")
-    .addSection(cardSection)
+  var successCard = CardService.newCardBuilder()
+    .setName("Success Card")
+    .addSection(congratsSection)
     .build();
   
-return card;
+  return successCard;
 }
 
-function handleImageClick(e) {
+function HomeCard() {
   
-  var image = CardService.newImage().setAltText("A nice image").setImageUrl("https://etoro-cdn.etorostatic.com/market-avatars/fb/150x150.png");
-
+  var gmailDraft = CardService.newSelectionInput()
+    .setType(CardService.SelectionInputType.DROPDOWN)
+    .setTitle("Select Gmail Draft")
+    .setFieldName("draft_id");
+    var drafts = GmailApp.getDrafts();
+    for (var i=0; i<drafts.length; i++) {
+      gmailDraft.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
+    }
   
-  var section = CardService.newCardSection()
-  .setHeader(JSON.stringify(e))
-  .addWidget(image);
-  return CardService.newCardBuilder().setName('Wings').addSection(section).build();
+  var numberInput = CardService.newTextInput()
+    .setFieldName("number_of_copies")
+    .setTitle("Enter Number of Copies");
+  
+  var submitButton = CardService.newTextButton()
+    .setText("Duplicate")
+    .setOnClickAction(CardService.newAction()
+                     .setFunctionName("handleForm"));
+  
+  var formSection = CardService.newCardSection()
+    .addWidget(gmailDraft)
+    .addWidget(numberInput)
+    .addWidget(submitButton);
+  
+  var homeCard = CardService.newCardBuilder()
+    .setName("Home Card")
+    .addSection(formSection)
+    .build();
+  
+  return homeCard;
+  
 }
 
 
-/**
- * Updates the labels on the current thread based on 
- * user selections. Runs via the OnChangeAction for
- * each CHECK_BOX created.
- *
- * @param {Object} e The data provided by the Gmail UI.
-*/
+function handleForm(e) {
+  
+  var n = e.formInputs.number_of_copies;
+  
+  var hasDecimal = (n - Math.floor(n)) !== 0;
+  var gtZero = (n > 0);
+  
+  var textParagraph = CardService.newTextParagraph();
+  if (gtZero && !hasDecimal) {
+    
+    var draftId = e.formInputs.draft_id;
+    createCopies(n, draftId);
+    var draftSubject = GmailApp.getDraft(draftId).getMessage().getSubject();
+    
+    return SuccessCard(n, draftSubject);
+  }
+  else {
+    return HomeCard();
+  }
 
-function test() {
-  Logger.log(GmailApp.getDraft('r-7826952942781815535').getMessage().getSubject()); 
 }
 
 
+function createCopies(n, draftId) {
+  
+  var template = GmailApp.getDraft(draftId).getMessage();
+  
+  var recipient = template.getTo();
+  var subject = template.getSubject();
+  var body = template.getBody();
+  var attachments = template.getAttachments();
+  var bcc = template.getBcc();
+  var cc = template.getCc();
+  var from = template.getFrom();
+  var replyTo = template.getReplyTo();
+  
+  for (var i=0; i<n; i++) {
+    GmailApp.createDraft(recipient, subject, body, {
+      attachments: attachments,
+      bcc: bcc,
+      cc: cc,
+      from: from,
+      htmlBody: body,
+      replyTo: replyTo
+    });
+  }
+  
+}
