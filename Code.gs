@@ -43,12 +43,14 @@ function HomeCard(err) {
       gmailDraft.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
     }
   }
-    
-  var numberInputMessage = err.length > 0 ? err : "Enter number of copies";
-  
+      
   var numberInput = CardService.newTextInput()
     .setFieldName("number_of_copies")
     .setTitle("Enter number of copies");
+  
+  var numNumbers = 5, suggestions = CardService.newSuggestions();
+  for (var num = 1; num <= numNumbers; num++) suggestions.addSuggestion(num.toString());
+  numberInput.setSuggestions(suggestions);
   
   if (err.length > 0) numberInput.setHint(err);
   
