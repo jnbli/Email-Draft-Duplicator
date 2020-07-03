@@ -2,26 +2,26 @@ function buildAddOn(e) {
   return HomeCard("");
 }
 
-function SuccessCard(x,y) {
-  var successParagraph = CardService.newTextParagraph(); 
-  if (x == 1) {
-    successParagraph.setText("Success! " + x + " copy of the draft \"" + y + "\" was made for you.");
+function SuccessCard(n, draftSubject) {
+  let successParagraph = CardService.newTextParagraph(); 
+  if (n == 1) {
+    successParagraph.setText(`Success! ${n} copy of the draft "${draftSubject}" was made for you.`);
   }
   else {
-    successParagraph.setText("Success! " + x + " copies of the draft \"" + y + "\" were made for you.");
+    successParagraph.setText(`Success! ${n} copies of the draft "${draftSubject}" were made for you.`);
   }
       
-  var backButton = CardService.newTextButton()
+  const backButton = CardService.newTextButton()
     .setText("Go back")
     .setOnClickAction(CardService.newAction()
                       .setFunctionName("HomeCard")
                       .setParameters({ err: "" }));
   
-  var congratsSection = CardService.newCardSection()
+  const congratsSection = CardService.newCardSection()
     .addWidget(successParagraph)
     .addWidget(backButton);
   
-  var successCard = CardService.newCardBuilder()
+  const successCard = CardService.newCardBuilder()
     .setName("Success Card")
     .addSection(congratsSection)
     .build();
@@ -30,41 +30,43 @@ function SuccessCard(x,y) {
 }
 
 function HomeCard(err) {
-  var gmailDraft = CardService.newSelectionInput()
+  let gmailDraftDropDown = CardService.newSelectionInput()
     .setType(CardService.SelectionInputType.DROPDOWN)
     .setTitle("Select Gmail Draft")
     .setFieldName("draft_id");
-  var drafts = GmailApp.getDrafts();
+  
+  let drafts = GmailApp.getDrafts();
   if (drafts.length == 0) {
-    gmailDraft.addItem("", "", false);
+    gmailDraftDropDown.addItem("", "", false);
   }
   else {
-    for (var i=0; i<drafts.length; i++) {
-      gmailDraft.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
+    for (let i = 0; i < drafts.length; i++) {
+      gmailDraftDropDown.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
     }
   }
       
-  var numberInput = CardService.newTextInput()
+  let numberInput = CardService.newTextInput()
     .setFieldName("number_of_copies")
     .setTitle("Enter number of copies");
   
-  var numNumbers = 5, suggestions = CardService.newSuggestions();
-  for (var num = 1; num <= numNumbers; num++) suggestions.addSuggestion(num.toString());
+  const numNumbers = 5;
+  let suggestions = CardService.newSuggestions();
+  for (let num = 1; num <= numNumbers; num++) suggestions.addSuggestion(num.toString());
   numberInput.setSuggestions(suggestions);
   
   if (err.length > 0) numberInput.setHint(err);
   
-  var submitButton = CardService.newTextButton()
+  const submitButton = CardService.newTextButton()
     .setText("Duplicate")
     .setOnClickAction(CardService.newAction()
                      .setFunctionName("handleForm"));
   
-  var formSection = CardService.newCardSection()
-    .addWidget(gmailDraft)
+  const formSection = CardService.newCardSection()
+    .addWidget(gmailDraftDropDown)
     .addWidget(numberInput)
     .addWidget(submitButton);
   
-  var homeCard = CardService.newCardBuilder()
+  const homeCard = CardService.newCardBuilder()
     .setName("Home Card")
     .addSection(formSection)
     .build();
@@ -73,15 +75,13 @@ function HomeCard(err) {
 }
 
 function handleForm(e) {
-  var n = e.formInputs.number_of_copies;
-  var draftId = e.formInputs.draft_id;
+  const n = e.formInputs.number_of_copies;
+  const draftId = e.formInputs.draft_id;
   
-  var hasDecimal = (n - Math.floor(n)) !== 0;  // Implicitly checks that the input is a number
-  var gtZero = (n > 0);
+  const hasDecimal = (n - Math.floor(n)) !== 0;  // Implicitly checks that the input is a number
+  const gtZero = (n > 0);
   
-  var textParagraph = CardService.newTextParagraph();
-  
-  var error = "";  // Stays this way if there was no error with the input
+  let error = "";  // Stays this way if there was no error with the input
   
   if (hasDecimal) error = "Number of copies must be an integer";
   else if (!gtZero) error = "Number of copies must be at least 1";
@@ -89,8 +89,7 @@ function handleForm(e) {
   
   if (error == "") {  // No error with the input
     createCopies(n, draftId);
-    var draftSubject = GmailApp.getDraft(draftId).getMessage().getSubject();
-    
+    const draftSubject = GmailApp.getDraft(draftId).getMessage().getSubject();
     return SuccessCard(n, draftSubject);
   }
   else { // Display useful error message
@@ -99,18 +98,18 @@ function handleForm(e) {
 }
 
 function createCopies(n, draftId) {
-  var template = GmailApp.getDraft(draftId).getMessage();
+  let template = GmailApp.getDraft(draftId).getMessage();
   
-  var recipient = template.getTo();
-  var subject = template.getSubject();
-  var body = template.getBody();
-  var attachments = template.getAttachments();
-  var bcc = template.getBcc();
-  var cc = template.getCc();
-  var from = template.getFrom();
-  var replyTo = template.getReplyTo();
+  const recipient = template.getTo();
+  const subject = template.getSubject();
+  const body = template.getBody();
+  const attachments = template.getAttachments();
+  const bcc = template.getBcc();
+  const cc = template.getCc();
+  const from = template.getFrom();
+  const replyTo = template.getReplyTo();
   
-  for (var i=0; i<n; i++) {
+  for (let i = 0; i < n; i++) {
     GmailApp.createDraft(recipient, subject, body, {
       attachments: attachments,
       bcc: bcc,
