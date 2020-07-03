@@ -6,7 +6,7 @@ See https://www.youtube.com/watch?v=o3JVWLKUrYs.
 
 ## TODOs:
 - [X] `Number of Copies` input displays useful error message to the user if the user does not input a whole number
-- [ ] `Number of Copies` input displays suggestions when clicked 
+- [X] `Number of Copies` input displays suggestions when clicked 
 - [ ] Update to modern JavaScript syntax (if possible)
 - [ ] When the user hits enter while on the `Home Card`, the `Duplicate` button is activated
 - [ ] Activates without having to click on an email
