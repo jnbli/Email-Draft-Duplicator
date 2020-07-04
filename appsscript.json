@@ -3,7 +3,7 @@
   "runtimeVersion": "V8",
   "gmail": {
     "name": "Gmail Draft Duplicator",
-    "logoUrl": "https://github.com/JessHua159/Gmail-Draft-Duplicator/blob/master/Logo.png?raw=true",
+    "logoUrl": "https://raw.githubusercontent.com/jnbli/Gmail-Draft-Duplicator/master/Logo.png",
     "contextualTriggers": [{
       "unconditional": {
       },
