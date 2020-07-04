@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/JessHua159/Gmail-Draft-Duplicator/blob/master/Logo.png" alt="Gmail Draft Duplicator Logo" width="200" height="200">
+  <img src="https://raw.githubusercontent.com/jnbli/Gmail-Draft-Duplicator/master/Logo.png" alt="Gmail Draft Duplicator Logo" width="200" height="200">
 </p>
 
 # Gmail Draft Duplicator
