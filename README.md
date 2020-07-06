@@ -6,13 +6,14 @@
 This is a Gmail add-on that you can use to duplicate email drafts in Gmail.
 
 ## Installation Instructions and How It Works:
-See https://www.youtube.com/watch?v=o3JVWLKUrYs.
+See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 
 ## TODOs:
-- [X] `Number of Copies` input displays useful error message to the user if the user does not input a whole number
-- [X] `Number of Copies` input displays suggestions when clicked 
-- [X] Update to modern JavaScript syntax
-- [X] Activates without having to click on an email
-- [ ] If a draft is clicked, the `Gmail Draft` menu is automatically filled in with the corresponding draft subject
-- [ ] Fields update without having to reload Gmail (for example, if you create or remove draft(s), the dropdown for selecting a draft shows this automatically)
-- [ ] Draft number updates without having to reload Gmail after creating duplicates
+- [ ] `Number of Copies` input displays an error message to the user if the input is invalid before the input is submitted.
+- [X] `Number of Copies` input displays an error message to the user if the input is invalid after the input is submitted.
+- [X] `Number of Copies` input displays suggestions when clicked.
+- [X] Update to modern JavaScript syntax.
+- [X] User can duplicate drafts without having to click on an email if this add-on is used on non-mobile versions of Gmail.
+- [X] If there are no drafts available, add-on displays a message instead of the usual UI elements.
+- [ ] Refactor cards and event callback functions into separate files.
+- [ ] User can duplicate more than one draft at once.
