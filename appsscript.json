@@ -4,11 +4,10 @@
   "gmail": {
     "name": "Gmail Draft Duplicator",
     "logoUrl": "https://raw.githubusercontent.com/jnbli/Gmail-Draft-Duplicator/master/Logo.png",
-    "contextualTriggers": [{
-      "unconditional": {
-      },
-      "onTriggerFunction": "buildAddOn"
-    }],
+    "homepageTrigger": {
+      "enabled": true,
+      "runFunction": "buildAddOn"
+    },
     "primaryColor": "#4285F4",
     "secondaryColor": "#4285F4",
     "openLinkUrlPrefixes": ["https://mail.google.com/"]
