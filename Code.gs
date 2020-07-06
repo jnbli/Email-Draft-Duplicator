@@ -21,8 +21,10 @@ function SuccessCard(n, draftSubject) {
     .addWidget(successParagraph)
     .addWidget(backButton);
   
+  let title = n == 1 ? "A Gmail draft has been duplicated." : "Gmail drafts have been duplicated";
   const successCard = CardService.newCardBuilder()
     .setName("Success Card")
+    .setHeader(CardService.newCardHeader().setTitle(title))
     .addSection(congratsSection)
     .build();
   
@@ -54,7 +56,7 @@ function HomeCard(err) {
   for (let num = 1; num <= numNumbers; num++) suggestions.addSuggestion(num.toString());
   numberInput.setSuggestions(suggestions);
   
-  if (err.length > 0) numberInput.setHint(err);
+  if (err.length > 0) numberInput.setHint(err);  // Show error message if necessary
   
   const submitButton = CardService.newTextButton()
     .setText("Duplicate")
@@ -68,6 +70,7 @@ function HomeCard(err) {
   
   const homeCard = CardService.newCardBuilder()
     .setName("Home Card")
+    .setHeader(CardService.newCardHeader().setTitle("Duplicate Gmail drafts."))
     .addSection(formSection)
     .build();
   
