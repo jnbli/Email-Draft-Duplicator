@@ -1,5 +1,12 @@
 {
-  "oauthScopes": ["https://www.googleapis.com/auth/gmail.addons.execute", "https://www.googleapis.com/auth/gmail.readonly", "https://www.googleapis.com/auth/gmail.modify", "https://mail.google.com/", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/gmail.compose"],
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/gmail.addons.execute", 
+    "https://www.googleapis.com/auth/gmail.readonly", 
+    "https://www.googleapis.com/auth/gmail.modify", 
+    "https://mail.google.com/", 
+    "https://www.googleapis.com/auth/userinfo.email", 
+    "https://www.googleapis.com/auth/gmail.compose"
+  ],
   "runtimeVersion": "V8",
   "gmail": {
     "name": "Gmail Draft Duplicator",
@@ -8,6 +15,10 @@
       "enabled": true,
       "runFunction": "buildAddOn"
     },
+    "contextualTriggers": [{
+      "unconditional": {},
+      "onTriggerFunction": "buildAddOn"
+    }],
     "primaryColor": "#4285F4",
     "secondaryColor": "#4285F4",
     "openLinkUrlPrefixes": ["https://mail.google.com/"]

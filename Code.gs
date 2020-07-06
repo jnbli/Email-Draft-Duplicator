@@ -1,8 +1,10 @@
-function buildAddOn(e) {
+function buildAddOn() {
   return HomeCard("");
 }
 
 function SuccessCard(n, draftSubject) {
+  const header = CardService.newCardHeader().setTitle("The Gmail draft has been duplicated.");
+  
   let successParagraph = CardService.newTextParagraph(); 
   if (n == 1) {
     successParagraph.setText(`Success! ${n} copy of the draft "${draftSubject}" was made for you.`);
@@ -21,10 +23,9 @@ function SuccessCard(n, draftSubject) {
     .addWidget(successParagraph)
     .addWidget(backButton);
   
-  let title = n == 1 ? "A Gmail draft has been duplicated." : "Gmail drafts have been duplicated";
   const successCard = CardService.newCardBuilder()
     .setName("Success Card")
-    .setHeader(CardService.newCardHeader().setTitle(title))
+    .setHeader(header)
     .addSection(congratsSection)
     .build();
   
@@ -32,36 +33,49 @@ function SuccessCard(n, draftSubject) {
 }
 
 function HomeCard(err) {
+  let drafts = GmailApp.getDrafts();  
+  
+  // If the user currently has no Gmail drafts.
+  if (drafts.length == 0) {
+    const header = CardService.newCardHeader().setTitle("You have no Gmail drafts.");
+    
+    const message = CardService.newTextParagraph().setText("You must have at least one Gmail draft to duplicate draft(s).");
+    const mainSection = CardService.newCardSection().addWidget(message);
+    
+    const homeCard = CardService.newCardBuilder()
+      .setName("Home Card")
+      .setHeader(header)
+      .addSection(mainSection)
+      .build();
+    
+    return homeCard;
+  }  
+  
+  // If the user currently has at least 1 Gmail draft(s).  
+  const header = CardService.newCardHeader().setTitle("Duplicate your Gmail draft(s).");
+  
   let gmailDraftDropDown = CardService.newSelectionInput()
     .setType(CardService.SelectionInputType.DROPDOWN)
     .setTitle("Select Gmail Draft")
     .setFieldName("draft_id");
   
-  let drafts = GmailApp.getDrafts();
-  if (drafts.length == 0) {
-    gmailDraftDropDown.addItem("", "", false);
-  }
-  else {
-    for (let i = 0; i < drafts.length; i++) {
-      gmailDraftDropDown.addItem(drafts[i].getMessage().getSubject(), drafts[i].getId(), false);
-    }
-  }
-      
+  drafts.forEach(draft => gmailDraftDropDown.addItem(draft.getMessage().getSubject(), draft.getId(), false));
+    
   let numberInput = CardService.newTextInput()
     .setFieldName("number_of_copies")
-    .setTitle("Enter number of copies");
+    .setTitle("Enter number of copies.");
   
   const numNumbers = 5;
   let suggestions = CardService.newSuggestions();
   for (let num = 1; num <= numNumbers; num++) suggestions.addSuggestion(num.toString());
   numberInput.setSuggestions(suggestions);
   
-  if (err.length > 0) numberInput.setHint(err);  // Show error message if necessary
+  if (err.length > 0) numberInput.setHint(err);  // Show error message if necessary.
   
   const submitButton = CardService.newTextButton()
     .setText("Duplicate")
     .setOnClickAction(CardService.newAction()
-                     .setFunctionName("handleForm"));
+                      .setFunctionName("handleForm"));
   
   const formSection = CardService.newCardSection()
     .addWidget(gmailDraftDropDown)
@@ -70,7 +84,7 @@ function HomeCard(err) {
   
   const homeCard = CardService.newCardBuilder()
     .setName("Home Card")
-    .setHeader(CardService.newCardHeader().setTitle("Duplicate Gmail drafts."))
+    .setHeader(header)
     .addSection(formSection)
     .build();
   
@@ -86,22 +100,24 @@ function handleForm(e) {
   
   let error = "";  // Stays this way if there was no error with the input
   
-  if (hasDecimal) error = "Number of copies must be an integer";
-  else if (!gtZero) error = "Number of copies must be at least 1";
-  else if (!draftId) error = "No drafts available for duplicating";
+  if (hasDecimal) error = "Number of copies must be an integer.";
+  else if (!gtZero) error = "Number of copies must be at least 1.";
+  else if (!draftId) error = "There was an error with finding the id of the draft you would like to duplicate.";
   
-  if (error == "") {  // No error with the input
-    createCopies(n, draftId);
-    const draftSubject = GmailApp.getDraft(draftId).getMessage().getSubject();
+  if (error == "") {  // No error with the input    
+    const draft = GmailApp.getDraft(draftId);
+    
+    createCopies(n, draft);
+    const draftSubject = draft.getMessage().getSubject();
     return SuccessCard(n, draftSubject);
   }
-  else { // Display useful error message
+  else { // Display error message
     return HomeCard(error);
   }
 }
 
-function createCopies(n, draftId) {
-  let template = GmailApp.getDraft(draftId).getMessage();
+function createCopies(n, draft) {  
+  let template = draft.getMessage();
   
   const recipient = template.getTo();
   const subject = template.getSubject();
