@@ -14,5 +14,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Update to modern JavaScript syntax.
 - [X] User can duplicate drafts without having to click on an email if this add-on is used on non-mobile versions of Gmail.
 - [X] If there are no drafts available, add-on displays a message instead of the usual UI elements.
-- [ ] Refactor cards and event callback functions into separate files.
+- [X] Refactor cards and event callback functions into separate files.
+- [ ] Add commenting to code.
 - [ ] User can duplicate more than one draft at once.
+- [ ] If a draft that is starred is duplicated, the starred status transfers over to the duplicates.
