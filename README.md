@@ -9,8 +9,7 @@ This is a Gmail add-on that you can use to duplicate email drafts in Gmail.
 See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 
 ## TODOs:
-- [ ] `Number of Copies` input displays an error message to the user if the input is invalid before the input is submitted.
-- [X] `Number of Copies` input displays an error message to the user if the input is invalid after the input is submitted.
+- [X] `Number of Copies` input displays an error message to the user if the input is invalid.
 - [X] `Number of Copies` input displays suggestions when clicked.
 - [X] Update to modern JavaScript syntax.
 - [X] User can duplicate drafts without having to click on an email if this add-on is used on non-mobile versions of Gmail.
