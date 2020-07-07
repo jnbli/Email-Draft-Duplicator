@@ -15,9 +15,8 @@ function handleForm(e) {
   if (error == "") {  // No error with the input    
     const draft = GmailApp.getDraft(draftId);
     
-    createCopies(n, draft);
-    const draftSubject = draft.getMessage().getSubject();
-    return SuccessCard(n, draftSubject);
+    const draftInfo = createCopies(n, draft);
+    return SuccessCard(n, draftInfo);
   }
   else { // Display error message.
     return HomeCard(error);
@@ -36,9 +35,10 @@ function createCopies(n, draft) {
   const cc = template.getCc();
   const from = template.getFrom();
   const replyTo = template.getReplyTo();
+  const starred = template.isStarred();
   
   for (let i = 0; i < n; i++) {
-    GmailApp.createDraft(recipient, subject, body, {
+    let draft = GmailApp.createDraft(recipient, subject, body, {
       attachments: attachments,
       bcc: bcc,
       cc: cc,
@@ -46,5 +46,13 @@ function createCopies(n, draft) {
       htmlBody: body,
       replyTo: replyTo
     });
+    
+    if (starred) GmailApp.starMessage(draft.getMessage());  // Duplicating starred drafts duplicates the starred status.
   }
+  
+  // Draft info used in SuccessCard.gs
+  return { 
+    subject: subject, 
+    starred: starred
+  };
 }

@@ -27,7 +27,14 @@ function HomeCard(err) {
     .setTitle("Select Gmail Draft")
     .setFieldName("draft_id");  // Used by handleForm.gs to find the draft to duplicate
   
-  drafts.forEach(draft => gmailDraftDropDown.addItem(draft.getMessage().getSubject(), draft.getId(), false));
+  drafts.forEach(draft => { 
+    const draftMessage = draft.getMessage();
+    let draftSubject = draftMessage.getSubject();
+    
+    // Reflect starred drafts.
+    if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
+    gmailDraftDropDown.addItem(draftSubject, draft.getId(), false);
+  });
     
   let numberInput = CardService.newTextInput()
     .setFieldName("number_of_copies")  // Used by handleForm.gs for the number of times to duplicate the draft
