@@ -22,7 +22,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] UI reflects starred drafts.
 
 ### Performance Improvement(s) and Optimization(s)
-- [ ] Cache list of Gmail drafts that can be duplicated and load the cached list for the `Select Gmail Draft` dropdown appropriately.
+- [ ] Cache list of Gmail drafts and load the cached list for the `Select Gmail Draft` dropdown appropriately.
 
 ### Code Refactor
 - [X] Use modern JavaScript syntax.
