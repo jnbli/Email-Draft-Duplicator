@@ -10,7 +10,8 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 
 ## TODOs:
 ### General
-- [ ] After completing all UI TODOS, tag and release version `1.0.0` of this add-on.
+- [ ] Tag and release version `1.0.0` of this add-on on GitHub. 
+- [ ] After completing more TODOs after releasing version `1.0.0` of this add-on, tag and release version `1.0.1` of this add-on.
 
 ### Feature(s)
 - [X] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
@@ -23,7 +24,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Added header to cards.
 - [X] If there are no drafts available, add-on displays a message instead of the usual UI elements.
 - [X] UI reflects starred drafts.
-- [ ] Have a placeholder subject name for drafts with no subjects.
+- [X] UI better handles drafts with no subject.
 
 ### Performance Improvement(s) and Optimization(s)
 - [ ] Cache list of Gmail drafts and load the cached list for the `Select Gmail Draft` dropdown appropriately.
