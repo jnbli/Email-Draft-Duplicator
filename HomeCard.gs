@@ -31,6 +31,9 @@ function HomeCard(err) {
     const draftMessage = draft.getMessage();
     let draftSubject = draftMessage.getSubject();
     
+    // Handle drafts with empty subject.
+    if (draftSubject.length === 0) draftSubject = `(no subject) ${draftSubject}`;
+  
     // Reflect starred drafts.
     if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
     gmailDraftDropDown.addItem(draftSubject, draft.getId(), false);

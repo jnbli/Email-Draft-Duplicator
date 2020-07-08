@@ -5,8 +5,9 @@ function SuccessCard(n, draftInfo) {
   
   const draftType = draftInfo.starred ? "starred draft" : "draft";  // Reflect starred draft.
   let successParagraph = CardService.newTextParagraph(); 
-  if (n == 1) successParagraph.setText(`Success! ${n} copy of the ${draftType} "${draftInfo.subject}" was made for you.`);
-  else { successParagraph.setText(`Success! ${n} copies of the ${draftType} "${draftInfo.subject}" were made for you.`); }
+  const draftSubjectPortion = draftInfo.subject.length === 0 ? "" : ` "${draftInfo.subject}"`; // Handle duplicated draft with no subject.
+  if (n == 1) successParagraph.setText(`Success! ${n} copy of the ${draftType}${draftSubjectPortion} was made for you.`);
+  else { successParagraph.setText(`Success! ${n} copies of the ${draftType}${draftSubjectPortion} were made for you.`); }
       
   const backButton = CardService.newTextButton()
     .setText("Go back")
