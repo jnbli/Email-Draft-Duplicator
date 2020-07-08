@@ -10,8 +10,8 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 
 ## TODOs:
 ### General
-- [ ] Tag and release version `1.0.0` of this add-on on GitHub after completing all UI TODOs. 
-- [ ] After completing all remaining TODOs after releasing version `1.0.0` of this add-on, tag and release version `1.0.1` of this add-on.
+- [X] Tag and release version `1.0.0` of this add-on on GitHub after completing all UI TODOs. 
+- [ ] After completing all remaining TODOs in `Performance Improvement(s) and Optimization(s)` after version `1.0.0`, tag and release version `1.1.0` of this add-on on GitHub.
 
 ### Feature(s)
 - [X] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
@@ -29,6 +29,6 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 ### Performance Improvement(s) and Optimization(s)
 - [ ] Cache list of Gmail drafts and load the cached list for the `Select Gmail Draft` dropdown appropriately.
 
-### Code Refactor
+### Code Refactor and Fixing Bug(s)
 - [X] Use modern JavaScript syntax.
 - [X] Refactor code into separate files and comment code.
