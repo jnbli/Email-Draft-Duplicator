@@ -3,7 +3,7 @@
 </p>
 
 # Gmail Draft Duplicator
-This is a Gmail add-on that you can use to duplicate email drafts in Gmail.
+This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All releases can be found at the base repository [here](https://github.com/jnbli/Gmail-Draft-Duplicator/releases).
 
 ## Installation Instructions and How It Works
 See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
