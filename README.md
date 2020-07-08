@@ -10,8 +10,8 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 
 ## TODOs:
 ### General
-- [ ] Tag and release version `1.0.0` of this add-on on GitHub. 
-- [ ] After completing more TODOs after releasing version `1.0.0` of this add-on, tag and release version `1.0.1` of this add-on.
+- [ ] Tag and release version `1.0.0` of this add-on on GitHub after completing all UI TODOs. 
+- [ ] After completing all remaining TODOs after releasing version `1.0.0` of this add-on, tag and release version `1.0.1` of this add-on.
 
 ### Feature(s)
 - [X] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
