@@ -25,9 +25,12 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] If there are no drafts available, add-on displays a message instead of the usual UI elements.
 - [X] UI reflects starred drafts.
 - [X] UI better handles drafts with no subject.
+- [X] Suggestions reflects maximum number of copies user can make for a draft.
 
 ### Performance Improvement(s) and Optimization(s)
-- [ ] Cache list of Gmail drafts and load the cached list for the `Select Gmail Draft` dropdown appropriately.
+- [ ] Cache UI elements. 
+- [X] Implement maximum number of duplicates for a draft.
+- [ ] Develop a caching mechanism for drafts array data.
 
 ### Code Refactor and Fixing Bug(s)
 - [X] Use modern JavaScript syntax.
