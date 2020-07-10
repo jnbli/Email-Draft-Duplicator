@@ -1,4 +1,4 @@
-{
+{ 
   "oauthScopes": [
     "https://www.googleapis.com/auth/gmail.addons.execute", 
     "https://www.googleapis.com/auth/gmail.readonly", 

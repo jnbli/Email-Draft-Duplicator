@@ -9,7 +9,7 @@ function handleForm(e) {
   let error = "";  // Stays this way if there was no error with the input
   
   if (hasDecimal) error = "Number of copies must be an integer.";
-  else if (!gtZero) error = "Number of copies must be at least 1.";
+  else if (!gtZero || n > maxDuplicatesPerDraft) error = `Number of copies must be from 1-${maxDuplicatesPerDraft}.`;
   else if (!draftId) error = "There was an error with finding the id of the draft you would like to duplicate.";
   
   if (error == "") {  // No error with the input    
