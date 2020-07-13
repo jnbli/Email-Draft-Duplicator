@@ -17,15 +17,19 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 ### UI
 - [X] `Number of Copies` input displays an error message to the user if the input is invalid.
 - [X] `Number of Copies` input displays suggestions when clicked.
-- [X] Added header to cards.
+- [X] Add header to cards.
 - [X] If there are no drafts available, add-on displays a message instead of the usual UI elements.
 - [X] UI reflects starred drafts.
 - [X] UI better handles drafts with no subject.
 - [X] Suggestions reflect maximum number of copies user can make for a draft.
+- [X] Create starting card asking the user how many drafts to duplicate.
+- [X] Change number inputs to dropdown inputs, with each numerical choice a dropdown item.
+- [ ] Home card reflects number of drafts user requests to duplicate.
 
 ### Performance Improvement(s) and Optimization(s)
-- [X] Implement maximum number of duplicates for a draft.
+- [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
 
 ### Code Refactor and Fixing Bug(s)
 - [X] Use modern JavaScript syntax.
 - [X] Refactor code into separate files and comment code.
+- [X] Cards take in data object for use by UI element(s).
