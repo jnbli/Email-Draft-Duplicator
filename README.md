@@ -11,7 +11,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 ## TODOs
 ### General
 - [X] Tag and release version `1.0.0` of this add-on on GitHub after completing all UI TODOs. 
-- [ ] After completing all remaining TODOs in `Performance Improvement(s) and Optimization(s)` after version `1.0.0`, tag and release version `1.1.0` of this add-on on GitHub.
+- [X] After completing all remaining TODOs in `Performance Improvement(s) and Optimization(s)` after version `1.0.0`, tag and release version `1.1.0` of this add-on on GitHub.
 
 ### Feature(s)
 - [X] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
@@ -25,12 +25,10 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] If there are no drafts available, add-on displays a message instead of the usual UI elements.
 - [X] UI reflects starred drafts.
 - [X] UI better handles drafts with no subject.
-- [X] Suggestions reflects maximum number of copies user can make for a draft.
+- [X] Suggestions reflect maximum number of copies user can make for a draft.
 
 ### Performance Improvement(s) and Optimization(s)
-- [ ] Cache UI elements. 
 - [X] Implement maximum number of duplicates for a draft.
-- [ ] Develop a caching mechanism for drafts array data.
 
 ### Code Refactor and Fixing Bug(s)
 - [X] Use modern JavaScript syntax.
