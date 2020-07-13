@@ -86,10 +86,11 @@
 //
 //let appCache = new AppCache();  
 
-const maxDuplicatesPerDraft = 9;
+const drafts = GmailApp.getDrafts();
+const maxDuplicatesPerDraft = 10;
 
 // Starting point of this add-on
 // Invoked on homepage and contextual and trigger
 function buildAddOn() {
-  return HomeCard("");
+  return StartCard();
 }
