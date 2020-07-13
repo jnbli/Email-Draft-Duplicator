@@ -1,32 +1,16 @@
 // Card that prompts the user to duplicate draft(s)
 // The additional error parameter is used by the number text input to show an error message if necessary.
-function HomeCard(err) {  
-  const drafts = GmailApp.getDrafts();
+function HomeCard(data = {}) {
+  // numberOfDraftsToDuplicate gets reset to its default when the add-on reloads.
+  const headerMessage = data.numberOfDrafts === 1 ? "You would like to duplicate 1 Gmail draft." : `You would like to duplicate ${data.numberOfDrafts} Gmail drafts.`;
+  const header = CardService.newCardHeader().setTitle(headerMessage);
   
-  // If the user currently has no Gmail drafts
-  if (drafts.length == 0) {
-    const header = CardService.newCardHeader().setTitle("You have no Gmail drafts.");
-    
-    const message = CardService.newTextParagraph().setText("You must have at least one Gmail draft to duplicate draft(s).");
-    const mainSection = CardService.newCardSection().addWidget(message);
-    
-    const homeCard = CardService.newCardBuilder()
-      .setName("Home Card")
-      .setHeader(header)
-      .addSection(mainSection)
-      .build();
-    
-    return homeCard;
-  }  
-  
-  // If the user currently has at least 1 Gmail draft(s)
-  const header = CardService.newCardHeader().setTitle("Duplicate your Gmail draft(s).");
- 
   let gmailDraftDropdown = CardService.newSelectionInput()
-          .setType(CardService.SelectionInputType.DROPDOWN)
-          .setTitle("Select Gmail Draft")
-          .setFieldName("draft_id");
+    .setType(CardService.SelectionInputType.DROPDOWN)
+    .setTitle("Select Gmail Draft")
+    .setFieldName("draft_id");
   
+  // Fill in gmail draft dropdown
   drafts.forEach(draft => { 
     const draftMessage = draft.getMessage();
     let draftSubject = draftMessage.getSubject();
@@ -39,25 +23,22 @@ function HomeCard(err) {
     gmailDraftDropdown.addItem(draftSubject, draft.getId(), false);
   });
     
-  let numberInput = CardService.newTextInput()
-          .setFieldName("number_of_copies")  // Used by handleForm.gs for the number of times to duplicate the draft
-          .setTitle(`Enter number of copies (1-${maxDuplicatesPerDraft}).`);
-  
-  // Suggestions to help the user enter in valid input
-  let suggestions = CardService.newSuggestions();
-  for (let num = 1; num <= maxDuplicatesPerDraft; num++) suggestions.addSuggestion(num.toString());
-  numberInput.setSuggestions(suggestions);
-  
-  if (err.length > 0) numberInput.setHint(err);  // Show error message if necessary.
+  let numberOfCopiesDropdown = CardService.newSelectionInput()
+    .setType(CardService.SelectionInputType.DROPDOWN)
+    .setTitle("Select Number of Copies")
+    .setFieldName("number_of_copies");
+
+  // Fill in number of copies dropdown
+  for (let num = 1; num <= maxDuplicatesPerDraft; num++) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false);
   
   const submitButton = CardService.newTextButton()
     .setText("Duplicate")
     .setOnClickAction(CardService.newAction()
-                      .setFunctionName("handleForm"));
+                      .setFunctionName("handleHomeCardForm"));
   
   const formSection = CardService.newCardSection()
     .addWidget(gmailDraftDropdown)
-    .addWidget(numberInput)
+    .addWidget(numberOfCopiesDropdown)
     .addWidget(submitButton);
   
   const homeCard = CardService.newCardBuilder()
