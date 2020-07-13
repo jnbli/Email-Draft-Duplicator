@@ -9,10 +9,6 @@ This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All 
 See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 
 ## TODOs
-### General
-- [X] Tag and release version `1.0.0` of this add-on on GitHub after completing all UI TODOs. 
-- [X] After completing all remaining TODOs in `Performance Improvement(s) and Optimization(s)` after version `1.0.0`, tag and release version `1.1.0` of this add-on on GitHub.
-
 ### Feature(s)
 - [X] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
 - [X] If a starred draft is duplicated, the starred status transfers over to the duplicates.
