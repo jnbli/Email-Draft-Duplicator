@@ -25,6 +25,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Create starting card asking the user how many drafts to duplicate.
 - [X] Change number inputs to dropdown inputs, with each numerical choice a dropdown item.
 - [X] Home card allows user to select number of duplicates to make for multiple drafts.
+- [X] Success card reflects duplication of multiple drafts.
 - [ ] Add footer with a button that allows the user to refresh the add-on.
 - [ ] Add notifications.
 
