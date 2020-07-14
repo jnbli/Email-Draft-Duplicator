@@ -13,13 +13,20 @@ function handleStartCardForm(e) { return HomeCard({ numberOfDrafts: e.formInputs
 
 // Process user input for duplicating draft(s) with error checking
 function handleHomeCardForm(e) {
-  const numberOfCopies = e.formInputs.number_of_copies;
-  const draftId = e.formInputs.draft_id;
+  // numberOfDraftsToDuplicate set in HomeCard.gs
+  let copyInfo = [];
+  let numberOfDrafts = Number.parseInt(e.parameters["numberOfDrafts"]);
+  for (let i = 0; i < numberOfDrafts; i++) {
+    const draftId = e.formInputs[`draft_id${i}`];
+    const numberOfCopies = e.formInputs[`number_of_copies${i}`];
+    
+    const draft = GmailApp.getDraft(draftId);
+    const draftInfo = createCopies(numberOfCopies, draft); 
+    
+    copyInfo.push({ draftInfo, numberOfCopies });
+  }
   
-  const draft = GmailApp.getDraft(draftId);
-  const draftInfo = createCopies(numberOfCopies, draft);
-  
-  return SuccessCard({ numberOfCopies: numberOfCopies, draftInfo: draftInfo });
+  return SuccessCard({ copyInfo: copyInfo });
 }
 
 // Helper function that does error checking for all home card input
