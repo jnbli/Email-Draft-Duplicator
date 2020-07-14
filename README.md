@@ -12,7 +12,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 ### Feature(s)
 - [X] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
 - [X] If a starred draft is duplicated, the starred status transfers over to the duplicates.
-- [ ] User can duplicate more than one draft at once.
+- [X] User can duplicate more than one draft at once.
 
 ### UI
 - [X] `Number of Copies` input displays an error message to the user if the input is invalid.
@@ -24,12 +24,16 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Suggestions reflect maximum number of copies user can make for a draft.
 - [X] Create starting card asking the user how many drafts to duplicate.
 - [X] Change number inputs to dropdown inputs, with each numerical choice a dropdown item.
-- [ ] Home card reflects number of drafts user requests to duplicate.
+- [X] Home card allows user to select number of duplicates to make for multiple drafts.
+- [ ] Add footer with a button that allows the user to refresh the add-on.
+- [ ] Add notifications.
 
 ### Performance Improvement(s) and Optimization(s)
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
+- [X] Implement maximum allowed number of drafts to duplicate at once to minimize the amount of time it takes to load the home card.
 
 ### Code Refactor and Fixing Bug(s)
 - [X] Use modern JavaScript syntax.
 - [X] Refactor code into separate files and comment code.
 - [X] Cards take in data object for use by UI element(s).
+- [ ] Refactor with card navigation.
