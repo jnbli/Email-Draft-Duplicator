@@ -32,7 +32,6 @@ function SuccessCard(data = {}) {
     .setName("Success Card")
     .setHeader(header)
     .addSection(congratsSection)
-    .addSection(FooterSection())
     .build();
   
   return successCard;
