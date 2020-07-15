@@ -1,9 +1,12 @@
 // Generates a footer section to be used in card(s)
-function FooterSection() {
+function FooterSection(cardName, cardData) {  
   const refreshButton = CardService.newTextButton()
     .setText("Refresh")
+  
+    // JSON.stringify() is used since setParameters() only takes string keys and values.
     .setOnClickAction(CardService.newAction()
-                       .setFunctionName("reloadAddOn"));
+                       .setFunctionName("reloadCard")
+                       .setParameters({ "cardName": cardName, "cardData": JSON.stringify(cardData) })); 
 
   const footerButtonSet = CardService.newButtonSet()
     .addButton(refreshButton);

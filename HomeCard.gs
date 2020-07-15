@@ -57,7 +57,7 @@ function HomeCard(data = {}) {
     .setName("Home Card")
     .setHeader(header)
     .addSection(formSection)
-    .addSection(FooterSection())
+    .addSection(FooterSection("homeCard", data))
     .build();
   
   return homeCard;
