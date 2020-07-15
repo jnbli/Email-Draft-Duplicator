@@ -41,6 +41,7 @@ function StartCard(data = {}) {
       .setName("Start Card")
       .setHeader(header)
       .addSection(formSection)
+      .addSection(FooterSection())
       .build();
   }
   
