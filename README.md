@@ -13,7 +13,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
 - [X] If a starred draft is duplicated, the starred status transfers over to the duplicates.
 - [X] User can duplicate more than one draft at once.
-- [X] User can refresh certain cards via a button on the footer. This is useful for ensuring that the card is processing and displaying up-to-date data.
+- [X] User can refresh certain cards via a button on the footer. This is useful for ensuring that those cards are processing and displaying up-to-date data.
 - [ ] User cannot select the same draft if duplicating multiple drafts.
 - [ ] Input data for the card the user is currently on persists when the card is reloaded.
 
