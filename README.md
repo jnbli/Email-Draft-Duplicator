@@ -31,7 +31,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Success card reflects duplication of multiple drafts.
 - [X] Add footer with a button that allows the user to refresh the card on certain cards.
 - [ ] Add notifications.
-- [ ] Have Home Card list draft selection and duplication frequency for one draft at a time instead of list  for all drafts.
+- [ ] Have Home Card list draft selection and duplication frequency for one draft at a time instead of list for all drafts.
 
 ### Performance Improvement(s) and Optimization(s)
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
