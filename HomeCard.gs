@@ -35,9 +35,9 @@ function HomeCard(data = {}) {
                       .setParameters({ "numberOfDrafts" : data.numberOfDrafts.toString() }));
 
   const backButton = CardService.newTextButton()
-    .setText("Back")
+    .setText("Go Back")
     .setOnClickAction(CardService.newAction()
-                     .setFunctionName("StartCard"))
+                     .setFunctionName("goBackToStartCard"))
   
   const buttons = CardService.newButtonSet()
     .addButton(submitButton)
@@ -53,11 +53,12 @@ function HomeCard(data = {}) {
   }                                                                                                                            
   formSection.addWidget(buttons);
   
+  const cardName = "Home Card";
   const homeCard = CardService.newCardBuilder()
-    .setName("Home Card")
+    .setName(cardName)
     .setHeader(header)
     .addSection(formSection)
-    .addSection(FooterSection("homeCard", data))
+    .addSection(FooterSection(cardName, data))
     .build();
   
   return homeCard;
