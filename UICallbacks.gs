@@ -1,5 +1,9 @@
 // Process user input for number of drafts to duplicate
-function handleStartCardForm(e) { return HomeCard({ numberOfDrafts: e.formInputs.number_of_drafts }); }
+function handleStartCardForm(e) { 
+  const homeCard = HomeCard({ numberOfDrafts: e.formInputs.number_of_drafts });
+  const navigationToHomeCard = CardService.newNavigation().pushCard(homeCard);
+  return CardService.newActionResponseBuilder().setNavigation(navigationToHomeCard).build();
+}
 
 // Helper function that does error checking for all start card input
 //function checkStartCardInput(numberOfDrafts) {
@@ -15,7 +19,7 @@ function handleStartCardForm(e) { return HomeCard({ numberOfDrafts: e.formInputs
 function handleHomeCardForm(e) {
   // numberOfDraftsToDuplicate set in HomeCard.gs
   let copyInfo = [];
-  let numberOfDrafts = Number.parseInt(e.parameters["numberOfDrafts"]);
+  let numberOfDrafts = Number.parseInt(e.parameters.numberOfDrafts);
   for (let i = 0; i < numberOfDrafts; i++) {
     const draftId = e.formInputs[`draft_id${i}`];
     const numberOfCopies = e.formInputs[`number_of_copies${i}`];
@@ -26,7 +30,9 @@ function handleHomeCardForm(e) {
     copyInfo.push({ draftInfo, numberOfCopies });
   }
   
-  return SuccessCard({ copyInfo: copyInfo });
+  const successCard = SuccessCard({ copyInfo: copyInfo });
+  const navigationToSuccessCard = CardService.newNavigation().pushCard(successCard);
+  return CardService.newActionResponseBuilder().setNavigation(navigationToSuccessCard).build();
 }
 
 // Helper function that does error checking for all home card input
@@ -82,4 +88,30 @@ function createCopies(n, draft) {
   
   // Draft info used in SuccessCard.gs
   return { subject: subject, starred: starred };
+}
+  
+function goBackToStartCard(e) {
+  const navigationToStartCard = CardService.newNavigation().popToRoot();
+  return CardService.newActionResponseBuilder().setNavigation(navigationToStartCard).build();
+}
+  
+function reloadCard(e) {
+  let cardToReload;
+  const cardData = JSON.parse(e.parameters.cardData);
+  switch(e.parameters.cardName) {
+    case "Start Card":
+      cardToReload = StartCard(cardData);
+      break;
+    case "Home Card":
+      cardToReload = HomeCard(cardData);
+      break;
+    case "Success Card":
+      cardToReload = SuccessCard(cardData);
+      break;
+    default:
+      return null; // eventually, this will return an error card
+  }
+  
+  const navigationToSameCard = CardService.newNavigation().popCard().pushCard(cardToReload);
+  return CardService.newActionResponseBuilder().setNavigation(navigationToSameCard).build();
 }
