@@ -2,7 +2,9 @@
 function handleStartCardForm(e) { 
   const homeCard = HomeCard({ numberOfDrafts: e.formInputs.number_of_drafts });
   const navigationToHomeCard = CardService.newNavigation().pushCard(homeCard);
-  return CardService.newActionResponseBuilder().setNavigation(navigationToHomeCard).build();
+  return CardService.newActionResponseBuilder()
+    .setNavigation(navigationToHomeCard)
+    .build();
 }
 
 // Process user input for duplicating draft(s) with error checking
@@ -22,17 +24,25 @@ function handleHomeCardForm(e) {
   
   const successCard = SuccessCard({ copyInfo: copyInfo });
   const navigationToSuccessCard = CardService.newNavigation().pushCard(successCard);
-  return CardService.newActionResponseBuilder().setNavigation(navigationToSuccessCard).build();
+  const notification = CardService.newNotification().setText("Duplication successful.")
+  return CardService.newActionResponseBuilder()
+    .setNavigation(navigationToSuccessCard)
+    .setNotification(notification)
+    .build();
 }
   
 function goBackToStartCard(e) {
   const navigationToStartCard = CardService.newNavigation().popToRoot();
-  return CardService.newActionResponseBuilder().setNavigation(navigationToStartCard).build();
+  return CardService.newActionResponseBuilder()
+    .setNavigation(navigationToStartCard)
+    .build();
 }
   
 function goBackToHomeCard(e) {
   const navigationToHomeCard = CardService.newNavigation().popToNamedCard(CardNames.homeCardName);
-  return CardService.newActionResponseBuilder().setNavigation(navigationToHomeCard).build();
+  return CardService.newActionResponseBuilder()
+    .setNavigation(navigationToHomeCard)
+    .build();
 }
   
 function reloadCard(e) {
@@ -53,5 +63,7 @@ function reloadCard(e) {
   }
   
   const navigationToSameCard = CardService.newNavigation().popCard().pushCard(cardToReload);
-  return CardService.newActionResponseBuilder().setNavigation(navigationToSameCard).build();
+  return CardService.newActionResponseBuilder()
+    .setNavigation(navigationToSameCard)
+    .build();
 }

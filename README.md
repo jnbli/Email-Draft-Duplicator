@@ -31,7 +31,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] User can also refresh the start card without having any drafts.
 - [X] Add back button to the home card.
 - [X] Add back button to the success card.
-- [ ] Add notification(s).
+- [X] Add successful duplication notification.
 - [ ] Add error card.
 - [ ] Have home card list draft selection and duplication frequency for one draft at a time instead of list for all drafts.
 
