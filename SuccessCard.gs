@@ -19,14 +19,23 @@ function SuccessCard(data = {}) {
   
   successParagraph.setText(successParagraphText);
       
-  const backButton = CardService.newTextButton()
-    .setText("Run Again")
+  const runAgainButton = CardService.newTextButton()
+    .setText("Start Over")
     .setOnClickAction(CardService.newAction()
                       .setFunctionName("goBackToStartCard"));
   
+  const backButton = CardService.newTextButton()
+    .setText("Go Back")
+    .setOnClickAction(CardService.newAction()
+                      .setFunctionName("goBackToHomeCard"));
+  
+  const buttons = CardService.newButtonSet()
+    .addButton(runAgainButton)
+    .addButton(backButton);
+  
   let congratsSection = CardService.newCardSection()
     .addWidget(successParagraph)
-    .addWidget(backButton);
+    .addWidget(buttons);
   
   const successCard = CardService.newCardBuilder()
     .setName(CardNames.successCardName)
