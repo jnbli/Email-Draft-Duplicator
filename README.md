@@ -29,6 +29,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Success card reflects duplication of multiple drafts.
 - [X] Add footer with a button that allows the user to refresh the card on certain cards.
 - [X] User can also refresh the start card without having any drafts.
+- [X] Add back button to the home card.
 - [X] Add back button to the success card.
 - [ ] Add notification(s).
 - [ ] Add error card.
