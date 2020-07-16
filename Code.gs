@@ -85,9 +85,8 @@
 //}
 //
 // let appCache = new AppCache();  
+
 const drafts = GmailApp.getDrafts();
-const maxDraftsAtOnce = 10;
-const maxDuplicatesPerDraft = 10;
 
 // Starting point of this add-on
 // Invoked on homepage and contextual and trigger

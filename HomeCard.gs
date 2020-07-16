@@ -53,12 +53,11 @@ function HomeCard(data = {}) {
   }                                                                                                                            
   formSection.addWidget(buttons);
   
-  const cardName = "Home Card";
   const homeCard = CardService.newCardBuilder()
-    .setName(cardName)
+    .setName(CardNames.homeCardName)
     .setHeader(header)
     .addSection(formSection)
-    .addSection(FooterSection(cardName, data))
+    .addSection(FooterSection(CardNames.homeCardName, data))
     .build();
   
   return homeCard;

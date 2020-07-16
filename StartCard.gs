@@ -36,13 +36,12 @@ function StartCard(data = {}) {
     const formSection = CardService.newCardSection()
       .addWidget(numberOfDraftsDropdown)
       .addWidget(nextButton);
-    
-    const cardName = "Start Card";
+   
     startCard = CardService.newCardBuilder()
-      .setName(cardName)
+      .setName(CardNames.startCardName)
       .setHeader(header)
       .addSection(formSection)
-      .addSection(FooterSection(cardName, data))
+      .addSection(FooterSection(CardNames.startCardName, data))
       .build();
   }
   

@@ -34,13 +34,13 @@ function reloadCard(e) {
   let cardToReload;
   const cardData = JSON.parse(e.parameters.cardData);
   switch(e.parameters.cardName) {
-    case "Start Card":
+    case CardNames.startCardName:
       cardToReload = StartCard(cardData);
       break;
-    case "Home Card":
+    case CardNames.homeCardName:
       cardToReload = HomeCard(cardData);
       break;
-    case "Success Card":
+    case CardNames.successCardName:
       cardToReload = SuccessCard(cardData);
       break;
     default:

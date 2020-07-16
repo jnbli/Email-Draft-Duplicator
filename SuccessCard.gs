@@ -28,9 +28,8 @@ function SuccessCard(data = {}) {
     .addWidget(successParagraph)
     .addWidget(backButton);
   
-  const cardName = "Success Card";
   const successCard = CardService.newCardBuilder()
-    .setName(cardName)
+    .setName(CardNames.successCardName)
     .setHeader(header)
     .addSection(congratsSection)
     .build();
