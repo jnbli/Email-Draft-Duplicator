@@ -18,8 +18,6 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [ ] Input data for the card the user is currently on persists when the card is loaded again in any way (either through a refresh or navigation).
 
 ### UI
-- [X] `Number of Copies` input displays an error message to the user if the input is invalid.
-- [X] `Number of Copies` input displays suggestions when clicked.
 - [X] Add header to cards.
 - [X] If there are no drafts available, add-on displays a message instead of the usual UI elements.
 - [X] UI reflects starred drafts.
@@ -31,6 +29,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Success card reflects duplication of multiple drafts.
 - [X] Add footer with a button that allows the user to refresh the card on certain cards.
 - [X] User can also refresh the start card without having any drafts.
+- [X] Add back button to the success card.
 - [ ] Add notification(s).
 - [ ] Add error card.
 - [ ] Have home card list draft selection and duplication frequency for one draft at a time instead of list for all drafts.

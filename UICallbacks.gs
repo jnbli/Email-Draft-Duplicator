@@ -30,6 +30,11 @@ function goBackToStartCard(e) {
   return CardService.newActionResponseBuilder().setNavigation(navigationToStartCard).build();
 }
   
+function goBackToHomeCard(e) {
+  const navigationToHomeCard = CardService.newNavigation().popToNamedCard(CardNames.homeCardName);
+  return CardService.newActionResponseBuilder().setNavigation(navigationToHomeCard).build();
+}
+  
 function reloadCard(e) {
   let cardToReload;
   const cardData = JSON.parse(e.parameters.cardData);
