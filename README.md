@@ -15,7 +15,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] User can duplicate more than one draft at once.
 - [X] User can refresh certain cards via a button on the footer. This is useful for ensuring that those cards are processing and displaying up-to-date data.
 - [ ] User cannot select the same draft if duplicating multiple drafts.
-- [ ] Input data for the card the user is currently on persists when the card is reloaded.
+- [ ] Input data for the card the user is currently on persists when the card is loaded again in any way (either through a refresh or navigation).
 
 ### UI
 - [X] `Number of Copies` input displays an error message to the user if the input is invalid.
@@ -30,8 +30,9 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Home card allows user to select number of duplicates to make for multiple drafts.
 - [X] Success card reflects duplication of multiple drafts.
 - [X] Add footer with a button that allows the user to refresh the card on certain cards.
-- [ ] Add notifications.
-- [ ] Have Home Card list draft selection and duplication frequency for one draft at a time instead of list for all drafts.
+- [ ] Add notification(s).
+- [ ] Add error card.
+- [ ] Have home card list draft selection and duplication frequency for one draft at a time instead of list for all drafts.
 
 ### Performance Improvement(s) and Optimization(s)
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
@@ -41,4 +42,4 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Use modern JavaScript syntax.
 - [X] Refactor code into separate files and comment code.
 - [X] Cards take in data object for use by UI element(s).
-- [ ] Refactor with card navigation.
+- [X] Refactor with card navigation.
