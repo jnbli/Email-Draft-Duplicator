@@ -30,7 +30,7 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Home card allows user to select number of duplicates to make for multiple drafts.
 - [X] Success card reflects duplication of multiple drafts.
 - [X] Add footer with a button that allows the user to refresh the card on certain cards.
-- [ ] User can also refresh the start card without having any drafts.
+- [X] User can also refresh the start card without having any drafts.
 - [ ] Add notification(s).
 - [ ] Add error card.
 - [ ] Have home card list draft selection and duplication frequency for one draft at a time instead of list for all drafts.
