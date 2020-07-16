@@ -43,3 +43,4 @@ See this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs).
 - [X] Refactor code into separate files and comment code.
 - [X] Cards take in data object for use by UI element(s).
 - [X] Refactor with card navigation.
+- [ ] Refactor card names into an object for reference across multiple scripts.
