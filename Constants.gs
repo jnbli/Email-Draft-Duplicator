@@ -4,5 +4,6 @@ const maxDuplicatesPerDraft = 10;
 const CardNames = {
   startCardName: "Start Card",
   homeCardName: "Home Card",
-  successCardName: "Success Card"
+  successCardName: "Success Card",
+  errorCardName: "Error Card"
 };

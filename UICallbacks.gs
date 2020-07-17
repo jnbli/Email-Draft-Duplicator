@@ -43,6 +43,14 @@ function goBackToHomeCard(e) {
   return CardService.newActionResponseBuilder()
     .setNavigation(navigationToHomeCard)
     .build();
+}  
+  
+// Goes back to the card before the one that used this callback function 
+function goBackToPreviousCard(e) {
+  const navigationToPreviousCard = CardService.newNavigation().popCard();
+  return CardService.newActionResponseBuilder()
+    .setNavigation(navigationToPreviousCard)
+    .build();
 }
   
 function reloadCard(e) {
