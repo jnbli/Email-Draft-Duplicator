@@ -5,10 +5,10 @@
 # Gmail Draft Duplicator
 This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All releases can be found at the base repository [here](https://github.com/jnbli/Gmail-Draft-Duplicator/releases).
 
-## Installation and Usage Instructions
+## Installation Instructions
 Until we can get this add-on published on G-suite (if we do, then you could get this Gmail add-on the same way you would get any other Gmail add-on), you can use this add-on as a **developer add-on**. To do so, follow instructions in this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs) (which also describes how this add-on functions). Alternatively:
 
-### For Gmail In the Browser
+### For Gmail in a Browser
 1) Get the [Google Apps Script GitHub Assistant](https://chrome.google.com/webstore/detail/google-apps-script-github/lfjcgcmkmjjlieihflfhjopckgpelofo) chrome extension.
 2) Create a new Google Apps Script project on your Google Drive and open it. It is recommended to name this project Gmail Draft Duplicator. 
 3) Fork this repo.
