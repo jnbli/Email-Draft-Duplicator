@@ -12,11 +12,11 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 1) Get the [Google Apps Script GitHub Assistant](https://chrome.google.com/webstore/detail/google-apps-script-github/lfjcgcmkmjjlieihflfhjopckgpelofo) chrome extension.
 2) Create a new Google Apps Script project on your Google Drive and open it. It is recommended to name this project Gmail Draft Duplicator. 
 3) Fork this repo.
-4) Next to the `Select function` dropdown, select the forked repo in the `Repo` dropdown.
+4) Next to the `Select function` dropdown, select the fork in the `Repo` dropdown.
 5) Ensure that the `master` branch is selected in the `Branch` dropdown.
 6) Click on the button with the arrow icon pointing down. This opens up a window showing all the diffs.
 7) Scroll down to the bottom of the window and click on `Pull`. 
-8) Ensure that the option to show the manifest file is toggled on. Copy and paste the contents of the `appsscript.json` file from this repo to the one in the Google Apps Script project.
+8) Ensure that the option to show the manifest file is toggled on. Copy and paste the contents of the `appsscript.json` file from this repo or the fork to the one in the Google Apps Script project.
 9) Click on `Publish`, then `Deploy from manifest...`, then `Install add-on` with the deployment that is listed in the `Deployments` window. 
 10) Open up Gmail. Click on `Show side panel` if you have not already done so. Then, look for the icon that you see on the beginning of this README on the side panel. Click on it.
 11) If prompted, click on the `Authorize Access` button, which opens up a window. In that window, sign in with your Google Account, click on `Advanced`, then the `Go to` option, then `Allow`. 
