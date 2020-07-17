@@ -33,7 +33,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] Add back button to the success card.
 - [X] Add successful duplication notification.
 - [X] Add error card.
-- [ ] Have home card list draft selection and duplication frequency for one draft at a time instead of list for all drafts.
+- [ ] Make home card dynamic.
 
 ### Performance Improvement(s) and Optimization(s)
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
