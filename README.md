@@ -22,7 +22,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 11) If prompted, click on the `Authorize Access` button, which opens up a window. In that window, sign in with your Google Account, click on `Advanced`, then the `Go to` option, then `Allow`. 
 
 ### For Gmail Mobile App
-Follow through **steps 1-10**. Then, open up the Gmail app on a mobile device, scroll down to the bottom of an email, look for the `Available add-ons` bottom menu, and tap on the icon that you see on the beginning of this README. If you have not already given this add-on authorization access, follow **step 11**.
+Follow through **steps 1-9**. Then, open up the Gmail app on a mobile device, scroll down to the bottom of an email, look for the `Available add-ons` bottom menu, and tap on the icon that you see on the beginning of this README. If you have not already given this add-on authorization access, follow **step 11**.
 
 ## TODOs
 ### Feature(s)
