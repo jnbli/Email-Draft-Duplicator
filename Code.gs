@@ -86,7 +86,6 @@
 //
 // let appCache = new AppCache();  
 
-// Test commit
 const drafts = GmailApp.getDrafts();
 
 // Starting point of this add-on
