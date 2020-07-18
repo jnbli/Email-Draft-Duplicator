@@ -1,68 +1,115 @@
 // Card that prompts the user to duplicate draft(s)
 // The additional error parameter is used by the number text input to show an error message if necessary.
-function HomeCard(data = {}) {    
+function HomeCard(data = {}) {  
   try {
     const headerMessage = data.numberOfDrafts == 1 ? "You would like to duplicate 1 Gmail draft." : `You would like to duplicate ${data.numberOfDrafts} Gmail drafts.`;
     const header = CardService.newCardHeader().setTitle(headerMessage);
     
-    let gmailDraftDropdown = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.DROPDOWN)
-    .setTitle("Select a Gmail Draft");
+    const draftDuplicationInfoHeader = data.iterationCount > data.numberOfDrafts ? "You would like to make:" : "So far, you would like to make:";
+    let draftDuplicationInfo = "";
+    if (data.iterationCount > 1) {
+      data.draftsToDuplicate.forEach(draftToDuplicate => {
+        const template = GmailApp.getDraft(draftToDuplicate.id).getMessage(); // So that the referenced draft is up to date when this card is refreshed
+        const draftInfo = template.isStarred() ? "starred draft" : "draft";  // Reflect starred draft.
+        const draftSubject = template.getSubject();
+        const draftSubjectPortion = draftSubject.length === 0 ? "\"(no subject)\"" : `"${draftSubject}"`; // Reflect draft with no subject.
+        
+        if (draftToDuplicate.numberOfCopies == 1) draftDuplicationInfo += `  - ${draftToDuplicate.numberOfCopies} copy of the ${draftInfo} ${draftSubjectPortion}\n`;
+        else { draftDuplicationInfo += `  - ${draftToDuplicate.numberOfCopies} copies of the ${draftInfo} ${draftSubjectPortion}\n`; }
+      });
+    }
+
+    if (data.iterationCount <= data.numberOfDrafts) draftDuplicationInfo += "\n";
+    const draftDuplicationInfoText = CardService.newTextParagraph().setText(`${draftDuplicationInfoHeader}\n${draftDuplicationInfo}`);
+
+    const headerForInput = CardService.newTextParagraph().setText(`Gmail Draft (${data.iterationCount}/${data.numberOfDrafts})`);
+
+    const formSection = CardService.newCardSection();
+    if (data.iterationCount > 1) formSection.addWidget(draftDuplicationInfoText)
     
-    // Fill in gmail draft dropdown
-    drafts.forEach(draft => { 
-      const draftMessage = draft.getMessage();
-      let draftSubject = draftMessage.getSubject();
+    // Do not show the header for the selection inputs and selection inputs on the last iteration
+    if (data.iterationCount <= data.numberOfDrafts) {
+      formSection.addWidget(headerForInput);
+
+      const gmailDraftDropdown = CardService.newSelectionInput()
+        .setFieldName("draft_id")
+        .setType(CardService.SelectionInputType.DROPDOWN)
+        .setTitle("Select a Gmail Draft");
     
-      // Handle drafts with empty subject.
-      if (draftSubject.length === 0) draftSubject = `(no subject) ${draftSubject}`;
+      // Fill in gmail draft dropdown
+      drafts.forEach(draft => { 
+        const draftMessage = draft.getMessage();
+        let draftSubject = draftMessage.getSubject();
+      
+        // Handle drafts with empty subject.
+        if (draftSubject.length === 0) draftSubject = `(no subject) ${draftSubject}`;
+      
+        // Reflect starred drafts.
+        if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
+        gmailDraftDropdown.addItem(draftSubject, draft.getId(), false);
+      });
     
-      // Reflect starred drafts.
-      if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
-      gmailDraftDropdown.addItem(draftSubject, draft.getId(), false);
-    });
-  
-    let numberOfCopiesDropdown = CardService.newSelectionInput()
-    .setType(CardService.SelectionInputType.DROPDOWN)
-    .setTitle("Select Number of Copies");
-  
-    // Fill in number of copies dropdown
-    for (let num = 1; num <= maxDuplicatesPerDraft; num++) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false);
-  
-    const submitButton = CardService.newTextButton()
-    .setText("Duplicate")
-    .setOnClickAction(CardService.newAction()
-                      .setFunctionName("handleHomeCardForm")
-                      .setParameters({ "numberOfDrafts" : data.numberOfDrafts.toString() }));
-  
-    const backButton = CardService.newTextButton()
-    .setText("Go Back")
-    .setOnClickAction(CardService.newAction()
-                      .setFunctionName("goBackToPreviousCard"))
-  
-    const buttons = CardService.newButtonSet()
-      .addButton(submitButton)
-      .addButton(backButton); 
-  
-    let formSection = CardService.newCardSection();
-    for (let i = 0; i < data.numberOfDrafts; i++) { 
+      const numberOfCopiesDropdown = CardService.newSelectionInput()
+        .setFieldName("number_of_copies")
+        .setType(CardService.SelectionInputType.DROPDOWN)
+        .setTitle("Select Number of Copies");
+      
+      // Fill in number of copies dropdown
+      for (let num = 1; num <= maxDuplicatesPerDraft; num++) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false);
+    
       formSection
-        .addWidget(CardService.newTextParagraph().setText(`Gmail Draft #${i+1}`))
-        .addWidget(gmailDraftDropdown.setFieldName(`draft_id${i}`))
-        .addWidget(numberOfCopiesDropdown.setFieldName(`number_of_copies${i}`));
-//    if (i < data.numberOfDrafts - 1) formSection.addWidget(CardService.newTextParagraph().setText("\n")); 
-    }                                                                                                                            
-    formSection.addWidget(buttons);
-  
+        .addWidget(gmailDraftDropdown)
+        .addWidget(numberOfCopiesDropdown);
+    }
+    
+    const buttonSet = CardService.newButtonSet();
+
+    // Only show the duplicate button once the user is done entering duplication data
+    if (data.iterationCount > data.numberOfDrafts) {  
+      const duplicateButtonName = data.numberOfDrafts > 1 ? "Duplicate Drafts" : "Duplicate Draft"; 
+      const duplicateButton = CardService.newTextButton()
+        .setText(duplicateButtonName)
+        .setOnClickAction(CardService.newAction()
+                            .setFunctionName("sendHomeCardFormData")
+                            // JSON.stringify() is used since setParameters() only takes string keys and values.
+                            .setParameters({ "cardData" : JSON.stringify(data), "draftDuplicationInfo": draftDuplicationInfo }));
+      buttonSet.addButton(duplicateButton);
+    } else {
+      const nextButton = CardService.newTextButton()
+        .setText("Next")
+        .setOnClickAction(CardService.newAction()
+                            .setFunctionName("iterateHomeCard")
+                            // JSON.stringify() is used since setParameters() only takes string keys and values.
+                            .setParameters({ "cardData" : JSON.stringify(data) }));
+      buttonSet.addButton(nextButton);
+    }     
+    
+    const resetButton = CardService.newTextButton()
+      .setText("Reset")
+      .setOnClickAction(CardService.newAction()
+                          .setFunctionName("resetHomeCard")
+                          .setParameters({ numberOfDrafts: JSON.stringify(data.numberOfDrafts) }));
+
+    const backButton = CardService.newTextButton()
+      .setText("Go Back")
+      .setOnClickAction(CardService.newAction()
+                          .setFunctionName("goBackToPreviousCard")); 
+                                  
+    buttonSet
+      .addButton(resetButton)
+      .addButton(backButton);
+
+    formSection.addWidget(buttonSet);
+
     const homeCard = CardService.newCardBuilder()
-    .setName(CardNames.homeCardName)
-    .setHeader(header)
-    .addSection(formSection)
-    .addSection(FooterSection(CardNames.homeCardName, data))
-    .build();
-  
+      .setName(CardNames.homeCardName)
+      .setHeader(header)
+      .addSection(formSection)
+      .addSection(FooterSection(CardNames.homeCardName, data))
+      .build();
+    
     return homeCard;  
-  } catch(error) {
+  } catch (error) {
     return ErrorCard({ error: error });
   }
 }
