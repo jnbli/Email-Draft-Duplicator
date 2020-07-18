@@ -14,7 +14,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] If a starred draft is duplicated, the starred status transfers over to the duplicates.
 - [X] User can duplicate more than one draft at once.
 - [X] User can refresh certain cards via a button on the footer. This is useful for ensuring that those cards are processing and displaying up-to-date data.
-- [ ] User cannot select the same draft if duplicating multiple drafts.
+- [X] User cannot select the same draft if duplicating multiple drafts.
 - [ ] Input data for the card the user is currently on persists when the card is loaded again in any way (either through a refresh or navigation).
 
 ### UI
@@ -35,10 +35,11 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] Add error card.
 - [X] Make home card dynamic.
 - [X] Add reset button to home card. 
+- [ ] Have a footer for the success and error cards and move the back button to the footer for cards with a back button.
 
 ### Performance Improvement(s) and Optimization(s)
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
-- [X] Implement maximum allowed number of drafts to duplicate at once to minimize the amount of time it takes to load the home card.
+- [X] Implement maximum allowed number of drafts to duplicate at once.
 
 ### Code Refactor and Fixing Bug(s)
 - [X] Use modern JavaScript syntax.
