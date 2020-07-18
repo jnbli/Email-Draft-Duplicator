@@ -15,7 +15,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] User can duplicate more than one draft at once.
 - [X] User can refresh certain cards via a button on the footer. This is useful for ensuring that those cards are processing and displaying up-to-date data.
 - [X] User cannot select the same draft if duplicating multiple drafts.
-- [ ] Input data for the card the user is currently on persists when the card is loaded again in any way (either through a refresh or navigation).
+- [X] Input data for the card the user is currently on does not change (except for after each iteration of the home card) when the card is reloaded in any way (either through a refresh or navigation).
 
 ### UI
 - [X] Add header to cards.
