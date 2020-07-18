@@ -98,16 +98,8 @@ function HomeCard(data = {}) {
       .setText("Reset")
       .setOnClickAction(CardService.newAction()
                           .setFunctionName("resetHomeCard")
-                          .setParameters({ numberOfDrafts: JSON.stringify(data.numberOfDrafts) }));
-
-    const backButton = CardService.newTextButton()
-      .setText("Go Back")
-      .setOnClickAction(CardService.newAction()
-                          .setFunctionName("goBackToPreviousCard")); 
-                                  
-    buttonSet
-      .addButton(resetButton)
-      .addButton(backButton);
+                          .setParameters({ numberOfDrafts: JSON.stringify(data.numberOfDrafts) }));                              
+    buttonSet.addButton(resetButton);
 
     formSection.addWidget(buttonSet);
 
