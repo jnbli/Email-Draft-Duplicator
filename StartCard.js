@@ -27,7 +27,10 @@ function StartCard(data = {}) {
       
       // Fill in number of drafts input dropdown
       const maximumNumberOfDrafts = drafts.length > maxDraftsAtOnce ? maxDraftsAtOnce : drafts.length;
-      for (let num = 1; num <= maximumNumberOfDrafts; num++) numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false);
+      for (let num = 1; num <= maximumNumberOfDrafts; num++) { 
+        if (data.formInputs && num == data.formInputs.number_of_drafts) numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
+        else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
+      }
       
       const nextButton = CardService.newTextButton()
         .setText("Next")

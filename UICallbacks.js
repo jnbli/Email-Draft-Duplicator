@@ -49,6 +49,8 @@ function iterateHomeCard(e) {
     // User cannot select the same draft if duplicating multiple drafts.
     delete cardData.draftIds[draftId];
 
+    if (cardData.formInputs) cardData.formInputs = undefined; // So that the inputs reset for the next iteration.
+    
     const homeCard = HomeCard(cardData);
     const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
     return CardService.newActionResponseBuilder()
@@ -111,6 +113,7 @@ function reloadCard(e) {
   try {
     let cardToReload;
     const cardData = JSON.parse(e.parameters.cardData);
+    cardData.formInputs = e.formInputs;
     switch(e.parameters.cardName) {
       case CardNames.startCardName:
         cardToReload = StartCard(cardData);

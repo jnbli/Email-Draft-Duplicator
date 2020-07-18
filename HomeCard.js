@@ -51,7 +51,9 @@ function HomeCard(data = {}) {
       
         // Reflect starred drafts.
         if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
-        gmailDraftDropdown.addItem(draftSubject, draftId, false);
+
+        if (data.formInputs && draftId == data.formInputs.draft_id) gmailDraftDropdown.addItem(draftSubject, draftId, true);
+        else { gmailDraftDropdown.addItem(draftSubject, draftId, false); }
       }
     
       const numberOfCopiesDropdown = CardService.newSelectionInput()
@@ -60,7 +62,10 @@ function HomeCard(data = {}) {
         .setTitle("Select Number of Copies");
       
       // Fill in number of copies dropdown
-      for (let num = 1; num <= maxDuplicatesPerDraft; num++) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false);
+      for (let num = 1; num <= maxDuplicatesPerDraft; num++) { 
+        if (data.formInputs && num == data.formInputs.number_of_copies) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), true);
+        else { numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false); }
+      }
     
       formSection
         .addWidget(gmailDraftDropdown)
