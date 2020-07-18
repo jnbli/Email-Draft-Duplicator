@@ -114,9 +114,11 @@ function reloadCard(e) {
     let cardToReload;
     const cardData = JSON.parse(e.parameters.cardData);
     cardData.formInputs = e.formInputs;
+
     switch(e.parameters.cardName) {
       case CardNames.startCardName:
         cardToReload = StartCard(cardData);
+
         break;
       case CardNames.homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
         // Regenerate the draft ids object since there is a chance the user added, modified, or deleted drafts.
@@ -127,9 +129,11 @@ function reloadCard(e) {
 
         cardData.draftIds = draftIds;
         cardToReload = HomeCard(cardData);
+
         break;
       case CardNames.successCardName:
         cardToReload = SuccessCard(cardData);
+        
         break;
       default:  // If the card name parameter is not valid
         cardToReload = ErrorCard({ error: "Cannot reload unknown card." }); 
