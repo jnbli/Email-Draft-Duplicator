@@ -2,7 +2,11 @@
 function handleStartCardForm(e) { 
   try {
     const draftIds = generateDraftIds();
-    const homeCard = HomeCard({ numberOfDrafts: e.formInputs.number_of_drafts, iterationCount: 1, draftIds: draftIds });
+    const homeCard = HomeCard({ 
+      setNumberOfDrafts: e.formInputs.number_of_drafts, 
+      iterationCount: 1, 
+      draftIds: draftIds 
+    });
     const navigationToHomeCard = CardService.newNavigation().pushCard(homeCard);
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToHomeCard)
@@ -15,16 +19,15 @@ function handleStartCardForm(e) {
 // Process user input for duplicating draft(s) with error checking
 function sendHomeCardFormData(e) {
   try {
-    const cardData = JSON.parse(e.parameters.cardData);  
-    cardData.draftsToDuplicate.forEach(draftToDuplicate => {
-      const draftId = draftToDuplicate.id;
-      const numberOfCopies = draftToDuplicate.numberOfCopies;
-  
+    const cardData = JSON.parse(e.parameters.cardData); 
+    
+    for (const draftId in cardData.draftsToDuplicate) {
+      const numberOfCopies = cardData.draftsToDuplicate[draftId];
       const draft = GmailApp.getDraft(draftId);
-      createCopies(numberOfCopies, draft); // createCopies function defined in Utilities.gs
-    });  
+      createCopies(numberOfCopies, draft); // createCopies function defined in the Utilities file
+    }
   
-    const successCard = SuccessCard({ numberOfDrafts: cardData.draftsToDuplicate.length, draftDuplicationInfo: e.parameters.draftDuplicationInfo });
+    const successCard = SuccessCard({ numberOfDrafts: cardData.setNumberOfDrafts, draftDuplicationInfo: e.parameters.draftDuplicationInfo });
     const navigationToSuccessCard = CardService.newNavigation().pushCard(successCard);
     const notification = CardService.newNotification().setText("Duplication successful.")
     return CardService.newActionResponseBuilder()
@@ -42,8 +45,8 @@ function iterateHomeCard(e) {
     const numberOfCopies = e.formInputs.number_of_copies;
 
     const cardData = JSON.parse(e.parameters.cardData);
-    if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = [];
-    cardData.draftsToDuplicate.push({ id: draftId, numberOfCopies: numberOfCopies });
+    if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
+    cardData.draftsToDuplicate[draftId] = numberOfCopies; 
     cardData.iterationCount++;
 
     // User cannot select the same draft if duplicating multiple drafts.
@@ -87,7 +90,11 @@ function resetHomeCard(e) {
   try {
     // Regenerate the draft ids object since there is a chance the user added, modified, or deleted drafts.
     const draftIds = generateDraftIds();
-    const homeCard = HomeCard({ numberOfDrafts: JSON.parse(e.parameters.numberOfDrafts), iterationCount: 1, draftIds: draftIds });
+    const homeCard = HomeCard({ 
+      setNumberOfDrafts: JSON.parse(e.parameters.setNumberOfDrafts), 
+      iterationCount: 1, 
+      draftIds: draftIds 
+    });
     const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToHomeCard)
@@ -124,8 +131,17 @@ function reloadCard(e) {
         // Regenerate the draft ids object since there is a chance the user added, modified, or deleted drafts.
         const draftIds = generateDraftIds();
 
-        // User cannot select the same draft if duplicating multiple drafts.
-        if (cardData.draftsToDuplicate) cardData.draftsToDuplicate.forEach(draftToDuplicate => delete draftIds[draftToDuplicate.id]); 
+        if (cardData.draftsToDuplicate) { 
+
+          // Remove draft selections that have been deleted and account for valid selections.
+          for (const draftId in cardData.draftsToDuplicate) {
+            if (!draftIds[draftId]) { 
+              delete cardData.draftsToDuplicate[draftId];
+              cardData.iterationCount--;
+            }
+            else { delete draftIds[draftId]; }
+          }
+        }
 
         cardData.draftIds = draftIds;
         cardToReload = HomeCard(cardData);

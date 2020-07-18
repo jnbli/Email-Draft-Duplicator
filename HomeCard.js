@@ -2,37 +2,46 @@
 // The additional error parameter is used by the number text input to show an error message if necessary.
 function HomeCard(data = {}) {  
   try {
-    data.numberOfDrafts = data.numberOfDrafts > drafts.length ? drafts.length : data.numberOfDrafts;
-    
-    if (data.numberOfDrafts === 0) return StartCard({ numberOfDrafts: data.draftIds.numberOfDrafts });
+    // Helps the total draft number adjust to the user creating and/or deleting drafts
+    const numberOfDrafts = data.setNumberOfDrafts > drafts.length ? drafts.length : data.setNumberOfDrafts;
+  
+    if (numberOfDrafts === 0) return StartCard();
 
-    const headerMessage = data.numberOfDrafts == 1 ? "You would like to duplicate 1 Gmail draft." : `You would like to duplicate ${data.numberOfDrafts} Gmail drafts.`;
+    let headerMessage = "";
+    if (data.setNumberOfDrafts == 1) headerMessage = `You would like to duplicate ${data.setNumberOfDrafts} Gmail draft.`;
+    else if (data.setNumberOfDrafts > drafts.length) { 
+      if (drafts.length == 1) headerMessage = `You would like to duplicate ${data.setNumberOfDrafts} Gmail drafts, but there is only ${drafts.length} draft available.`; 
+      else { headerMessage = `You would like to duplicate ${data.setNumberOfDrafts} Gmail drafts, but there are only ${drafts.length} drafts available.`; } 
+    }
+    else { headerMessage = `You would like to duplicate ${data.setNumberOfDrafts} Gmail drafts.` }
+
     const header = CardService.newCardHeader().setTitle(headerMessage);
     
-    const draftDuplicationInfoHeader = data.iterationCount > data.numberOfDrafts ? "You would like to make:" : "So far, you would like to make:";
+    const draftDuplicationInfoHeader = data.iterationCount > numberOfDrafts ? "You would like to make:" : "So far, you would like to make:";
     let draftDuplicationInfo = "";
     if (data.iterationCount > 1) {
-      data.draftsToDuplicate.forEach(draftToDuplicate => {
-        const template = GmailApp.getDraft(draftToDuplicate.id).getMessage(); // So that the referenced draft is up to date when this card is refreshed
+      for (const draftId in data.draftsToDuplicate) {
+        const template = GmailApp.getDraft(draftId).getMessage(); // So that the referenced draft is up to date when this card is refreshed
         const draftInfo = template.isStarred() ? "starred draft" : "draft";  // Reflect starred draft.
         const draftSubject = template.getSubject();
         const draftSubjectPortion = draftSubject.length === 0 ? "\"(no subject)\"" : `"${draftSubject}"`; // Reflect draft with no subject.
         
-        if (draftToDuplicate.numberOfCopies == 1) draftDuplicationInfo += `  - ${draftToDuplicate.numberOfCopies} copy of the ${draftInfo} ${draftSubjectPortion}\n`;
-        else { draftDuplicationInfo += `  - ${draftToDuplicate.numberOfCopies} copies of the ${draftInfo} ${draftSubjectPortion}\n`; }
-      });
+        // For the data.draftToDuplicate object, the key is the draft id and the value is the number of copies the user selected for each draft.
+        if (data.draftsToDuplicate[draftId] == 1) draftDuplicationInfo += `  - ${data.draftsToDuplicate[draftId]} copy of the ${draftInfo} ${draftSubjectPortion}\n`;
+        else { draftDuplicationInfo += `  - ${data.draftsToDuplicate[draftId]} copies of the ${draftInfo} ${draftSubjectPortion}\n`; }
+      }
     }
 
-    if (data.iterationCount <= data.numberOfDrafts) draftDuplicationInfo += "\n";
+    if (data.iterationCount <= numberOfDrafts) draftDuplicationInfo += "\n";
     const draftDuplicationInfoText = CardService.newTextParagraph().setText(`${draftDuplicationInfoHeader}\n${draftDuplicationInfo}`);
 
-    const headerForInput = CardService.newTextParagraph().setText(`Gmail Draft (${data.iterationCount}/${data.numberOfDrafts})`);
+    const headerForInput = CardService.newTextParagraph().setText(`Gmail Draft (${data.iterationCount}/${numberOfDrafts})`);
 
     const formSection = CardService.newCardSection();
     if (data.iterationCount > 1) formSection.addWidget(draftDuplicationInfoText)
     
-    // Do not show the header for the selection inputs and selection inputs on the last iteration
-    if (data.iterationCount <= data.numberOfDrafts) {
+    // Do not show the header for the selection inputs and selection inputs on the last possible iteration.
+    if (data.iterationCount <= numberOfDrafts) {
       formSection.addWidget(headerForInput);
 
       const gmailDraftDropdown = CardService.newSelectionInput()
@@ -40,7 +49,7 @@ function HomeCard(data = {}) {
         .setType(CardService.SelectionInputType.DROPDOWN)
         .setTitle("Select a Gmail Draft");
 
-      // Fill in gmail draft dropdown
+      // Fill in gmail draft dropdown.
       for (const draftId in data.draftIds) {
         const draft = GmailApp.getDraft(draftId);
         const draftMessage = draft.getMessage();
@@ -61,7 +70,7 @@ function HomeCard(data = {}) {
         .setType(CardService.SelectionInputType.DROPDOWN)
         .setTitle("Select Number of Copies");
       
-      // Fill in number of copies dropdown
+      // Fill in number of copies dropdown.
       for (let num = 1; num <= maxDuplicatesPerDraft; num++) { 
         if (data.formInputs && num == data.formInputs.number_of_copies) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), true);
         else { numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false); }
@@ -74,9 +83,9 @@ function HomeCard(data = {}) {
 
     const buttonSet = CardService.newButtonSet();
 
-    // Only show the duplicate button once the user is done entering duplication data
-    if (data.iterationCount > data.numberOfDrafts) {  
-      const duplicateButtonName = data.numberOfDrafts > 1 ? "Duplicate Drafts" : "Duplicate Draft"; 
+    // Only show the duplicate button on the last possible iteration.
+    if (data.iterationCount > numberOfDrafts) {  
+      const duplicateButtonName = numberOfDrafts > 1 ? "Duplicate Drafts" : "Duplicate Draft"; 
       const duplicateButton = CardService.newTextButton()
         .setText(duplicateButtonName)
         .setOnClickAction(CardService.newAction()
@@ -98,7 +107,7 @@ function HomeCard(data = {}) {
       .setText("Reset")
       .setOnClickAction(CardService.newAction()
                           .setFunctionName("resetHomeCard")
-                          .setParameters({ numberOfDrafts: JSON.stringify(data.numberOfDrafts) }));                              
+                          .setParameters({ setNumberOfDrafts: JSON.stringify(data.setNumberOfDrafts) }));                              
     buttonSet.addButton(resetButton);
 
     formSection.addWidget(buttonSet);
