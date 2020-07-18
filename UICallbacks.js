@@ -135,7 +135,7 @@ function reloadCard(e) {
         cardToReload = SuccessCard(cardData);
         
         break;
-      default:  // If the card name parameter is not valid
+      default:  // If the card name is not valid
         cardToReload = ErrorCard({ error: "Cannot reload unknown card." }); 
     }
     
