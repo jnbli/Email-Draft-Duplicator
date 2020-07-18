@@ -35,7 +35,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] Add error card.
 - [X] Make home card dynamic.
 - [X] Add reset button to home card. 
-- [ ] Have a footer for the success and error cards and move the back button to the footer for cards with a back button.
+- [X] Have a footer for the success and error cards and redistribute button(s) in the footer for the home and success cards.
 
 ### Performance Improvement(s) and Optimization(s)
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
