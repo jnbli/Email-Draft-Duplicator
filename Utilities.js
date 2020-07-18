@@ -24,9 +24,6 @@ function createCopies(n, draft) {
     
     if (starred) GmailApp.starMessage(draft.getMessage());  // Duplicating starred drafts duplicates the starred status.
   }
-  
-  // Draft info used in SuccessCard.gs
-  return { subject: subject, starred: starred };
 }
 
 // Helper function that appends input data to the card's data
