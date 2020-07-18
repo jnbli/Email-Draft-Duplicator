@@ -1,7 +1,8 @@
 // Process user input for number of drafts to duplicate
 function handleStartCardForm(e) { 
   try {
-    const homeCard = HomeCard({ numberOfDrafts: e.formInputs.number_of_drafts, iterationCount: 1 });
+    const draftIds = generateDraftIds();
+    const homeCard = HomeCard({ numberOfDrafts: e.formInputs.number_of_drafts, iterationCount: 1, draftIds: draftIds });
     const navigationToHomeCard = CardService.newNavigation().pushCard(homeCard);
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToHomeCard)
@@ -37,11 +38,17 @@ function sendHomeCardFormData(e) {
 
 function iterateHomeCard(e) {
   try {
+    const draftId = e.formInputs.draft_id;
+    const numberOfCopies = e.formInputs.number_of_copies;
+
     const cardData = JSON.parse(e.parameters.cardData);
     if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = [];
-    cardData.draftsToDuplicate.push({ id: e.formInputs.draft_id, numberOfCopies: e.formInputs.number_of_copies });
+    cardData.draftsToDuplicate.push({ id: draftId, numberOfCopies: numberOfCopies });
     cardData.iterationCount++;
-  
+
+    // User cannot select the same draft if duplicating multiple drafts.
+    delete cardData.draftIds[draftId];
+
     const homeCard = HomeCard(cardData);
     const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
     return CardService.newActionResponseBuilder()
@@ -76,7 +83,9 @@ function goBackToHomeCard(e) {
 
 function resetHomeCard(e) {
   try {
-    const homeCard = HomeCard({ numberOfDrafts: JSON.parse(e.parameters.numberOfDrafts), iterationCount: 1 });
+    // Regenerate the draft ids object since there is a chance the user added, modified, or deleted drafts.
+    const draftIds = generateDraftIds();
+    const homeCard = HomeCard({ numberOfDrafts: JSON.parse(e.parameters.numberOfDrafts), iterationCount: 1, draftIds: draftIds });
     const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToHomeCard)
@@ -106,7 +115,14 @@ function reloadCard(e) {
       case CardNames.startCardName:
         cardToReload = StartCard(cardData);
         break;
-      case CardNames.homeCardName:
+      case CardNames.homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
+        // Regenerate the draft ids object since there is a chance the user added, modified, or deleted drafts.
+        const draftIds = generateDraftIds();
+
+        // User cannot select the same draft if duplicating multiple drafts.
+        if (cardData.draftsToDuplicate) cardData.draftsToDuplicate.forEach(draftToDuplicate => delete draftIds[draftToDuplicate.id]); 
+
+        cardData.draftIds = draftIds;
         cardToReload = HomeCard(cardData);
         break;
       case CardNames.successCardName:

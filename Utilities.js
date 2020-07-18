@@ -26,6 +26,13 @@ function createCopies(n, draft) {
   }
 }
 
+// Helper function that generates an object of draft ids
+function generateDraftIds() {
+  const draftIds = {};
+  drafts.forEach(draft => draftIds[draft.getId()] = 1);
+  return draftIds;
+}
+
 // Helper function that appends input data to the card's data
 //function addInputCardData(cardData) {
 //  cardData.formInputs = e.formInputs;
