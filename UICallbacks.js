@@ -21,15 +21,47 @@ function sendHomeCardFormData(e) {
   try {
     const cardData = JSON.parse(e.parameters.cardData); 
     
+    // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
+    const draftIds = generateDraftIds();
+
+    let numberOfDraftsDuplicated = 0;
+    let userDeletedAtLeastOneSelectedDraft = false;
+
+    let missingDraftInfo = [];
+
     for (const draftId in cardData.draftsToDuplicate) {
-      const numberOfCopies = cardData.draftsToDuplicate[draftId];
-      const draft = GmailApp.getDraft(draftId);
-      createCopies(numberOfCopies, draft); // createCopies function defined in the Utilities file
+      // The key of draftIds object are the draft ids.
+      if (draftIds[draftId]) {  // Selected draft has not been deleted
+        const numberOfCopies = cardData.draftsToDuplicate[draftId];
+        const draft = GmailApp.getDraft(draftId);
+        createCopies(numberOfCopies, draft); // createCopies function defined in the Utilities file
+        numberOfDraftsDuplicated++;
+
+        // Regenerate draft duplication info for the draft just in case the user modified the selected draft.      
+        cardData.draftDuplicationInfoObj[draftId] = generateDraftDuplicationInfo(draftId, cardData.draftsToDuplicate);
+      } else {  // Selected draft has been deleted
+        if (!userDeletedAtLeastOneSelectedDraft) userDeletedAtLeastOneSelectedDraft = true; 
+        missingDraftInfo.push(cardData.draftDuplicationInfoObj[draftId]);
+        delete cardData.draftDuplicationInfoObj[draftId];
+      }
     }
   
-    const successCard = SuccessCard({ numberOfDrafts: cardData.setNumberOfDrafts, draftDuplicationInfo: e.parameters.draftDuplicationInfo });
+    const successCard = SuccessCard({ 
+      draftDuplicationInfoObj: cardData.draftDuplicationInfoObj,
+      numberOfDraftsDuplicated: numberOfDraftsDuplicated, 
+      userDeletedAtLeastOneSelectedDraft: userDeletedAtLeastOneSelectedDraft, 
+      missingDraftInfo: missingDraftInfo
+    });
+
     const navigationToSuccessCard = CardService.newNavigation().pushCard(successCard);
-    const notification = CardService.newNotification().setText("Duplication successful.")
+
+    let notificationContent = "";
+    if (numberOfDraftsDuplicated === 0) notificationContent = "Duplication unsuccessful.";
+    else if (userDeletedAtLeastOneSelectedDraft) notificationContent = "Duplication partially successful.";
+    else { notificationContent = "Duplication successful."; }
+
+    const notification = CardService.newNotification().setText(notificationContent);
+    
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToSuccessCard)
       .setNotification(notification)
@@ -47,7 +79,7 @@ function iterateHomeCard(e) {
     const cardData = JSON.parse(e.parameters.cardData);
     if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
     cardData.draftsToDuplicate[draftId] = numberOfCopies; 
-    cardData.iterationCount++;
+    cardData.iterationCount++;  
 
     // User cannot select the same draft if duplicating multiple drafts.
     delete cardData.draftIds[draftId];
@@ -88,7 +120,7 @@ function goBackToHomeCard(e) {
 
 function resetHomeCard(e) {
   try {
-    // Regenerate the draft ids object since there is a chance the user added, modified, or deleted drafts.
+    // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
     const draftIds = generateDraftIds();
     const homeCard = HomeCard({ 
       setNumberOfDrafts: JSON.parse(e.parameters.setNumberOfDrafts), 
@@ -128,7 +160,7 @@ function reloadCard(e) {
 
         break;
       case CardNames.homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
-        // Regenerate the draft ids object since there is a chance the user added, modified, or deleted drafts.
+        // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
         const draftIds = generateDraftIds();
 
         if (cardData.draftsToDuplicate) { 
