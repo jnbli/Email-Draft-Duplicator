@@ -2,6 +2,10 @@
 // The additional error parameter is used by the number text input to show an error message if necessary.
 function HomeCard(data = {}) {  
   try {
+    data.numberOfDrafts = data.numberOfDrafts > drafts.length ? drafts.length : data.numberOfDrafts;
+    
+    if (data.numberOfDrafts === 0) return StartCard({ numberOfDrafts: data.draftIds.numberOfDrafts });
+
     const headerMessage = data.numberOfDrafts == 1 ? "You would like to duplicate 1 Gmail draft." : `You would like to duplicate ${data.numberOfDrafts} Gmail drafts.`;
     const header = CardService.newCardHeader().setTitle(headerMessage);
     
@@ -35,9 +39,10 @@ function HomeCard(data = {}) {
         .setFieldName("draft_id")
         .setType(CardService.SelectionInputType.DROPDOWN)
         .setTitle("Select a Gmail Draft");
-    
+
       // Fill in gmail draft dropdown
-      drafts.forEach(draft => { 
+      for (const draftId in data.draftIds) {
+        const draft = GmailApp.getDraft(draftId);
         const draftMessage = draft.getMessage();
         let draftSubject = draftMessage.getSubject();
       
@@ -46,8 +51,8 @@ function HomeCard(data = {}) {
       
         // Reflect starred drafts.
         if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
-        gmailDraftDropdown.addItem(draftSubject, draft.getId(), false);
-      });
+        gmailDraftDropdown.addItem(draftSubject, draftId, false);
+      }
     
       const numberOfCopiesDropdown = CardService.newSelectionInput()
         .setFieldName("number_of_copies")
@@ -61,7 +66,7 @@ function HomeCard(data = {}) {
         .addWidget(gmailDraftDropdown)
         .addWidget(numberOfCopiesDropdown);
     }
-    
+
     const buttonSet = CardService.newButtonSet();
 
     // Only show the duplicate button once the user is done entering duplication data
