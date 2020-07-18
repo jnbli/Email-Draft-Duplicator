@@ -11,7 +11,7 @@ function StartCard(data = {}) {
       const mainSection = CardService.newCardSection().addWidget(message);
       
       startCard = CardService.newCardBuilder()
-        .setName("Home Card")
+        .setName(CardNames.startCardName)
         .setHeader(header)
         .addSection(mainSection)
         .addSection(FooterSection(CardNames.startCardName, data))

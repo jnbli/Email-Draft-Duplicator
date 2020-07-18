@@ -19,18 +19,20 @@ function HomeCard(data = {}) {
     
     const draftDuplicationInfoHeader = data.iterationCount > numberOfDrafts ? "You would like to make:" : "So far, you would like to make:";
     let draftDuplicationInfo = "";
+    const draftDuplicationInfoObj = {};
     if (data.iterationCount > 1) {
-      for (const draftId in data.draftsToDuplicate) {
-        const template = GmailApp.getDraft(draftId).getMessage(); // So that the referenced draft is up to date when this card is refreshed
-        const draftInfo = template.isStarred() ? "starred draft" : "draft";  // Reflect starred draft.
-        const draftSubject = template.getSubject();
-        const draftSubjectPortion = draftSubject.length === 0 ? "\"(no subject)\"" : `"${draftSubject}"`; // Reflect draft with no subject.
-        
-        // For the data.draftToDuplicate object, the key is the draft id and the value is the number of copies the user selected for each draft.
-        if (data.draftsToDuplicate[draftId] == 1) draftDuplicationInfo += `  - ${data.draftsToDuplicate[draftId]} copy of the ${draftInfo} ${draftSubjectPortion}\n`;
-        else { draftDuplicationInfo += `  - ${data.draftsToDuplicate[draftId]} copies of the ${draftInfo} ${draftSubjectPortion}\n`; }
+      for (const draftId in data.draftsToDuplicate) {        
+        // The generateDraftDuplicationInfo function is defined in the Utilities file.
+        let currDraftDuplicationInfo = generateDraftDuplicationInfo(draftId, data.draftsToDuplicate);
+        draftDuplicationInfo += currDraftDuplicationInfo;
+
+        // The draft duplication info object is only used on the last iteration.
+        if (data.iterationCount > numberOfDrafts) draftDuplicationInfoObj[draftId] = currDraftDuplicationInfo;
       }
     }
+
+    // The draft duplication info object is only used on the last iteration.
+    if (data.iterationCount > numberOfDrafts) data.draftDuplicationInfoObj = draftDuplicationInfoObj;
 
     if (data.iterationCount <= numberOfDrafts) draftDuplicationInfo += "\n";
     const draftDuplicationInfoText = CardService.newTextParagraph().setText(`${draftDuplicationInfoHeader}\n${draftDuplicationInfo}`);
@@ -91,7 +93,7 @@ function HomeCard(data = {}) {
         .setOnClickAction(CardService.newAction()
                             .setFunctionName("sendHomeCardFormData")
                             // JSON.stringify() is used since setParameters() only takes string keys and values.
-                            .setParameters({ "cardData" : JSON.stringify(data), "draftDuplicationInfo": draftDuplicationInfo }));
+                            .setParameters({ "cardData" : JSON.stringify(data) }));
       buttonSet.addButton(duplicateButton);
     } else {
       const nextButton = CardService.newTextButton()
