@@ -2,7 +2,7 @@
 function StartCard(data = {}) {
   try {
     let startCard = null;
-  
+
     // If the user currently has no Gmail drafts
     if (drafts.length == 0) {
       const header = CardService.newCardHeader().setTitle("You have no Gmail drafts.");
