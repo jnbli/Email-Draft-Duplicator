@@ -14,8 +14,10 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] If a starred draft is duplicated, the starred status transfers over to the duplicates.
 - [X] User can duplicate more than one draft at once.
 - [X] User can refresh certain cards via a button on the footer. This is useful for ensuring that those cards are processing and displaying up-to-date data.
+- [X] User can go back and forth between cards via a button on certain cards.
 - [X] User cannot select the same draft if duplicating multiple drafts.
 - [X] Input data for the card the user is currently on does not change when the card is reloaded (except for after each iteration of the home card).
+- [X] Success card content is dynamic (for example, if the user modified and/or deleted one or more selected draft(s) before duplication, the update is reflected).
 
 ### UI
 - [X] Add header to cards.
@@ -48,6 +50,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] Cards take in data object for use by UI element(s).
 - [X] Refactor with card navigation.
 - [X] Use a separate file to store global constants.
-- [X] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks the refresh button.
+- [X] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the refresh button.
 - [X] Fix unadaptive total number of drafts in the home card.
-- [ ] Prevent runtime error that occurs if the user tries to duplicate selected draft(s) after deleting them without refreshing the home card.
+- [X] Prevent runtime error that occurs if the user tries to duplicate selected draft(s) after deleting them without refreshing the home card.
+- [ ] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the next button.
