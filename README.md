@@ -7,6 +7,7 @@ This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All 
 
 ## Installation Instructions
 Until we can get the Gmail Draft Duplicator published on G-suite (if we do, then you could get this Gmail add-on the same way you would get any other Gmail add-on), you can use this add-on as a **developer add-on**. To do so, you can follow the instructions in this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs) (which also describes how this add-on functions) or the steps below:
+
 1) Create a new Google Apps Script project.
 2) Copy and paste the contents of `Code.js` from this GitHub repository to `Code.gs` in the Google Apps Script project.
 3) Copy and paste the contents of `appsscript.json` from this GitHub repository to `appsscript.json` in the Google Apps Script project. If the `appscript.json` file is not visible, ensure that manifest files are shown via `View` &rarr; `Show manifest file`.
@@ -20,12 +21,12 @@ $ npm install -g @google/clasp
 $ clasp login
 ```
 7) Clone this GitHub repository.
-8) Head over to the folder container the cloned repository and remove the `.clasp.json` file.
-9) Clone the Google Apps Script project you just created with clasp. 
+8) Head over to the created folder containing the cloned GitHub repository and remove the `.clasp.json` file.
+9) In the same folder, clone the Google Apps Script project you just created with clasp. 
 ```sh
 $ clasp clone <google-apps-script-project-url>
 ```
-10) Push the code cloned from this GitHub repository onto the Google Apps Script project.
+10) Using clasp, push the code cloned from this GitHub repository onto the Google Apps Script project. 
 ```sh
 $ clasp push
 ```
