@@ -6,7 +6,34 @@
 This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All releases can be found at the base repository [here](https://github.com/jnbli/Gmail-Draft-Duplicator/releases).
 
 ## Installation Instructions
-Until we can get this add-on published on G-suite (if we do, then you could get this Gmail add-on the same way you would get any other Gmail add-on), you can use this add-on as a **developer add-on**. To do so, follow instructions in this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs) (which also describes how this add-on functions).
+Until we can get the Gmail Draft Duplicator published on G-suite (if we do, then you could get this Gmail add-on the same way you would get any other Gmail add-on), you can use this add-on as a **developer add-on**. To do so, you can follow the instructions in this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs) (which also describes how this add-on functions) or the steps below:
+1) Create a new Google Apps Script project.
+2) Copy and paste the contents of `Code.js` from this GitHub repository to `Code.gs` in the Google Apps Script project.
+3) Copy and paste the contents of `appsscript.json` from this GitHub repository to `appsscript.json` in the Google Apps Script project. If the `appscript.json` file is not visible, ensure that manifest files are shown via `View` &rarr; `Show manifest file`.
+4) Download clasp. 
+```sh
+$ npm install -g @google/clasp
+```
+5) Turn on the Google Apps Script API [here](https://script.google.com/home/usersettings).
+6) Log into Google via clasp.
+```sh
+$ clasp login
+```
+7) Clone this GitHub repository.
+8) Head over to the folder container the cloned repository and remove the `.clasp.json` file.
+9) Clone the Google Apps Script project you just created with clasp. 
+```sh
+$ clasp clone <google-apps-script-project-url>
+```
+10) Push the code cloned from this GitHub repository onto the Google Apps Script project.
+```sh
+$ clasp push
+```
+11) Refresh the Google Apps Script project. Click on `Publish` &rarr; `Deploy from manifest...` &rarr; `Install add-on`.
+
+12) Now that you have installed the **development edition** of the Gmail Draft Duplicator:
+* **To use this add-on in the web version of Gmail**, open up the side panel and click on the icon below the other ones. 
+* **To use this add-on in the Gmail mobile app**, tap on any messages, scroll down to the bottom, and tap on the icon within the `Available add-ons` section.
 
 ## TODOs
 ### Feature(s)
@@ -14,7 +41,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] If a starred draft is duplicated, the starred status transfers over to the duplicates.
 - [X] User can duplicate more than one draft at once.
 - [X] User can refresh certain cards via a button on the footer. This is useful for ensuring that those cards are processing and displaying up-to-date data.
-- [X] User can go back and forth between cards via a button on certain cards.
+- [X] User can go back and forth between cards via button(s) on certain cards.
 - [X] User cannot select the same draft if duplicating multiple drafts.
 - [X] Input data for the card the user is currently on does not change when the card is reloaded (except for after each iteration of the home card).
 - [X] Success card content is dynamic (for example, if the user modified and/or deleted one or more selected draft(s) before duplication, the update is reflected).
@@ -39,7 +66,8 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] Add reset button to home card. 
 - [X] Have a footer for the success and error cards and redistribute button(s) in the footer for the home and success cards.
 - [X] Selection input titles display number of available choices.
-- [ ] Make some of the buttons filled with a background.
+- [X] Make some of the buttons filled with a background.
+- [X] When present, home card draft duplication info is in its own section except for the last iteration.
 
 ### Performance Improvement(s) and Optimization(s)
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
