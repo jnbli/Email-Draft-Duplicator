@@ -20,13 +20,15 @@ function StartCard(data = {}) {
       //    const headerMessage = drafts.length === 1 ? "You have 1 Gmail draft." : `You have ${drafts.length} Gmail drafts.`; // Commented out since the add-on has a maximum for the number of drafts the user can duplicate at once for performance.
       const header = CardService.newCardHeader().setTitle("Let's start duplicating your Gmail drafts.");
       
+      const maximumNumberOfDrafts = drafts.length > maxDraftsAtOnce ? maxDraftsAtOnce : drafts.length;
+      const numberOfDraftsDropdownTitle = maximumNumberOfDrafts > 1 ? `Select Number of Gmail Drafts to Duplicate (1-${maximumNumberOfDrafts})` : `Select Number of Gmail Drafts to Duplicate (${maximumNumberOfDrafts})`;
       let numberOfDraftsDropdown = CardService.newSelectionInput()
         .setType(CardService.SelectionInputType.DROPDOWN)
-        .setTitle("Select Number of Gmail Drafts to Duplicate")
+        .setTitle(numberOfDraftsDropdownTitle)
         .setFieldName("number_of_drafts");
       
       // Fill in number of drafts input dropdown
-      const maximumNumberOfDrafts = drafts.length > maxDraftsAtOnce ? maxDraftsAtOnce : drafts.length;
+      
       for (let num = 1; num <= maximumNumberOfDrafts; num++) { 
         if (data.formInputs && num == data.formInputs.number_of_drafts) numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
         else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }

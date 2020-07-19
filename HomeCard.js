@@ -46,10 +46,12 @@ function HomeCard(data = {}) {
     if (data.iterationCount <= numberOfDrafts) {
       formSection.addWidget(headerForInput);
 
+      const numberOfOptions = drafts.length - data.iterationCount + 1;
+      const gmailDraftDropdownTitle = numberOfOptions === 1 ? `Select a Gmail Draft (${numberOfOptions} option remaining)` : `Select a Gmail Draft (${numberOfOptions} options remaining)`;
       const gmailDraftDropdown = CardService.newSelectionInput()
         .setFieldName("draft_id")
         .setType(CardService.SelectionInputType.DROPDOWN)
-        .setTitle("Select a Gmail Draft");
+        .setTitle(gmailDraftDropdownTitle);
 
       // Fill in gmail draft dropdown.
       for (const draftId in data.draftIds) {
@@ -71,7 +73,7 @@ function HomeCard(data = {}) {
       const numberOfCopiesDropdown = CardService.newSelectionInput()
         .setFieldName("number_of_copies")
         .setType(CardService.SelectionInputType.DROPDOWN)
-        .setTitle("Select Number of Copies");
+        .setTitle(`Select Number of Copies (1-${maxDuplicatesPerDraft})`);
       
       // Fill in number of copies dropdown.
       for (let num = 1; num <= maxDuplicatesPerDraft; num++) { 

@@ -38,6 +38,7 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] Make home card dynamic.
 - [X] Add reset button to home card. 
 - [X] Have a footer for the success and error cards and redistribute button(s) in the footer for the home and success cards.
+- [X] Selection input titles display number of available choices.
 - [ ] Make some of the buttons filled with a background.
 
 ### Performance Improvement(s) and Optimization(s)
