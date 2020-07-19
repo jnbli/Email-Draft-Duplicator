@@ -6,7 +6,11 @@
 This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All releases can be found at the base repository [here](https://github.com/jnbli/Gmail-Draft-Duplicator/releases).
 
 ## Installation Instructions
+<<<<<<< HEAD
 Until we can get the Gmail Draft Duplicator published on G-suite (if we do, then you could get this Gmail add-on the same way you would get any other Gmail add-on), you can use this add-on as a **developer add-on**. To do so, you can follow the instructions in this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs) (which also describes how this add-on functions) or the steps below:
+=======
+Until we can get the Gmail Draft Duplicator published on G-suite (if we do, then you could get this Gmail add-on the same way you would get any other Gmail add-on), you can use this add-on as a **developer add-on**. To do so, you can follow the instructions in this [video](https://www.youtube.com/watch?v=o3JVWLKUrYs) (which also describes how this add-on functions or the steps below:
+>>>>>>> 7acfce1f3d030b41d6a6e848b01676be56326dd4
 1) Create a new Google Apps Script project.
 2) Copy and paste the contents of `Code.js` from this GitHub repository to `Code.gs` in the Google Apps Script project.
 3) Copy and paste the contents of `appsscript.json` from this GitHub repository to `appsscript.json` in the Google Apps Script project. If the `appscript.json` file is not visible, ensure that manifest files are shown via `View` &rarr; `Show manifest file`.
@@ -20,7 +24,11 @@ $ npm install -g @google/clasp
 $ clasp login
 ```
 7) Clone this GitHub repository.
+<<<<<<< HEAD
 8) Head over to the folder container the cloned repository and remove the `.clasp.json` file.
+=======
+8) Head over to the folder container the cloned repository and remove the `.clasp.json`.
+>>>>>>> 7acfce1f3d030b41d6a6e848b01676be56326dd4
 9) Clone the Google Apps Script project you just created with clasp. 
 ```sh
 $ clasp clone <google-apps-script-project-url>
@@ -32,8 +40,13 @@ $ clasp push
 11) Refresh the Google Apps Script project. Click on `Publish` &rarr; `Deploy from manifest...` &rarr; `Install add-on`.
 
 12) Now that you have installed the **development edition** of the Gmail Draft Duplicator:
+<<<<<<< HEAD
 * **To use this add-on in the web version of Gmail**, open up the side panel and click on the icon below the other ones. 
 * **To use this add-on in the Gmail mobile app**, tap on any messages, scroll down to the bottom, and tap on the icon within the `Available add-ons` section.
+=======
+* To use this add-on in the web version of Gmail, open up the side panel and click on the icon below the other ones. 
+* To use this add-on in the Gmail mobile app, tap on any messages, scroll down to the bottom, and tap on the icon within the `Available add-ons` section.
+>>>>>>> 7acfce1f3d030b41d6a6e848b01676be56326dd4
 
 ## TODOs
 ### Feature(s)
