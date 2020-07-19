@@ -31,7 +31,7 @@ function sendHomeCardFormData(e) {
 
     for (const draftId in cardData.draftsToDuplicate) {
       // The key of draftIds object are the draft ids.
-      if (draftIds[draftId]) {  // Selected draft has not been deleted
+      if (draftIds[draftId]) {  // Selected draft has not been deleted.
         const numberOfCopies = cardData.draftsToDuplicate[draftId];
         const draft = GmailApp.getDraft(draftId);
         createCopies(numberOfCopies, draft); // createCopies function defined in the Utilities file
@@ -39,7 +39,7 @@ function sendHomeCardFormData(e) {
 
         // Regenerate draft duplication info for the draft just in case the user modified the selected draft.      
         cardData.draftDuplicationInfoObj[draftId] = generateDraftDuplicationInfo(draftId, cardData.draftsToDuplicate);
-      } else {  // Selected draft has been deleted
+      } else {  // Selected draft has been deleted.
         if (!userDeletedAtLeastOneSelectedDraft) userDeletedAtLeastOneSelectedDraft = true; 
         missingDraftInfo.push(cardData.draftDuplicationInfoObj[draftId]);
         delete cardData.draftDuplicationInfoObj[draftId];
@@ -77,12 +77,30 @@ function iterateHomeCard(e) {
     const numberOfCopies = e.formInputs.number_of_copies;
 
     const cardData = JSON.parse(e.parameters.cardData);
-    if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
-    cardData.draftsToDuplicate[draftId] = numberOfCopies; 
-    cardData.iterationCount++;  
+    const draftIds = generateDraftIds();
 
-    // User cannot select the same draft if duplicating multiple drafts.
-    delete cardData.draftIds[draftId];
+    if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
+    else {  
+      for (const chosenDraftId in cardData.draftsToDuplicate) { // Handle user deleting selected draft(s).
+        if (!draftIds[chosenDraftId]) { 
+          delete cardData.draftsToDuplicate[chosenDraftId];
+          cardData.iterationCount--;
+        }
+      }
+
+      for (const storedDraftId in cardData.draftIds) {  // Handle user deleting unselected draft(s).
+        if (!draftIds[storedDraftId]) delete cardData.draftIds[storedDraftId];
+      }
+    }
+
+    // Handle user deleting currently selected draft.
+    if (draftIds[draftId]) {
+      cardData.draftsToDuplicate[draftId] = numberOfCopies; 
+      cardData.iterationCount++;  
+      
+      // User cannot select the same draft if duplicating multiple drafts.
+      delete cardData.draftIds[draftId];
+    } else { delete cardData.draftIds[draftId]; }
 
     if (cardData.formInputs) cardData.formInputs = undefined; // So that the inputs reset for the next iteration.
     

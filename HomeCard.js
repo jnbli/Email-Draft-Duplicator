@@ -63,6 +63,7 @@ function HomeCard(data = {}) {
         // Reflect starred drafts.
         if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
 
+        // Retain selected input data
         if (data.formInputs && draftId == data.formInputs.draft_id) gmailDraftDropdown.addItem(draftSubject, draftId, true);
         else { gmailDraftDropdown.addItem(draftSubject, draftId, false); }
       }
@@ -74,6 +75,7 @@ function HomeCard(data = {}) {
       
       // Fill in number of copies dropdown.
       for (let num = 1; num <= maxDuplicatesPerDraft; num++) { 
+        // Retain selected input data
         if (data.formInputs && num == data.formInputs.number_of_copies) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), true);
         else { numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false); }
       }
