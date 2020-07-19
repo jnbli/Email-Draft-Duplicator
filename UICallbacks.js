@@ -5,7 +5,7 @@ function handleStartCardForm(e) {
     const homeCard = HomeCard({ 
       setNumberOfDrafts: e.formInputs.number_of_drafts, 
       iterationCount: 1, 
-      draftIds: draftIds 
+      draftIds: draftIds
     });
     const navigationToHomeCard = CardService.newNavigation().pushCard(homeCard);
     return CardService.newActionResponseBuilder()
