@@ -1,5 +1,4 @@
 // Card that prompts the user to duplicate draft(s)
-// The additional error parameter is used by the number text input to show an error message if necessary.
 function HomeCard(data = {}) {  
   try {
     // Helps the total draft number adjust to the user creating and/or deleting drafts
@@ -34,16 +33,13 @@ function HomeCard(data = {}) {
     // The draft duplication info object is only used on the last iteration.
     if (data.iterationCount > numberOfDrafts) data.draftDuplicationInfoObj = draftDuplicationInfoObj;
 
-    if (data.iterationCount <= numberOfDrafts) draftDuplicationInfo += "\n";
-    const draftDuplicationInfoText = CardService.newTextParagraph().setText(`${draftDuplicationInfoHeader}\n${draftDuplicationInfo}`);
-
-    const headerForInput = CardService.newTextParagraph().setText(`Gmail Draft (${data.iterationCount}/${numberOfDrafts})`);
+    let draftDuplicationInfoText = CardService.newTextParagraph().setText(`${draftDuplicationInfoHeader}\n${draftDuplicationInfo}`);
 
     const formSection = CardService.newCardSection();
-    if (data.iterationCount > 1) formSection.addWidget(draftDuplicationInfoText)
     
     // Do not show the header for the selection inputs and selection inputs on the last possible iteration.
     if (data.iterationCount <= numberOfDrafts) {
+      const headerForInput = CardService.newTextParagraph().setText(`Gmail Draft (${data.iterationCount}/${numberOfDrafts})`);
       formSection.addWidget(headerForInput);
 
       const numberOfOptions = drafts.length - data.iterationCount + 1;
@@ -85,7 +81,7 @@ function HomeCard(data = {}) {
       formSection
         .addWidget(gmailDraftDropdown)
         .addWidget(numberOfCopiesDropdown);
-    }
+    } else { formSection.addWidget(draftDuplicationInfoText); } // Have draft duplication info text in the form section for the last iteration.
 
     const buttonSet = CardService.newButtonSet();
 
@@ -94,6 +90,7 @@ function HomeCard(data = {}) {
       const duplicateButtonName = numberOfDrafts > 1 ? "Duplicate Drafts" : "Duplicate Draft"; 
       const duplicateButton = CardService.newTextButton()
         .setText(duplicateButtonName)
+        .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
         .setOnClickAction(CardService.newAction()
                             .setFunctionName("sendHomeCardFormData")
                             // JSON.stringify() is used since setParameters() only takes string keys and values.
@@ -102,6 +99,7 @@ function HomeCard(data = {}) {
     } else {
       const nextButton = CardService.newTextButton()
         .setText("Next")
+        .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
         .setOnClickAction(CardService.newAction()
                             .setFunctionName("iterateHomeCard")
                             // JSON.stringify() is used since setParameters() only takes string keys and values.
@@ -118,9 +116,23 @@ function HomeCard(data = {}) {
 
     formSection.addWidget(buttonSet);
 
+    if (data.iterationCount === 1 || data.iterationCount > numberOfDrafts) {
+      const homeCard = CardService.newCardBuilder()
+        .setName(CardNames.homeCardName)
+        .setHeader(header)
+        .addSection(formSection)
+        .addSection(FooterSection(CardNames.homeCardName, data))
+        .build();
+      
+      return homeCard;  
+    } 
+
+    // Not on the first or last iteration
+    const draftDuplicationInfoSection = CardService.newCardSection().addWidget(draftDuplicationInfoText);
     const homeCard = CardService.newCardBuilder()
       .setName(CardNames.homeCardName)
       .setHeader(header)
+      .addSection(draftDuplicationInfoSection)
       .addSection(formSection)
       .addSection(FooterSection(CardNames.homeCardName, data))
       .build();
