@@ -1,7 +1,7 @@
 // Process user input for number of drafts to duplicate
 function handleStartCardForm(e) { 
   try {
-    const draftIds = generateDraftIds();
+    const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
     const homeCard = HomeCard({ 
       setNumberOfDrafts: e.formInputs.number_of_drafts, 
       iterationCount: 1, 
@@ -22,7 +22,7 @@ function sendHomeCardFormData(e) {
     const cardData = JSON.parse(e.parameters.cardData); 
     
     // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
-    const draftIds = generateDraftIds();
+    const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
 
     let numberOfDraftsDuplicated = 0;
     let userDeletedAtLeastOneSelectedDraft = false;
@@ -34,10 +34,11 @@ function sendHomeCardFormData(e) {
       if (draftIds[draftId]) {  // Selected draft has not been deleted.
         const numberOfCopies = cardData.draftsToDuplicate[draftId];
         const draft = GmailApp.getDraft(draftId);
-        createCopies(numberOfCopies, draft); // createCopies function defined in the Utilities file
+        createCopies(numberOfCopies, draft); // The createCopies function is defined in the Utilities file.
         numberOfDraftsDuplicated++;
 
-        // Regenerate draft duplication info for the draft just in case the user modified the selected draft.      
+        // Regenerate draft duplication info for the draft just in case the user modified the selected draft.
+        // The generateDraftDuplicationInfo function is defined in the Utilities file.      
         cardData.draftDuplicationInfoObj[draftId] = generateDraftDuplicationInfo(draftId, cardData.draftsToDuplicate);
       } else {  // Selected draft has been deleted.
         if (!userDeletedAtLeastOneSelectedDraft) userDeletedAtLeastOneSelectedDraft = true; 
@@ -77,7 +78,7 @@ function iterateHomeCard(e) {
     const numberOfCopies = e.formInputs.number_of_copies;
 
     const cardData = JSON.parse(e.parameters.cardData);
-    const draftIds = generateDraftIds();
+    const draftIds = generateDraftIds(); // The generateDraftIds function is defined in the Utilities file.
 
     if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
     else {  
@@ -139,7 +140,7 @@ function goBackToHomeCard(e) {
 function resetHomeCard(e) {
   try {
     // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
-    const draftIds = generateDraftIds();
+    const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
     const homeCard = HomeCard({ 
       setNumberOfDrafts: JSON.parse(e.parameters.setNumberOfDrafts), 
       iterationCount: 1, 
@@ -179,7 +180,7 @@ function reloadCard(e) {
         break;
       case CardNames.homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
         // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
-        const draftIds = generateDraftIds();
+        const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
 
         if (cardData.draftsToDuplicate) { 
 
