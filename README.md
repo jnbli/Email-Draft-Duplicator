@@ -53,4 +53,4 @@ Until we can get this add-on published on G-suite (if we do, then you could get 
 - [X] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the refresh button.
 - [X] Fix unadaptive total number of drafts in the home card.
 - [X] Prevent runtime error that occurs if the user tries to duplicate selected draft(s) after deleting them without refreshing the home card.
-- [ ] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the next button.
+- [X] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the next button.
