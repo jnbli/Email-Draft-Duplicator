@@ -1,6 +1,6 @@
 // Could not find a way to split this off into a separate file and have this file reference this class
 // The purpose of the class is to cache the various UI elements of this add-on.
-//class AppCache {
+// class AppCache {
 //  constructor() {    
 //    // Serves as the cache
 //    this.UIObjects = {
