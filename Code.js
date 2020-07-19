@@ -1,6 +1,6 @@
 // Could not find a way to split this off into a separate file and have this file reference this class
-// Purpose is to cache the various UI elements of this add-on
-//class AppCache {
+// The purpose of the class is to cache the various UI elements of this add-on.
+// class AppCache {
 //  constructor() {    
 //    // Serves as the cache
 //    this.UIObjects = {
@@ -84,12 +84,12 @@
 //  }  
 //}
 //
-//let appCache = new AppCache();  
+// let appCache = new AppCache();  
 
-const maxDuplicatesPerDraft = 9;
+const drafts = GmailApp.getDrafts();
 
 // Starting point of this add-on
 // Invoked on homepage and contextual and trigger
 function buildAddOn() {
-  return HomeCard("");
+  return StartCard();
 }

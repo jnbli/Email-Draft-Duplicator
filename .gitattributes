@@ -1,0 +1,15 @@
+# LF normalization
+* text=auto
+
+# Documents
+*.md text
+
+# Graphics
+*.png binary
+
+# Serialisation
+*.json text
+
+# Exclude files from exporting
+.gitattributes export-ignore
+.gitignore     export-ignore
