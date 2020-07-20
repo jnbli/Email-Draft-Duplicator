@@ -21,18 +21,17 @@ $ npm install -g @google/clasp
 $ clasp login
 ```
 7) Clone this GitHub repository.
-8) Head over to the created folder containing the cloned GitHub repository and remove the `.clasp.json` file.
-9) In the same folder, clone the Google Apps Script project you just created with clasp. 
+8) Using clasp, clone the Google Apps Script project you just created into the created folder containing the cloned GitHub repository. 
 ```sh
 $ clasp clone <google-apps-script-project-url>
 ```
-10) Using clasp, push the code cloned from this GitHub repository onto the Google Apps Script project. 
+9) Using clasp, push the code cloned from this GitHub repository onto the Google Apps Script project. 
 ```sh
 $ clasp push
 ```
-11) Refresh the Google Apps Script project. Click on `Publish` &rarr; `Deploy from manifest...` &rarr; `Install add-on`.
+10) Refresh the Google Apps Script project. Click on `Publish` &rarr; `Deploy from manifest...` &rarr; `Install add-on`.
 
-12) Now that you have installed the **development edition** of the Gmail Draft Duplicator:
+11) Now that you have installed the **development edition** of the Gmail Draft Duplicator:
 * **To use this add-on in the web version of Gmail**, open up the side panel and click on the icon below the other ones. 
 * **To use this add-on in the Gmail mobile app**, tap on any messages, scroll down to the bottom, and tap on the icon within the `Available add-ons` section.
 
