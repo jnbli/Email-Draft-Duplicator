@@ -2,3 +2,4 @@
 *.pdn
 *.zip
 *.tar.gz
+.clasp.json
