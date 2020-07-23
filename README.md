@@ -73,12 +73,7 @@ $ clasp push
 - [X] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
 - [X] Implement maximum allowed number of drafts to duplicate at once.
 
-### Code Refactor and Fixing Bug(s)
-- [X] Use modern JavaScript syntax.
-- [X] Refactor code into separate files and comment code.
-- [X] Cards take in data object for use by UI element(s).
-- [X] Refactor with card navigation.
-- [X] Use a separate file to store global constants.
+### Fixing Bug(s)
 - [X] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the refresh button.
 - [X] Fix unadaptive total number of drafts in the home card.
 - [X] Prevent runtime error that occurs if the user tries to duplicate selected draft(s) after deleting them without refreshing the home card.
