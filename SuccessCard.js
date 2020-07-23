@@ -14,7 +14,7 @@ function SuccessCard(data = {}) {
         .setName(CardNames.successCardName)
         .setHeader(header)
         .addSection(infoSection)
-        .addSection(FooterSection(CardNames.successCardName))
+        .addSection(FooterSection(CardNames.successCardName, data.homeCardData))
         .build();
     } else {  // At least one draft was duplicated
       const headerTitle = data.numberOfDraftsDuplicated == 1 ? "The Gmail draft has been duplicated." : "The Gmail drafts have been duplicated."; 
@@ -25,7 +25,7 @@ function SuccessCard(data = {}) {
       const status = data.userDeletedAtLeastOneSelectedDraft ? "At least one of your selected drafts has been duplicated." : "Success!";
       let successParagraphContent = `${status} You have made:\n`;
       
-      for (const draftId in data.draftDuplicationInfoObj) successParagraphContent += data.draftDuplicationInfoObj[draftId];
+      for (const draftId in data.homeCardData.draftDuplicationInfoObj) successParagraphContent += data.homeCardData.draftDuplicationInfoObj[draftId];
       successParagraphContent += `\n${concludingSentence}`;
 
       const successParagraph = CardService.newTextParagraph().setText(successParagraphContent);
@@ -43,14 +43,14 @@ function SuccessCard(data = {}) {
           .setHeader(header)
           .addSection(congratsSection)
           .addSection(infoSection)
-          .addSection(FooterSection(CardNames.successCardName))
+          .addSection(FooterSection(CardNames.successCardName, data.homeCardData))
           .build();
       } else {
         successCard = CardService.newCardBuilder()
           .setName(CardNames.successCardName)
           .setHeader(header)
           .addSection(congratsSection)
-          .addSection(FooterSection(CardNames.successCardName))
+          .addSection(FooterSection(CardNames.successCardName, data.homeCardData))
           .build();
       }
     }

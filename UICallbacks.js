@@ -48,7 +48,7 @@ function sendHomeCardFormData(e) {
     }
   
     const successCard = SuccessCard({ 
-      draftDuplicationInfoObj: cardData.draftDuplicationInfoObj,
+      homeCardData: cardData,
       numberOfDraftsDuplicated: numberOfDraftsDuplicated, 
       userDeletedAtLeastOneSelectedDraft: userDeletedAtLeastOneSelectedDraft, 
       missingDraftInfo: missingDraftInfo
@@ -78,30 +78,10 @@ function iterateHomeCard(e) {
     const numberOfCopies = e.formInputs.number_of_copies;
 
     const cardData = JSON.parse(e.parameters.cardData);
-    const draftIds = generateDraftIds(); // The generateDraftIds function is defined in the Utilities file.
 
-    if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
-    else {  
-      for (const chosenDraftId in cardData.draftsToDuplicate) { // Handle user deleting selected draft(s).
-        if (!draftIds[chosenDraftId]) { 
-          delete cardData.draftsToDuplicate[chosenDraftId];
-          cardData.iterationCount--;
-        }
-      }
-
-      for (const storedDraftId in cardData.draftIds) {  // Handle user deleting unselected draft(s).
-        if (!draftIds[storedDraftId]) delete cardData.draftIds[storedDraftId];
-      }
-    }
-
-    // Handle user deleting currently selected draft.
-    if (draftIds[draftId]) {
-      cardData.draftsToDuplicate[draftId] = numberOfCopies; 
-      cardData.iterationCount++;  
-      
-      // User cannot select the same draft if duplicating multiple drafts.
-      delete cardData.draftIds[draftId];
-    } else { delete cardData.draftIds[draftId]; }
+    // The updateDraftsData helper function is definied in the utilities file.
+    const iterationCountDelta = updateDraftsData(cardData, draftId, numberOfCopies);
+    if (iterationCountDelta !== 0) cardData.iterationCount += iterationCountDelta;
 
     if (cardData.formInputs) cardData.formInputs = undefined; // So that the inputs reset for the next iteration.
     
@@ -117,7 +97,8 @@ function iterateHomeCard(e) {
   
 function goBackToStartCard(e) {
   try {
-    const navigationToStartCard = CardService.newNavigation().popToRoot();
+    const startCard = StartCard();
+    const navigationToStartCard = CardService.newNavigation().popToRoot().updateCard(startCard);
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToStartCard)
       .build();
@@ -128,7 +109,13 @@ function goBackToStartCard(e) {
   
 function goBackToHomeCard(e) {
   try {
-    const navigationToHomeCard = CardService.newNavigation().popToNamedCard(CardNames.homeCardName);
+    const cardData = JSON.parse(e.parameters.cardData);
+
+    const iterationCountDelta = updateDraftsData(cardData);
+    if (iterationCountDelta !== 0) cardData.iterationCount += iterationCountDelta;
+
+    const homeCard = HomeCard(cardData);
+    const navigationToHomeCard = CardService.newNavigation().popToNamedCard(CardNames.homeCardName).updateCard(homeCard);
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToHomeCard)
       .build();
@@ -179,22 +166,9 @@ function reloadCard(e) {
 
         break;
       case CardNames.homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
-        // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
-        const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
-
-        if (cardData.draftsToDuplicate) { 
-
-          // Remove draft selections that have been deleted and account for valid selections.
-          for (const draftId in cardData.draftsToDuplicate) {
-            if (!draftIds[draftId]) { 
-              delete cardData.draftsToDuplicate[draftId];
-              cardData.iterationCount--;
-            }
-            else { delete draftIds[draftId]; }
-          }
-        }
-
-        cardData.draftIds = draftIds;
+        const iterationCountDelta = updateDraftsData(cardData);
+        if (iterationCountDelta !== 0) cardData.iterationCount += iterationCountDelta;
+        
         cardToReload = HomeCard(cardData);
 
         break;

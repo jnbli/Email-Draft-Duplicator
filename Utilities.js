@@ -45,6 +45,41 @@ function generateDraftIds() {
   return draftIds;
 }
 
+// Helper function that updates draft id and/or draft duplication data based on the content(s) of the accountFor object.
+function updateDraftsData(cardData, draftId, numberOfCopies) {
+  const draftIds = generateDraftIds();  // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
+  
+  let iterationCountDelta = 0;
+
+  if (cardData.draftsToDuplicate) { 
+    for (const draftId in cardData.draftsToDuplicate) { // Remove draft selections that have been deleted.
+      if (!draftIds[draftId]) { 
+        delete cardData.draftsToDuplicate[draftId];
+        iterationCountDelta--;
+      }
+      else { delete draftIds[draftId]; }
+    }
+  }
+  
+  cardData.draftIds = draftIds; // Account for updates with currently selected and/or unselected drafts.
+
+  // User has made draft duplication entry.
+  if (draftId && numberOfCopies) {  
+    if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
+
+    // If user did not delete the currently selected draft.
+    if (draftIds[draftId]) {
+      cardData.draftsToDuplicate[draftId] = numberOfCopies; 
+      iterationCountDelta++;  
+      
+      // User cannot select the same draft if duplicating multiple drafts.
+      delete cardData.draftIds[draftId];
+    } 
+  }
+
+  return iterationCountDelta;
+}
+
 // Helper function that appends input data to the card's data
 //function addInputCardData(cardData) {
 //  cardData.formInputs = e.formInputs;
