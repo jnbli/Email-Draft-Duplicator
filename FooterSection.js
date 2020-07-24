@@ -17,7 +17,9 @@ function FooterSection(cardName, cardData) {
       backButton = CardService.newTextButton()
       .setText("Go Back")
       .setOnClickAction(CardService.newAction()
-                          .setFunctionName("goBackToStartCard")); 
+                          .setFunctionName("goBackToStartCard")
+                          // JSON.stringify() is used since setParameters() only takes string keys and values.
+                          .setParameters({ "setNumberOfDrafts": JSON.stringify(cardData.setNumberOfDrafts) })); 
 
       refreshButton = CardService.newTextButton()
         .setText("Refresh")
@@ -36,7 +38,9 @@ function FooterSection(cardName, cardData) {
         .setText("Start Over")
         .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
         .setOnClickAction(CardService.newAction()
-                            .setFunctionName("goBackToStartCard"));
+                            .setFunctionName("goBackToStartCard")
+                            // JSON.stringify() is used since setParameters() only takes string keys and values.
+                          .setParameters({ "setNumberOfDrafts": JSON.stringify(cardData.setNumberOfDrafts) })); 
     
       backButton = CardService.newTextButton()
         .setText("Go Back")

@@ -82,4 +82,4 @@ $ clasp push
 - [X] Fix start card not reloading when going back to it from the home card.
 - [X] Fix home card not updating when user goes back to it from the success card.
 - [X] Fix bug in which the add-on restarts unexpectedly.
-- [ ] Prevent start card selection input from resetting if user goes back to it.
+- [X] Fix bug in which the start card selection input resets if user goes back to it.

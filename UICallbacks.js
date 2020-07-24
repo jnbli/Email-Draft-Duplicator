@@ -97,7 +97,7 @@ function iterateHomeCard(e) {
   
 function goBackToStartCard(e) {
   try {
-    const startCard = StartCard();
+    const startCard = StartCard({ setNumberOfDrafts: JSON.parse(e.parameters.setNumberOfDrafts) });
     const navigationToStartCard = CardService.newNavigation().popToRoot().updateCard(startCard);
     return CardService.newActionResponseBuilder()
       .setNavigation(navigationToStartCard)

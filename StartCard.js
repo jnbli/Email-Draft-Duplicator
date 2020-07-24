@@ -29,8 +29,9 @@ function StartCard(data = {}) {
       
       // Fill in number of drafts input dropdown
       for (let num = 1; num <= maximumNumberOfDrafts; num++) { 
-        if (data.formInputs && num == data.formInputs.number_of_drafts) numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
-        else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
+        if ((data.formInputs && num == data.formInputs.number_of_drafts) || (data.setNumberOfDrafts && num == data.setNumberOfDrafts)) { 
+          numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
+        } else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
       }
       
       const nextButton = CardService.newTextButton()
