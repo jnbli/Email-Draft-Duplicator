@@ -11,10 +11,6 @@
       "enabled": true,
       "runFunction": "buildAddOn"
     },
-    "contextualTriggers": [{
-      "unconditional": {},
-      "onTriggerFunction": "buildAddOn"
-    }],
     "primaryColor": "#4285F4",
     "secondaryColor": "#4285F4",
     "openLinkUrlPrefixes": ["https://mail.google.com/"]
