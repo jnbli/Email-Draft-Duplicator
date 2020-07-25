@@ -1,85 +1,40 @@
 // Process user input for number of drafts to duplicate
-function handleStartCardForm(e) { 
+function handleStartCardForm({ formInputs } = e) { 
   try {
-    const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
     const homeCard = HomeCard({ 
-      setNumberOfDrafts: e.formInputs.number_of_drafts, 
+      setNumberOfDrafts: formInputs.number_of_drafts, 
       iterationCount: 1, 
-      draftIds: draftIds
+      draftIds: getDraftIds() // The getDraftIds function is defined in the Utilities file.
     });
+
     const navigationToHomeCard = CardService.newNavigation().pushCard(homeCard);
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToHomeCard)
-      .build();
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); }
 }
 
 // Process user input for duplicating draft(s) with error checking
-function sendHomeCardFormData(e) {
+function sendHomeCardFormData({ parameters } = e) {
   try {
-    const cardData = JSON.parse(e.parameters.cardData); 
-    
-    // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
-    const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
-
-    let numberOfDraftsDuplicated = 0;
-    let userDeletedAtLeastOneSelectedDraft = false;
-
-    let missingDraftInfo = [];
-
-    for (const draftId in cardData.draftsToDuplicate) {
-      // The key of draftIds object are the draft ids.
-      if (draftIds[draftId]) {  // Selected draft has not been deleted.
-        const numberOfCopies = cardData.draftsToDuplicate[draftId];
-        const draft = GmailApp.getDraft(draftId);
-        createCopies(numberOfCopies, draft); // The createCopies function is defined in the Utilities file.
-        numberOfDraftsDuplicated++;
-
-        // Regenerate draft duplication info for the draft just in case the user modified the selected draft.
-        // The generateDraftDuplicationInfo function is defined in the Utilities file.      
-        cardData.draftDuplicationInfoObj[draftId] = generateDraftDuplicationInfo(draftId, cardData.draftsToDuplicate);
-      } else {  // Selected draft has been deleted.
-        if (!userDeletedAtLeastOneSelectedDraft) userDeletedAtLeastOneSelectedDraft = true; 
-        missingDraftInfo.push(cardData.draftDuplicationInfoObj[draftId]);
-        delete cardData.draftDuplicationInfoObj[draftId];
-      }
-    }
-  
-    const successCard = SuccessCard({ 
-      homeCardData: cardData,
-      numberOfDraftsDuplicated: numberOfDraftsDuplicated, 
-      userDeletedAtLeastOneSelectedDraft: userDeletedAtLeastOneSelectedDraft, 
-      missingDraftInfo: missingDraftInfo
-    });
-
+    const cardData = JSON.parse(parameters.cardData); 
+    // The function updateDraftDuplicationInfoandCreateCopies is defined in the Utilities file.
+    const { numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft, missingDraftInfo } = updateDraftDuplicationInfoAndCreateCopies(cardData);
+    const successCard = SuccessCard({ homeCardData: cardData, numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft, missingDraftInfo });
     const navigationToSuccessCard = CardService.newNavigation().pushCard(successCard);
 
-    let notificationContent = "";
-    if (numberOfDraftsDuplicated === 0) notificationContent = "Duplication unsuccessful.";
-    else if (userDeletedAtLeastOneSelectedDraft) notificationContent = "Duplication partially successful.";
-    else { notificationContent = "Duplication successful."; }
-
-    const notification = CardService.newNotification().setText(notificationContent);
-    
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToSuccessCard)
-      .setNotification(notification)
-      .build();
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+    // The function getNotificationContent is defined in the Utilities file.
+    const notification = CardService.newNotification().setText(getNotificationContent(numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft));  
+    return generateActionResponse(navigationToSuccessCard, notification); // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); }
 }
 
-function iterateHomeCard(e) {
+function iterateHomeCard({ parameters, formInputs } = e) {
   try {
-    const draftId = e.formInputs.draft_id;
-    const numberOfCopies = e.formInputs.number_of_copies;
+    const draftId = formInputs.draft_id;
+    const numberOfCopies = formInputs.number_of_copies;
 
-    const cardData = JSON.parse(e.parameters.cardData);
+    const cardData = JSON.parse(parameters.cardData);
 
-    // The updateDraftsData helper function is definied in the utilities file.
+    // The updateDraftsData helper function is defined in the Utilities file.
     const iterationCountDelta = updateDraftsData(cardData, draftId, numberOfCopies);
     if (iterationCountDelta !== 0) cardData.iterationCount += iterationCountDelta;
 
@@ -87,92 +42,72 @@ function iterateHomeCard(e) {
     
     const homeCard = HomeCard(cardData);
     const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToHomeCard)
-      .build();
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); }
 }
   
-function goBackToStartCard(e) {
+function goBackToStartCard({ parameters } = e) {
   try {
-    const startCard = StartCard({ setNumberOfDrafts: JSON.parse(e.parameters.setNumberOfDrafts) });
+    const startCard = StartCard({ setNumberOfDrafts: JSON.parse(parameters.setNumberOfDrafts) });
     const navigationToStartCard = CardService.newNavigation().popToRoot().updateCard(startCard);
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToStartCard)
-      .build();
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+    return generateActionResponse(navigationToStartCard); // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); }
 } 
   
-function goBackToHomeCard(e) {
+function goBackToHomeCard({ parameters } = e) {
   try {
-    const cardData = JSON.parse(e.parameters.cardData);
+    const cardData = JSON.parse(parameters.cardData);
 
     const iterationCountDelta = updateDraftsData(cardData);
     if (iterationCountDelta !== 0) cardData.iterationCount += iterationCountDelta;
 
     const homeCard = HomeCard(cardData);
     const navigationToHomeCard = CardService.newNavigation().popToNamedCard(CardNames.homeCardName).updateCard(homeCard);
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToHomeCard)
-      .build();
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); }
 }  
 
-function resetHomeCard(e) {
-  try {
-    // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
-    const draftIds = generateDraftIds();  // The generateDraftIds function is defined in the Utilities file.
+function resetHomeCard({ parameters } = e) {
+  try { 
     const homeCard = HomeCard({ 
-      setNumberOfDrafts: JSON.parse(e.parameters.setNumberOfDrafts), 
+      setNumberOfDrafts: JSON.parse(parameters.setNumberOfDrafts), 
       iterationCount: 1, 
-      draftIds: draftIds 
+      draftIds: getDraftIds()  // The getDraftIds function is defined in the Utilities file.
     });
+    
     const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToHomeCard)
-      .build();
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); }
 }
   
 // Goes back to the card before the one that used this callback function 
 function goBackToPreviousCard(e) {
   try {
     const navigationToPreviousCard = CardService.newNavigation().popCard();
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToPreviousCard)
-      .build();
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+    return generateActionResponse(navigationToPreviousCard);  // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); }
 }
   
-function reloadCard(e) {
+function reloadCard({ parameters, formInputs } = e) {
   try {
     let cardToReload;
-    const cardData = JSON.parse(e.parameters.cardData);
-    cardData.formInputs = e.formInputs;
+    const cardData = JSON.parse(parameters.cardData);
+    cardData.formInputs = formInputs;
 
-    switch(e.parameters.cardName) {
-      case CardNames.startCardName:
+    const { startCardName, homeCardName, successCardName } = CardNames; // The CardNames object is defined in the Constants file.
+    switch(parameters.cardName) {
+      case startCardName:
         cardToReload = StartCard(cardData);
 
         break;
-      case CardNames.homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
+      case homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
         const iterationCountDelta = updateDraftsData(cardData);
         if (iterationCountDelta !== 0) cardData.iterationCount += iterationCountDelta;
         
         cardToReload = HomeCard(cardData);
 
         break;
-      case CardNames.successCardName:
+      case successCardName:
         cardToReload = SuccessCard(cardData);
         
         break;
@@ -181,10 +116,6 @@ function reloadCard(e) {
     }
     
     const navigationToSameCard = CardService.newNavigation().updateCard(cardToReload);
-    return CardService.newActionResponseBuilder()
-      .setNavigation(navigationToSameCard)
-      .build();
-  } catch (error) { // For all other errors
-    return ErrorCard({ error: error });
-  }
+    return generateActionResponse(navigationToSameCard);  // The function generateActionResponse is defined in the Utilities file.
+  } catch (error) { return ErrorCard({ error }); } // For all other errors
 }

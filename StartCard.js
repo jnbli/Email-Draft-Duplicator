@@ -1,59 +1,85 @@
 // Card that prompts the user to specify how many drafts to duplicate
 function StartCard(data = {}) {
-  try {
-    let startCard = null;
-
-    // If the user currently has no Gmail drafts
-    if (drafts.length == 0) {
-      const header = CardService.newCardHeader().setTitle("You have no Gmail drafts.");
-      
-      const message = CardService.newTextParagraph().setText("You must have at least one Gmail draft to duplicate draft(s).");
-      const mainSection = CardService.newCardSection().addWidget(message);
-      
-      startCard = CardService.newCardBuilder()
-        .setName(CardNames.startCardName)
-        .setHeader(header)
-        .addSection(mainSection)
-        .addSection(FooterSection(CardNames.startCardName, data))
-        .build();
-    } else { // If the user currently has at least 1 Gmail draft(s)
-      //    const headerMessage = drafts.length === 1 ? "You have 1 Gmail draft." : `You have ${drafts.length} Gmail drafts.`; // Commented out since the add-on has a maximum for the number of drafts the user can duplicate at once for performance.
-      const header = CardService.newCardHeader().setTitle("Let's start duplicating your Gmail drafts.");
-      
-      const maximumNumberOfDrafts = drafts.length > maxDraftsAtOnce ? maxDraftsAtOnce : drafts.length;
-      const numberOfDraftsDropdownTitle = maximumNumberOfDrafts > 1 ? `Select Number of Gmail Drafts to Duplicate (1-${maximumNumberOfDrafts})` : `Select Number of Gmail Drafts to Duplicate (${maximumNumberOfDrafts})`;
-      let numberOfDraftsDropdown = CardService.newSelectionInput()
-        .setType(CardService.SelectionInputType.DROPDOWN)
-        .setTitle(numberOfDraftsDropdownTitle)
-        .setFieldName("number_of_drafts");
-      
-      // Fill in number of drafts input dropdown
-      for (let num = 1; num <= maximumNumberOfDrafts; num++) { 
-        if ((data.formInputs && num == data.formInputs.number_of_drafts) || (data.setNumberOfDrafts && num == data.setNumberOfDrafts)) { 
-          numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
-        } else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
-      }
-      
-      const nextButton = CardService.newTextButton()
-        .setText("Next")
-        .setTextButtonStyle(CardService.TextButtonStyle.FILLED)
-        .setOnClickAction(CardService.newAction()
-                        .setFunctionName("handleStartCardForm"));
-      
-      const formSection = CardService.newCardSection()
-        .addWidget(numberOfDraftsDropdown)
-        .addWidget(nextButton);
-      
-      startCard = CardService.newCardBuilder()
-        .setName(CardNames.startCardName)
-        .setHeader(header)
-        .addSection(formSection)
-        .addSection(FooterSection(CardNames.startCardName, data))
-        .build();
-    }
-    
-    return startCard;
-  } catch (error) {
-    return ErrorCard({ error: error });
-  }
+  try { return generateStartCard(data); } 
+  catch (error) { return ErrorCard({ error }); }
 }
+
+function generateStartCard(data) {
+  const { name } = startCard;
+
+  // If the user currently has no Gmail drafts
+  if (drafts.length == 0) {      
+    return CardService.newCardBuilder()
+      .setName(name)
+      .setHeader(startCard.generateHeader(true))
+      .addSection(startCard.generateMainSection())
+      .addSection(startCard.generateFooterSection(data))
+      .build();
+  }
+  
+  // If the user currently has at least 1 Gmail draft(s)      
+  return CardService.newCardBuilder()
+    .setName(name)
+    .setHeader(startCard.generateHeader(false))
+    .addSection(startCard.generateFormSection(data))
+    .addSection(startCard.generateFooterSection(data))
+    .build();
+}
+
+const startCard = {
+  name: CardNames.startCardName,  // The CardNames object is located in the Constants file.
+  
+  generateHeader: function(noDrafts) {
+    let headerMessage = noDrafts ? "You have no Gmail drafts." : "Let's start duplicating your Gmail drafts.";
+    return CardService.newCardHeader().setTitle(headerMessage);
+  },
+
+  // Helper function that generates the main section for the case the user currently has no drafts
+  generateMainSection: function() {
+    const message = CardService.newTextParagraph().setText("You must have at least one Gmail draft to duplicate draft(s).");
+    return CardService.newCardSection().addWidget(message);
+  },
+
+  // Helper function that generates the form section for the case the user currently has at least 1 Gmail draft(s)
+  generateFormSection: function(data) {
+    const maxNumberOfDrafts = drafts.length > maxDraftsAtOnce ? maxDraftsAtOnce : drafts.length;
+    const numberOfDraftsDropdownTitle = maxNumberOfDrafts > 1 ? `Select Number of Gmail Drafts to Duplicate (1-${maxNumberOfDrafts})` : `Select Number of Gmail Drafts to Duplicate (${maxNumberOfDrafts})`;
+    
+    const numberOfDraftsDropdown = this.generateNumberOfDraftsDropdown(data, maxNumberOfDrafts, numberOfDraftsDropdownTitle);
+    
+    // The function generateTextButton is defined in the Utilities file.
+    const nextButton = generateTextButton("Next", CardService.TextButtonStyle.FILLED, "handleStartCardForm");
+
+    return CardService.newCardSection()
+      .addWidget(numberOfDraftsDropdown)
+      .addWidget(nextButton);
+  },
+  
+  generateFooterSection: function(data) {
+    // The function generateTextButton is defined in the Utilities file.
+    const refreshButton = generateTextButton("Refresh", CardService.TextButtonStyle.TEXT, 
+    "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) });
+    return CardService.newCardSection()
+      .addWidget(refreshButton);
+  },
+  
+  generateNumberOfDraftsDropdown: function(data, maxNumberOfDrafts, numberOfDraftsDropdownTitle) {
+    const numberOfDraftsDropdown = CardService.newSelectionInput()
+      .setType(CardService.SelectionInputType.DROPDOWN)
+      .setTitle(numberOfDraftsDropdownTitle)
+      .setFieldName("number_of_drafts");
+
+    // Fill in number of drafts dropdown.
+    this.generateNumberOfDraftsDropdownItems(numberOfDraftsDropdown, data, maxNumberOfDrafts);
+
+    return numberOfDraftsDropdown;
+  },
+  
+  generateNumberOfDraftsDropdownItems: function(numberOfDraftsDropdown, { formInputs, setNumberOfDrafts } = {}, maxNumberOfDrafts) {
+    for (let num = 1; num <= maxNumberOfDrafts; num++) { 
+      if ((formInputs && num == formInputs.number_of_drafts) || (setNumberOfDrafts && num == setNumberOfDrafts)) { 
+        numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
+      } else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
+    }
+  },
+};
