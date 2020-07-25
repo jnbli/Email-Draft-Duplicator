@@ -1,19 +1,33 @@
 // Card that displays an error that was caught
 function ErrorCard(data = {}) {
-  try {
-    const header = CardService.newCardHeader().setTitle("An error occurred.");
-    const errorInfo = CardService.newTextParagraph().setText(data.error);
-    
-    const mainSection = CardService.newCardSection()
+  try { return generateErrorCard(data); } 
+  catch (error) { Logger.log(error); }
+}
+
+function generateErrorCard(data) {
+  return CardService.newCardBuilder()
+    .setName(errorCard.name)
+    .setHeader(errorCard.generateHeader())
+    .addSection(errorCard.generateMainSection(data))
+    .addSection(errorCard.generateFooterSection())
+    .build();
+}
+
+const errorCard = {
+  name: CardNames.errorCardName,
+  
+  generateHeader: function() { return CardService.newCardHeader().setTitle("An error occurred."); },
+  
+  generateMainSection: function({ error } = {}) {
+    const errorInfo = CardService.newTextParagraph().setText(error);
+    return CardService.newCardSection()
       .addWidget(errorInfo);
-    
-    const errorCard = CardService.newCardBuilder()
-      .setName(CardNames.errorCardName)
-      .setHeader(header)
-      .addSection(mainSection)
-      .addSection(FooterSection(CardNames.errorCardName))
-      .build();
-    
-    return errorCard;
-  } catch (error) { Logger.log(error); }
+  },
+
+  generateFooterSection: function() {
+    // The function generateTextButton is defined in the Utilities file.
+    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, "goBackToPreviousCard");
+    return CardService.newCardSection()
+      .addWidget(backButton);
+  }
 }

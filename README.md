@@ -78,3 +78,8 @@ $ clasp push
 - [X] Fix unadaptive total number of drafts in the home card.
 - [X] Prevent runtime error that occurs if the user tries to duplicate selected draft(s) after deleting them without refreshing the home card.
 - [X] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the next button.
+- [X] Fix start card not reloading when starting over.
+- [X] Fix start card not reloading when going back to it from the home card.
+- [X] Fix home card not updating when user goes back to it from the success card.
+- [X] Fix bug in which the start card selection input resets if user goes back to it.
+- [X] Fix card navigation not resetting if the user is redirected to the start card after removing all drafts. 
