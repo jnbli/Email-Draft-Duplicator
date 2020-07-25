@@ -3,7 +3,11 @@ function HomeCard(data = {}) {
   try {
     const { setNumberOfDrafts } = data;
     const numberOfDrafts = setNumberOfDrafts > drafts.length ? drafts.length : setNumberOfDrafts;
-    if (numberOfDrafts === 0) return StartCard();
+    if (numberOfDrafts === 0) {  // Go back to start card to display no drafts available message
+      const startCard = StartCard();
+      CardService.newNavigation().popToRoot().updateCard(startCard);
+      return startCard;
+    }
 
     // The numberOfDrafts variable helps with the displayed draft number adjust to the user creating and/or deleting drafts
     return generateHomeCard(data, numberOfDrafts);

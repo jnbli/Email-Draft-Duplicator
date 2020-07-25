@@ -88,8 +88,5 @@
 
 const drafts = GmailApp.getDrafts();
 
-// Starting point of this add-on
-// Invoked on homepage and contextual and trigger
-function buildAddOn() {
-  return StartCard();
-}
+// Invoked on homepage and contextual triggers
+function buildAddOn() { return StartCard(); }

@@ -27,8 +27,11 @@ function sendHomeCardFormData({ parameters } = e) {
   } catch (error) { return ErrorCard({ error }); }
 }
 
-function iterateHomeCard({ parameters, formInputs } = e) {
+function iterateHomeCard(e) {
   try {
+    if (drafts.length === 0) return goBackToStartCard(e);
+
+    const { parameters, formInputs } = e;
     const draftId = formInputs.draft_id;
     const numberOfCopies = formInputs.number_of_copies;
 
@@ -48,14 +51,17 @@ function iterateHomeCard({ parameters, formInputs } = e) {
   
 function goBackToStartCard({ parameters } = e) {
   try {
-    const startCard = StartCard({ setNumberOfDrafts: JSON.parse(parameters.setNumberOfDrafts) });
+    const startCard = drafts.length > 0 ? StartCard({ setNumberOfDrafts: JSON.parse(parameters.setNumberOfDrafts) }) : StartCard();
     const navigationToStartCard = CardService.newNavigation().popToRoot().updateCard(startCard);
     return generateActionResponse(navigationToStartCard); // The function generateActionResponse is defined in the Utilities file.
   } catch (error) { return ErrorCard({ error }); }
 } 
   
-function goBackToHomeCard({ parameters } = e) {
+function goBackToHomeCard(e) {
   try {
+    if (drafts.length === 0) return goBackToStartCard(e);
+
+    const { parameters } = e;
     const cardData = JSON.parse(parameters.cardData);
 
     const iterationCountDelta = updateDraftsData(cardData);
