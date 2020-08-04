@@ -30,8 +30,10 @@ $ clasp clone <google-apps-script-project-url>
 ```sh
 $ clasp push
 ```
-11. Refresh the Google Apps Script project. Click on `Publish` &rarr; `Deploy from manifest...` to start the deployment process. If you would prefer to use a new deployment rather than using the "Latest Version" deployment, click on `Create`, enter in a name of your choice for the `Deployment name` option, ensure that `appsscript` is selected for the `Manifest` option, and click on `Save`. Then, choose a deployment and click on `Install add-on`. 
-12) Now that you have installed the **development edition** of the Gmail Draft Duplicator:
+11. Refresh the Google Apps Script project. Click on `Publish` &rarr; `Deploy from manifest...` to start the deployment process. 
+12. If you would prefer to use a new deployment rather than using the "Latest Version" deployment, click on `Create`, enter in a name of your choice for the `Deployment name` option, ensure that `appsscript` is selected for the `Manifest` option, and click on `Save`. 
+13. Choose a deployment and click on `Install add-on`. 
+14. Now that you have installed the **development edition** of the Gmail Draft Duplicator:
 * **To use this add-on in the web version of Gmail**, open up the side panel and click on the icon below the other ones. 
 * **To use this add-on in the Gmail mobile app**, tap on a message, scroll down to the bottom, and tap on the icon within the `Available add-ons` section.
 
