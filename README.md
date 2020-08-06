@@ -2,6 +2,14 @@
   <img src="https://raw.githubusercontent.com/jnbli/Gmail-Draft-Duplicator/master/Logo.png" alt="Gmail Draft Duplicator Logo" width="200" height="200">
 </p>
 
+<div align="center">
+  <a href="#gmail-draft-duplicator">Overview</a>
+  |
+  <a href="#installation-instructions">Installation Instructions</a>
+  |
+  <a href="#todos">TODOs</a>
+</div>
+
 # Gmail Draft Duplicator
 This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All releases can be found at the base repository [here](https://github.com/jnbli/Gmail-Draft-Duplicator/releases).
 
@@ -38,7 +46,21 @@ clasp push
 * **To use this add-on in the Gmail mobile app**, tap on a message, scroll down to the bottom, and tap on the icon within the `Available add-ons` section.
 
 ## TODOs
-### Feature(s)
+
+**Skip to:**
+* [Features](#features)
+* [Performance Improvements and Optimizations](#performance-improvements-and-optimizations)
+* [Fixing Bugs](#fixing-bugs)
+
+<div align="center">
+  <a href="#features">Features</a>
+  |
+  <a href="#performance-improvements-and-optimizations">Performance Improvements and Optimizations</a>
+  |
+  <a href="#todos">TODOs</a>
+</div>
+
+### Features
 - [x] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
 - [x] If a starred draft is duplicated, the starred status transfers over to the duplicates.
 - [X] Create starting card asking the user how many drafts to duplicate.
@@ -71,12 +93,12 @@ clasp push
 - [ ] If a draft is labeled important, that label is transferred over to the duplicate.
 - [X] Change the style of the refresh button on the no drafts card to a filled style.
 
-### Performance Improvement(s) and Optimization(s)
+### Performance Improvements and Optimizations
 - [x] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
 - [X] Implement maximum allowed number of drafts to duplicate at once.
 - [ ] Cache unchanging string data.
 
-### Fixing Bug(s)
+### Fixing Bugs
 - [X] Fix bug with the home card that occurs if the user removes a draft that was already selected and clicks/taps the refresh button.
 - [X] Fix unadaptive total number of drafts in the home card.
 - [X] Prevent runtime error that occurs if the user tries to duplicate selected draft(s) after deleting them without refreshing the home card.
