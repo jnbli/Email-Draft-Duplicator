@@ -71,7 +71,7 @@ clasp push
 - [X] Selection input titles display number of available choices.
 - [X] Make some of the buttons filled with a background.
 - [X] When present, home card draft duplication info is in its own section except for the last iteration.
-- [X] Change the style of the refresh button on the no drafts card to have a filled style.
+- [X] Change the style of the refresh button on the no drafts card to a filled style.
 
 ### Performance Improvement(s) and Optimization(s)
 - [x] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
