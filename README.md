@@ -50,14 +50,6 @@ clasp push
 - [X] Input data for the card the user is currently on does not change when the card is reloaded (except for after each iteration of the home card).
 - [X] Make home card dynamic.
 - [X] Success card content is dynamic (for example, if the user modified and/or deleted one or more selected draft(s) before duplication, the update is reflected).
-- [X] Have designated no drafts card that is displayed if the user has no drafts to duplicate and attempts to proceed with other cards (before, the start card would display for the same purpose).
-- [X] Going back to a previous card from the error card reloads the previous card.
-- [ ] Add intro card that asks the user if he/she already knows which drafts to duplicate.
-- [ ] Have start card allow user to select (via checkboxes) which drafts he/she wants to duplicate.
-- [ ] Have home card have alternative prompt that only asks the user to specify duplication frequency for each draft if the user already knows which drafts he/she wants to duplicate.
-- [ ] If a draft is labeled to be important, that label is transferred over to the duplicate.
-
-### UI
 - [X] Add header to cards.
 - [X] UI reflects starred drafts.
 - [X] UI better handles drafts with no subject.
@@ -71,6 +63,12 @@ clasp push
 - [X] Selection input titles display number of available choices.
 - [X] Make some of the buttons filled with a background.
 - [X] When present, home card draft duplication info is in its own section except for the last iteration.
+- [X] Have designated no drafts card that is displayed if the user has no drafts to duplicate and attempts to proceed with other cards (before, the start card would display for the same purpose).
+- [X] Going back to a previous card from the error card reloads the previous card.
+- [ ] Add intro card that asks the user if he/she already knows which drafts to duplicate.
+- [ ] Have start card allow user to select (via checkboxes) which drafts he/she wants to duplicate.
+- [ ] Home card has alternative prompt that only asks the user to specify duplication frequency for each draft if the user already knows which drafts he/she wants to duplicate.
+- [ ] If a draft is labeled important, that label is transferred over to the duplicate.
 - [X] Change the style of the refresh button on the no drafts card to a filled style.
 
 ### Performance Improvement(s) and Optimization(s)
