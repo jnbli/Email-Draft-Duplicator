@@ -47,6 +47,7 @@ clasp push
 - [X] User cannot select the same draft if duplicating multiple drafts.
 - [X] Input data for the card the user is currently on does not change when the card is reloaded (except for after each iteration of the home card).
 - [X] Success card content is dynamic (for example, if the user modified and/or deleted one or more selected draft(s) before duplication, the update is reflected).
+- [X] Have designated no drafts card that is displayed if the user has no drafts to duplicate and attempts to proceed with other cards (before, the start card would display for the same purpose).
 
 ### UI
 - [X] Add header to cards.
@@ -70,6 +71,7 @@ clasp push
 - [X] Selection input titles display number of available choices.
 - [X] Make some of the buttons filled with a background.
 - [X] When present, home card draft duplication info is in its own section except for the last iteration.
+- [X] Change the style of the refresh button on the no drafts card to have a filled style.
 
 ### Performance Improvement(s) and Optimization(s)
 - [x] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
