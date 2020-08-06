@@ -52,14 +52,6 @@ clasp push
 * [Performance Improvements and Optimizations](#performance-improvements-and-optimizations)
 * [Fixing Bugs](#fixing-bugs)
 
-<div align="center">
-  <a href="#features">Features</a>
-  |
-  <a href="#performance-improvements-and-optimizations">Performance Improvements and Optimizations</a>
-  |
-  <a href="#todos">TODOs</a>
-</div>
-
 ### Features
 - [x] User can duplicate drafts (given that the user has at least 1 draft) without having to click on an email if this add-on is used on non-mobile versions of Gmail.
 - [x] If a starred draft is duplicated, the starred status transfers over to the duplicates.
