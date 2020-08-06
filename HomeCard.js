@@ -1,23 +1,22 @@
 // Card that prompts the user to duplicate draft(s)
 function HomeCard(data = {}) {  
+  const { name } = homeCard;
   try {
     const { setNumberOfDrafts } = data;
     const numberOfDrafts = setNumberOfDrafts > drafts.length ? drafts.length : setNumberOfDrafts;
-    if (numberOfDrafts === 0) {  // Go back to start card to display no drafts available message
-      const startCard = StartCard();
-      CardService.newNavigation().popToRoot().updateCard(startCard);
-      return startCard;
-    }
+    
+    // The start card function will load the no drafts card if there are no drafts available for duplication.
+    if (numberOfDrafts === 0) return StartCard(); 
 
     // The numberOfDrafts variable helps with the displayed draft number adjust to the user creating and/or deleting drafts
     return generateHomeCard(data, numberOfDrafts);
-  } catch (error) { return ErrorCard({ error }); }
+  } catch (error) { return ErrorCard({ error, cardName: name, cardData: JSON.stringify(data) }); }
 }
 
 function generateHomeCard(data, numberOfDrafts) {
   const draftDuplicationTextParagraph = homeCard.getDraftDuplicationData(data, numberOfDrafts);
-  
   const { iterationCount } = data, { name } = homeCard;
+  
   if (iterationCount === 1 || iterationCount > numberOfDrafts) {
     return CardService.newCardBuilder()
       .setName(name)
@@ -162,27 +161,29 @@ const homeCard = {
       
       // The function generateTextButton is defined in the Utilities file.
       const duplicateButton = generateTextButton(duplicateButtonName, CardService.TextButtonStyle.FILLED, 
-      "sendHomeCardFormData", { "cardData" : JSON.stringify(data) });
+      "sendHomeCardFormData", { "cardName": this.name, "cardData" : JSON.stringify(data) });
       buttonSet.addButton(duplicateButton);
     } else {
       // The function generateTextButton is defined in the Utilities file.
       const nextButton = generateTextButton("Next", CardService.TextButtonStyle.FILLED, 
-      "iterateHomeCard", { "cardData" : JSON.stringify(data) });
+      "iterateHomeCard", { "cardName": this.name, "cardData" : JSON.stringify(data) });
       buttonSet.addButton(nextButton);
     }     
 
     // The function generateTextButton is defined in the Utilities file.
     const resetButton = generateTextButton("Reset", CardService.TextButtonStyle.TEXT, 
-    "resetHomeCard", { setNumberOfDrafts: JSON.stringify(setNumberOfDrafts) });                            
+    "resetHomeCard", { "cardName": this.name, setNumberOfDrafts: setNumberOfDrafts.toString() });                            
     buttonSet.addButton(resetButton);
 
     return buttonSet;
   },
 
   generateFooterSectionButtonSet: function(data) {
+    const { setNumberOfDrafts } = data;
+
     // The function generateTextButton is defined in the Utilities file.
     const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
-    "goBackToStartCard", { "setNumberOfDrafts": JSON.stringify(data.setNumberOfDrafts) });
+    "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() });
     
     // The function generateTextButton is defined in the Utilities file.
     const refreshButton = generateTextButton("Refresh", CardService.TextButtonStyle.FILLED, 

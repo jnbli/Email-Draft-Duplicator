@@ -1,5 +1,6 @@
 // Card that displays an error that was caught
 function ErrorCard(data = {}) {
+  Logger.log(data);
   try { return generateErrorCard(data); } 
   catch (error) { Logger.log(error); }
 }
@@ -9,12 +10,12 @@ function generateErrorCard(data) {
     .setName(errorCard.name)
     .setHeader(errorCard.generateHeader())
     .addSection(errorCard.generateMainSection(data))
-    .addSection(errorCard.generateFooterSection())
+    .addSection(errorCard.generateFooterSection(data))
     .build();
 }
 
 const errorCard = {
-  name: CardNames.errorCardName,
+  name: CardNames.errorCardName,  // The CardNames object is located in the Constants file.
   
   generateHeader: function() { return CardService.newCardHeader().setTitle("An error occurred."); },
   
@@ -24,9 +25,11 @@ const errorCard = {
       .addWidget(errorInfo);
   },
 
-  generateFooterSection: function() {
+  // The properties cardName and cardData are card info from the previous card
+  generateFooterSection: function({ cardName, cardData } = {}) {
     // The function generateTextButton is defined in the Utilities file.
-    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, "goBackToPreviousCard");
+    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, 
+    "goBackToCardBeforeError", { "cardName": cardName, "cardData": cardData });  
     return CardService.newCardSection()
       .addWidget(backButton);
   }

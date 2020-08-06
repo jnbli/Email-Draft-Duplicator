@@ -1,7 +1,7 @@
 // Card that displays when the user successfully duplicated draft(s)
 function SuccessCard(data = {}) {  
   try { return generateSuccessCard(data); } 
-  catch (error) { return ErrorCard({ error }); }
+  catch (error) { return ErrorCard({ error, cardName: CardNames.successCardName, cardData: JSON.stringify(data) }); }
 }
 
 function generateSuccessCard(data) {
@@ -36,7 +36,7 @@ function generateSuccessCard(data) {
 }
 
 const successCard = {
-  name: CardNames.successCardName,
+  name: CardNames.successCardName,  // The CardNames object is located in the Constants file.
 
   generateHeader: function(draftsDuplicated, { numberOfDraftsDuplicated } = {}) {
     if (draftsDuplicated) { 
@@ -104,13 +104,17 @@ const successCard = {
   },
 
   generateFooterSectionButtonSet: function(data) {
+    const { setNumberOfDrafts } = data;
+
     // The function generateTextButton is defined in the Utilities file.
+    // Start card info is passed into the goBackToStartCard function callback.
     const startOverButton = generateTextButton("Start Over", CardService.TextButtonStyle.FILLED, 
-    "goBackToStartCard", { "setNumberOfDrafts": JSON.stringify(data.setNumberOfDrafts) });
+    "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() });
     
     // The function generateTextButton is defined in the Utilities file.
+    // Home card info is passed into the goBackToStartCard function callback.
     const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
-    "goBackToHomeCard", { "cardData": JSON.stringify(data) });
+    "goBackToHomeCard", { "cardName": this.name, "cardData": JSON.stringify(data) });
   
     return CardService.newButtonSet()
       .addButton(startOverButton)
