@@ -104,12 +104,10 @@ function goBackToHomeCard({ parameters } = e) {
 // Goes back to and reloads the card before the one where an error originated from 
 // (either in the card's code or in a callback function invoked by the card)
 function goBackToCardBeforeError({ parameters } = e) {
-  const { cardName } = parameters;
   try {
-    CardService.newNavigation().popToNamedCard(cardName); // This does not take effect unless it is attached to a returned action response object.
     return reloadCard({ parameters });
   } catch (error) {
-    const { cardData } = parameters;
+    const { cardName, cardData } = parameters;
     return ErrorCard({ error, cardName, cardData }); 
   }
 }
@@ -129,7 +127,7 @@ function reloadCard({ parameters, formInputs } = e) {
     let cardToReload;
 
     const parsedCardData = JSON.parse(cardData); 
-    parsedCardData.formInputs = formInputs;
+    if (formInputs) parsedCardData.formInputs = formInputs;
 
     const { startCardName, homeCardName, successCardName, noDraftsCardName, errorCardName } = CardNames; // The CardNames object is defined in the Constants file.
     switch(cardName) {
@@ -160,7 +158,7 @@ function reloadCard({ parameters, formInputs } = e) {
         cardToReload = ErrorCard({ error: "Cannot reload unknown card." }); 
     }
     
-    const navigationToSameCard = CardService.newNavigation().updateCard(cardToReload);
-    return generateActionResponse(navigationToSameCard);  // The generateActionResponse function is defined in the Utilities file.
+    const reloadNavigation = CardService.newNavigation().updateCard(cardToReload);
+    return generateActionResponse(reloadNavigation);  // The generateActionResponse function is defined in the Utilities file.
   } catch (error) { return ErrorCard({ error, cardName , cardData }); } // For all other errors   
 }

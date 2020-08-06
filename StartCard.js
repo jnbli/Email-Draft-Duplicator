@@ -3,7 +3,7 @@ function StartCard(data = {}) {
   const { name } = startCard;
   try { 
     // If the user currently has no Gmail drafts
-    if (drafts.length == 0) return NoDraftsCard();
+    if (drafts.length === 0) return NoDraftsCard();
     return generateStartCard(data); 
   } catch (error) { return ErrorCard({ error, cardName: name, cardData: JSON.stringify(data) }); }
 }
@@ -68,10 +68,13 @@ const startCard = {
   },
   
   generateNumberOfDraftsDropdownItems: function(numberOfDraftsDropdown, { formInputs, setNumberOfDrafts } = {}, maxNumberOfDrafts) {
+    let selectedNum = 1;  
+    if (formInputs && formInputs.number_of_drafts) selectedNum = Number(formInputs.number_of_drafts);
+    else if (setNumberOfDrafts) selectedNum = setNumberOfDrafts;
+
     for (let num = 1; num <= maxNumberOfDrafts; num++) { 
-      if ((formInputs && num == formInputs.number_of_drafts) || (setNumberOfDrafts && num == setNumberOfDrafts)) { 
-        numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
-      } else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
+      if (num === selectedNum) numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
+      else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
     }
   },
 };

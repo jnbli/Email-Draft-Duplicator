@@ -1,6 +1,5 @@
 // Card that displays an error that was caught
 function ErrorCard(data = {}) {
-  Logger.log(data);
   try { return generateErrorCard(data); } 
   catch (error) { Logger.log(error); }
 }
@@ -25,7 +24,7 @@ const errorCard = {
       .addWidget(errorInfo);
   },
 
-  // The properties cardName and cardData are card info from the previous card
+  // The properties cardName and cardData are card info from the previous card.
   generateFooterSection: function({ cardName, cardData } = {}) {
     // The function generateTextButton is defined in the Utilities file.
     const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, 
