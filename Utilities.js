@@ -79,6 +79,9 @@ function createCopies(n, draft) {
   const from = template.getFrom();
   const replyTo = template.getReplyTo();
   const starred = template.isStarred();
+
+  const thread = template.getThread();
+  const important = thread.isImportant();
   
   for (let i = 0; i < n; i++) {
     const draft = GmailApp.createDraft(recipient, subject, body, {
@@ -91,19 +94,27 @@ function createCopies(n, draft) {
     });
     
     if (starred) GmailApp.starMessage(draft.getMessage());  // Duplicating starred drafts duplicates the starred status.
+    if (important) GmailApp.markThreadImportant(draft.getMessage().getThread());   // Duplicating drafts marked as important duplicates the mark.
   }
 }
 
 // Helper function that generates draft duplication information for a draft
 function getDraftDuplicationInfo(draftId, draftsToDuplicate) {
-  const template = GmailApp.getDraft(draftId).getMessage(); // So that the referenced draft is up to date when this card is refreshed
-  const draftInfo = template.isStarred() ? "starred draft" : "draft";  // Reflect starred draft.
+  const template = GmailApp.getDraft(draftId).getMessage(); 
+  const starred = template.isStarred(), important = template.getThread().isImportant();
   const draftSubject = template.getSubject();
-  const draftSubjectPortion = draftSubject.length === 0 ? "\"(no subject)\"" : `"${draftSubject}"`; // Reflect draft with no subject.
+
+  let draftInfo = "draft";
+  draftInfo += draftSubject.length === 0  ? " \"(no subject)\"" : ` "${draftSubject}"`; // Reflect draft with no subject.;
+
+  // Reflect starred and important drafts.
+  if (starred && !important) draftInfo = `starred ${draftInfo}`;
+  else if (!starred && important) draftInfo = `important ${draftInfo}`;
+  else if (starred && important) draftInfo = `starred, important ${draftInfo}`;
 
   // For the draftToDuplicate object, the key is the draft id and the value is the number of copies the user selected for each draft.
-  if (draftsToDuplicate[draftId] == 1) return `  - ${draftsToDuplicate[draftId]} copy of the ${draftInfo} ${draftSubjectPortion}\n`;
-  return `  - ${draftsToDuplicate[draftId]} copies of the ${draftInfo} ${draftSubjectPortion}\n`;
+  if (draftsToDuplicate[draftId] == 1) return `  - ${draftsToDuplicate[draftId]} copy of the ${draftInfo}\n`;
+  return `  - ${draftsToDuplicate[draftId]} copies of the ${draftInfo}\n`;
 }
 
 function getNotificationContent(numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft) {

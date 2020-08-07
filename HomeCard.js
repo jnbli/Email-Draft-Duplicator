@@ -71,6 +71,7 @@ const homeCard = {
   and returns a text paragraph with that info. */
   getDraftDuplicationData: function(data = {}, numberOfDrafts) {
     const { iterationCount, draftsToDuplicate } = data;
+    
     const draftDuplicationInfoHeader = iterationCount > numberOfDrafts ? "You would like to make:" : "So far, you would like to make:";
   
     let draftDuplicationInfo = "";
@@ -120,10 +121,13 @@ const homeCard = {
       let draftSubject = draftMessage.getSubject();
     
       // Handle drafts with empty subject.
-      if (draftSubject.length === 0) draftSubject = `(no subject) ${draftSubject}`;
+      if (draftSubject.length === 0) draftSubject = `(no subject)`;
     
+      // Reflect drafts marked as important.
+      if (draftMessage.getThread().isImportant()) draftSubject = `(i) ${draftSubject}`;
+
       // Reflect starred drafts.
-      if (draftMessage.isStarred()) draftSubject = `(starred) ${draftSubject}`;
+      if (draftMessage.isStarred()) draftSubject = `(s) ${draftSubject}`;
     
       // Retain selected input data
       if (formInputs && draftId == formInputs.draft_id) gmailDraftDropdown.addItem(draftSubject, draftId, true);
