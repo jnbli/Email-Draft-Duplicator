@@ -1,26 +1,20 @@
 // Card that prompts the user to specify how many drafts to duplicate
 function StartCard(data = {}) {
-  try { return generateStartCard(data); } 
-  catch (error) { return ErrorCard({ error }); }
+  const { name } = startCard;
+  try { 
+    // If the user currently has no Gmail drafts
+    if (drafts.length === 0) return NoDraftsCard();
+    return generateStartCard(data); 
+  } catch (error) { return ErrorCard({ error, cardName: name, cardData: JSON.stringify(data) }); }
 }
 
 function generateStartCard(data) {
   const { name } = startCard;
-
-  // If the user currently has no Gmail drafts
-  if (drafts.length == 0) {      
-    return CardService.newCardBuilder()
-      .setName(name)
-      .setHeader(startCard.generateHeader(true))
-      .addSection(startCard.generateMainSection())
-      .addSection(startCard.generateFooterSection(data))
-      .build();
-  }
   
-  // If the user currently has at least 1 Gmail draft(s)      
+  // If the user currently has at least 1 Gmail draft      
   return CardService.newCardBuilder()
     .setName(name)
-    .setHeader(startCard.generateHeader(false))
+    .setHeader(startCard.generateHeader())
     .addSection(startCard.generateFormSection(data))
     .addSection(startCard.generateFooterSection(data))
     .build();
@@ -29,10 +23,7 @@ function generateStartCard(data) {
 const startCard = {
   name: CardNames.startCardName,  // The CardNames object is located in the Constants file.
   
-  generateHeader: function(noDrafts) {
-    let headerMessage = noDrafts ? "You have no Gmail drafts." : "Let's start duplicating your Gmail drafts.";
-    return CardService.newCardHeader().setTitle(headerMessage);
-  },
+  generateHeader: function() { return CardService.newCardHeader().setTitle("Let's start duplicating your Gmail drafts."); },
 
   // Helper function that generates the main section for the case the user currently has no drafts
   generateMainSection: function() {
@@ -48,7 +39,8 @@ const startCard = {
     const numberOfDraftsDropdown = this.generateNumberOfDraftsDropdown(data, maxNumberOfDrafts, numberOfDraftsDropdownTitle);
     
     // The function generateTextButton is defined in the Utilities file.
-    const nextButton = generateTextButton("Next", CardService.TextButtonStyle.FILLED, "handleStartCardForm");
+    const nextButton = generateTextButton("Next", CardService.TextButtonStyle.FILLED, 
+    "handleStartCardForm", { "cardName": this.name, "cardData": JSON.stringify(data) });
 
     return CardService.newCardSection()
       .addWidget(numberOfDraftsDropdown)
@@ -76,10 +68,13 @@ const startCard = {
   },
   
   generateNumberOfDraftsDropdownItems: function(numberOfDraftsDropdown, { formInputs, setNumberOfDrafts } = {}, maxNumberOfDrafts) {
+    let selectedNum = 1;  
+    if (formInputs && formInputs.number_of_drafts) selectedNum = Number(formInputs.number_of_drafts);
+    else if (setNumberOfDrafts) selectedNum = setNumberOfDrafts;
+
     for (let num = 1; num <= maxNumberOfDrafts; num++) { 
-      if ((formInputs && num == formInputs.number_of_drafts) || (setNumberOfDrafts && num == setNumberOfDrafts)) { 
-        numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
-      } else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
+      if (num === selectedNum) numberOfDraftsDropdown.addItem(num.toString(), num.toString(), true);
+      else { numberOfDraftsDropdown.addItem(num.toString(), num.toString(), false); }
     }
   },
 };
