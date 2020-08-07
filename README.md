@@ -82,7 +82,10 @@ clasp push
 - [ ] Add intro card that asks the user if he/she already knows which drafts to duplicate.
 - [ ] Have start card allow user to select (via checkboxes) which drafts he/she wants to duplicate.
 - [ ] Home card has alternative prompt that only asks the user to specify duplication frequency for each draft if the user already knows which drafts he/she wants to duplicate.
-- [ ] If a draft is labeled important, that label is transferred over to the duplicate.
+- [X] If a draft is marked as important, that mark is transferred over to the duplicate.
+- [X] Draft info reflects drafts that are marked as important. 
+- [X] Selection input for drafts reflect drafts that are marked as important.
+- [ ] Add a widget next to the draft selection input in the home card that provides info about how the draft selection input denotes starred drafts, drafts marked as important, and drafts with no subject.
 - [X] Change the style of the refresh button on the no drafts card to a filled style.
 
 ### Performance Improvements and Optimizations
