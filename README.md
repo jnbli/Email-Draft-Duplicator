@@ -83,7 +83,7 @@ clasp push
 - [X] Draft info reflects drafts that are marked as important. 
 - [X] Selection input for drafts reflect drafts that are marked as important.
 - [X] Change the style of the refresh button on the no drafts card to a filled style.
-- [ ] Only show info about drafts marked as important if the user chooses to show importance markers.
+- [ ] Only show "(i)" for important drafts in the draft dropdown if the user chooses to show importance markers.
 
 ### Performance Improvements and Optimizations
 - [x] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
