@@ -85,7 +85,6 @@ clasp push
 - [X] If a draft is marked as important, that mark is transferred over to the duplicate.
 - [X] Draft info reflects drafts that are marked as important. 
 - [X] Selection input for drafts reflect drafts that are marked as important.
-- [ ] Add a widget next to the draft selection input in the home card that provides info about how the draft selection input denotes starred drafts, drafts marked as important, and drafts with no subject.
 - [X] Change the style of the refresh button on the no drafts card to a filled style.
 
 ### Performance Improvements and Optimizations
