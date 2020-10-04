@@ -87,7 +87,7 @@ clasp push
 
 ### Performance Improvements and Optimizations
 - [x] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
-- [X] Implement maximum allowed number of drafts to duplicate at once.
+- [X] Implement maximum allowed number of drafts to duplicate at once to minimize the amount of time it takes to create the duplicates.
 - [ ] Cache unchanging string data.
 
 ### Fixing Bugs
