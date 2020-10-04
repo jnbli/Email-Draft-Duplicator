@@ -79,13 +79,11 @@ clasp push
 - [X] When present, home card draft duplication info is in its own section except for the last iteration.
 - [X] Have designated no drafts card that is displayed if the user has no drafts to duplicate and attempts to proceed with other cards (before, the start card would display for the same purpose).
 - [X] Going back to a previous card from the error card reloads the previous card.
-- [ ] Add intro card that asks the user if he/she already knows which drafts to duplicate.
-- [ ] Have start card allow user to select (via checkboxes) which drafts he/she wants to duplicate.
-- [ ] Home card has alternative prompt that only asks the user to specify duplication frequency for each draft if the user already knows which drafts he/she wants to duplicate.
 - [X] If a draft is marked as important, that mark is transferred over to the duplicate.
 - [X] Draft info reflects drafts that are marked as important. 
 - [X] Selection input for drafts reflect drafts that are marked as important.
 - [X] Change the style of the refresh button on the no drafts card to a filled style.
+- [ ] Only show info about drafts marked as important if the user chooses to show importance markers.
 
 ### Performance Improvements and Optimizations
 - [x] Implement maximum allowed number of duplicates for a draft to minimize the amount of time it takes to create the duplicates.
