@@ -83,6 +83,7 @@ clasp push
 - [X] Draft info reflects drafts that are marked as important. 
 - [X] Selection input for drafts reflect drafts that are marked as important.
 - [X] Change the style of the refresh button on the no drafts card to a filled style.
+- [X] Simplify no drafts card.
 - [ ] Only show "(i)" for important drafts in the draft dropdown if the user chooses to show importance markers.
 
 ### Performance Improvements and Optimizations
