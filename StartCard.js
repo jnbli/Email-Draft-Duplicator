@@ -25,12 +25,6 @@ const startCard = {
   
   generateHeader: function() { return CardService.newCardHeader().setTitle("Let's start duplicating your Gmail drafts."); },
 
-  // Helper function that generates the main section for the case the user currently has no drafts
-  generateMainSection: function() {
-    const message = CardService.newTextParagraph().setText("You must have at least one Gmail draft to duplicate draft(s).");
-    return CardService.newCardSection().addWidget(message);
-  },
-
   // Helper function that generates the form section for the case the user currently has at least 1 Gmail draft(s)
   generateFormSection: function(data) {
     const maxNumberOfDrafts = drafts.length > maxDraftsAtOnce ? maxDraftsAtOnce : drafts.length;
