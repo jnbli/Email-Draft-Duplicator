@@ -12,7 +12,6 @@ function generateNoDraftsCard(data) {
         return CardService.newCardBuilder()
             .setName(name)
             .setHeader(noDraftsCard.generateHeader())
-            .addSection(noDraftsCard.generateMainSection())
             .addSection(noDraftsCard.generateFooterSection(data))
             .build();
     } else { return StartCard(); }  // Go to the root card.
@@ -22,11 +21,6 @@ const noDraftsCard = {
     name: CardNames.noDraftsCardName,
 
     generateHeader: function() { return CardService.newCardHeader().setTitle("You have no Gmail drafts."); },
-
-    generateMainSection: function() {
-        const message = CardService.newTextParagraph().setText("You must have at least one Gmail draft to duplicate draft(s).");
-        return CardService.newCardSection().addWidget(message);
-    },
 
     generateFooterSection: function(data) {
         // The function generateTextButton is defined in the Utilities file.
