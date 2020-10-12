@@ -51,10 +51,10 @@ const homeCard = {
     if (iterationCount <= numberOfDrafts) {
       const headerForInput = CardService.newTextParagraph().setText(`Gmail Draft (${iterationCount}/${numberOfDrafts})`);
       formSection.addWidget(headerForInput);
-  
+
       const numberOfOptions = drafts.length - iterationCount + 1;
       const gmailDraftDropdownTitle = numberOfOptions === 1 ? `Select a Gmail Draft (${numberOfOptions} option remaining)` : `Select a Gmail Draft (${numberOfOptions} options remaining)`;
-   
+  
       formSection
         .addWidget(this.generateGmailDraftDropdown(data, gmailDraftDropdownTitle))
         .addWidget(this.generateNumberOfCopiesDropdown(data));
@@ -76,7 +76,7 @@ const homeCard = {
   
     let draftDuplicationInfo = "";
     const draftDuplicationInfoObj = {};
-    if (iterationCount > 1) {
+    if (iterationCount > 1) { // No draft duplication info displayed on the first iteration
       for (const draftId in draftsToDuplicate) {
         // The getDraftDuplicationInfo function is defined in the Utilities file.
         const currDraftDuplicationInfo = getDraftDuplicationInfo(draftId, draftsToDuplicate);
