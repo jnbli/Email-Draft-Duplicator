@@ -1,20 +1,19 @@
 // Card that tells the user that he/she has no drafts
-// Data object is just there for now (may be useful for future updates).
-function NoDraftsCard(data = {}) {
-    try { return generateNoDraftsCard(data); }
-    catch (error) { return ErrorCard({ error, cardName: CardNames.noDraftsCardName, cardData: data }); }
+function NoDraftsCard() {
+    try { return generateNoDraftsCard(); }
+    catch (error) { return ErrorCard({ error }); }
 }
 
-function generateNoDraftsCard(data) {
+function generateNoDraftsCard() {
     const { name } = noDraftsCard;
 
     if (drafts.length === 0) {
         return CardService.newCardBuilder()
             .setName(name)
             .setHeader(noDraftsCard.generateHeader())
-            .addSection(noDraftsCard.generateFooterSection(data))
+            .addSection(noDraftsCard.generateFooterSection())
             .build();
-    } else { return StartCard(); }  // Go to the root card.
+    } else { return StartCard(); } 
 }
 
 const noDraftsCard = {
@@ -22,10 +21,10 @@ const noDraftsCard = {
 
     generateHeader: function() { return CardService.newCardHeader().setTitle("You have no Gmail drafts."); },
 
-    generateFooterSection: function(data) {
+    generateFooterSection: function() {
         // The function generateTextButton is defined in the Utilities file.
         const refreshButton = generateTextButton("Refresh", CardService.TextButtonStyle.FILLED, 
-         "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) });
+         "reloadCard", { "cardName": this.name, "cardData": JSON.stringify({}) });
         return CardService.newCardSection()
             .addWidget(refreshButton);
     }
