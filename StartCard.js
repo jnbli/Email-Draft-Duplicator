@@ -1,11 +1,10 @@
 // Card that prompts the user to specify how many drafts to duplicate
 function StartCard(data = {}) {
-  const { name } = startCard;
   try { 
     // If the user currently has no Gmail drafts
     if (drafts.length === 0) return NoDraftsCard();
     return generateStartCard(data); 
-  } catch (error) { return ErrorCard({ error, cardName: name, cardData: JSON.stringify(data) }); }
+  } catch (error) { return ErrorCard({ error }); }
 }
 
 function generateStartCard(data) {

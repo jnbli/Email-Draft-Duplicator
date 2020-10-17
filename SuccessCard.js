@@ -1,7 +1,7 @@
 // Card that displays when the user successfully duplicated draft(s)
 function SuccessCard(data = {}) {  
   try { return generateSuccessCard(data); } 
-  catch (error) { return ErrorCard({ error, cardName: CardNames.successCardName, cardData: JSON.stringify(data) }); }
+  catch (error) { return ErrorCard({ error }); }
 }
 
 function generateSuccessCard(data) {
