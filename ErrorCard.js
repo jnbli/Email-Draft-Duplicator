@@ -25,10 +25,9 @@ const errorCard = {
   },
 
   // The properties cardName and cardData are card info from the previous card.
-  generateFooterSection: function({ cardName, cardData } = {}) {
+  generateFooterSection: function() {
     // The function generateTextButton is defined in the Utilities file.
-    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, 
-    "goBackToCardBeforeError", { "cardName": cardName, "cardData": cardData });  
+    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, "goBackToPreviousCard");  
     return CardService.newCardSection()
       .addWidget(backButton);
   }
