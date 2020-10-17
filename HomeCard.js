@@ -1,6 +1,5 @@
 // Card that prompts the user to duplicate draft(s)
-function HomeCard(data = {}) {  
-  const { name } = homeCard;
+function HomeCard(data = {}) {
   try {
     const { setNumberOfDrafts } = data;
     const numberOfDrafts = setNumberOfDrafts > drafts.length ? drafts.length : setNumberOfDrafts;
@@ -10,7 +9,7 @@ function HomeCard(data = {}) {
 
     // The numberOfDrafts variable helps with the displayed draft number adjust to the user creating and/or deleting drafts
     return generateHomeCard(data, numberOfDrafts);
-  } catch (error) { return ErrorCard({ error, cardName: name, cardData: JSON.stringify(data) }); }
+  } catch (error) { return ErrorCard({ error }); }
 }
 
 function generateHomeCard(data, numberOfDrafts) {
@@ -124,10 +123,10 @@ const homeCard = {
       if (draftSubject.length === 0) draftSubject = `(no subject)`;
     
       // Reflect drafts marked as important.
-      if (draftMessage.getThread().isImportant()) draftSubject = `(i) ${draftSubject}`;
+      if (draftMessage.getThread().isImportant()) draftSubject = `► ${draftSubject}`;
 
       // Reflect starred drafts.
-      if (draftMessage.isStarred()) draftSubject = `(s) ${draftSubject}`;
+      if (draftMessage.isStarred()) draftSubject = `★ ${draftSubject}`;
     
       // Retain selected input data
       if (formInputs && draftId == formInputs.draft_id) gmailDraftDropdown.addItem(draftSubject, draftId, true);
