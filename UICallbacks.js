@@ -1,4 +1,4 @@
-// Process user input for number of drafts to duplicate
+// Processes user input for number of drafts to duplicate
 function handleStartCardForm(e) {
   try {
     if (drafts.length === 0) return goToNoDraftsCard(); 
@@ -30,7 +30,7 @@ function iterateHomeCard(e) {
     const iterationCountDelta = updateDraftsData(parsedCardData, draftId, numberOfCopies);
     if (iterationCountDelta !== 0) parsedCardData.iterationCount += iterationCountDelta;
 
-    if (parsedCardData.formInputs) parsedCardData.formInputs = undefined; // So that the inputs reset for the next iteration.
+    if (parsedCardData.formInputs) parsedCardData.formInputs = undefined; // So that the inputs reset for the next iteration
     
     const homeCard = HomeCard(parsedCardData);
     const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
@@ -58,7 +58,7 @@ function resetHomeCard({ parameters } = e) {
   } catch (error) { return ErrorCard({ error }); }
 }
 
-// Process user input for duplicating draft(s) with error checking.
+// Processes user input for duplicating draft(s) with error checking
 function sendHomeCardFormData({ parameters } = e) {
   const { cardData } = parameters;
   try {
@@ -100,14 +100,14 @@ function goBackToHomeCard({ parameters } = e) {
   
 function goBackToPreviousCard(e) {
   const navigationToPreviousCard = CardService.newNavigation().popCard();
-  return generateActionResponse(navigationToPreviousCard);
+  return generateActionResponse(navigationToPreviousCard);  // The generateActionResponse function is defined in the Utilities file.
 }
 
 // Intended to only be invoked in another ui callback function as a helper function
 function goToNoDraftsCard() {
   const noDraftsCard = NoDraftsCard();
   const navigationToNoDraftsCard = CardService.newNavigation().popToRoot().updateCard(noDraftsCard); 
-  return generateActionResponse(navigationToNoDraftsCard);
+  return generateActionResponse(navigationToNoDraftsCard);  // The generateActionResponse function is defined in the Utilities file.
 }
 
 function reloadCard({ parameters, formInputs } = e) {

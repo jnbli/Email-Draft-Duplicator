@@ -93,7 +93,7 @@ const successCard = {
       infoParagraphContent += "Although at least one of your selected drafts was duplicated, " 
       infoParagraphContent += "it is recommended that you avoid deleting any selected drafts until after the duplication has been completed. ";
       infoParagraphContent += "Thank you.";
-    } else { // data.numberOfDraftsDuplicated === 0
+    } else {  // data.numberOfDraftsDuplicated === 0
       infoParagraphContent += "You may have deleted one or more drafts right before initiating the duplication. ";
       infoParagraphContent += "For successful draft duplication, ";
       infoParagraphContent += "it is recommended that you avoid deleting any selected drafts until after the duplication has been completed. ";

@@ -67,7 +67,7 @@ const homeCard = {
   generateFooterSection: function(data) { return CardService.newCardSection().addWidget(this.generateFooterSectionButtonSet(data)); },
 
   /* Helper function that gets draft duplication data for all drafts that the user has selected
-  and returns a text paragraph with that info. */
+  and returns text paragraph with that info */
   getDraftDuplicationData: function(data = {}, numberOfDrafts) {
     const { iterationCount, draftsToDuplicate } = data;
     
@@ -107,7 +107,7 @@ const homeCard = {
     .setType(CardService.SelectionInputType.DROPDOWN)
     .setTitle(title);
 
-    // Fill in gmail draft dropdown.
+    // Fills in gmail draft dropdown
     this.generateGmailDraftDropdownItems(gmailDraftDropdown, data);
 
     return gmailDraftDropdown;
@@ -119,16 +119,16 @@ const homeCard = {
       const draftMessage = draft.getMessage();
       let draftSubject = draftMessage.getSubject();
     
-      // Handle drafts with empty subject.
+      // Handles drafts with empty subject
       if (draftSubject.length === 0) draftSubject = `(no subject)`;
     
-      // Reflect drafts marked as important.
+      // Reflects drafts marked as important
       if (draftMessage.getThread().isImportant()) draftSubject = `► ${draftSubject}`;
 
-      // Reflect starred drafts.
+      // Reflects starred drafts
       if (draftMessage.isStarred()) draftSubject = `★ ${draftSubject}`;
     
-      // Retain selected input data
+      // Retains selected input data
       if (formInputs && draftId == formInputs.draft_id) gmailDraftDropdown.addItem(draftSubject, draftId, true);
       else { gmailDraftDropdown.addItem(draftSubject, draftId, false); }
     }
@@ -140,7 +140,7 @@ const homeCard = {
         .setType(CardService.SelectionInputType.DROPDOWN)
         .setTitle(`Select Number of Copies (1-${maxDuplicatesPerDraft})`);
       
-      // Fill in number of copies dropdown.
+      // Fills in number of copies dropdown
       this.generateNumberOfCopiesDropdownItems(numberOfCopiesDropdown, data);
       
       return numberOfCopiesDropdown;
@@ -148,7 +148,7 @@ const homeCard = {
 
   generateNumberOfCopiesDropdownItems: function(numberOfCopiesDropdown, { formInputs } = {}) {
     for (let num = 1; num <= maxDuplicatesPerDraft; num++) { 
-      // Retain selected input data
+      // Retains selected input data
       if (formInputs && num == formInputs.number_of_copies) numberOfCopiesDropdown.addItem(num.toString(), num.toString(), true);
       else { numberOfCopiesDropdown.addItem(num.toString(), num.toString(), false); }
     }

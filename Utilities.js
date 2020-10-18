@@ -1,11 +1,11 @@
-// Helper function that updates draft id and/or draft duplication data based on the content(s) of the accountFor object.
+// Helper function that updates draft duplication data
 function updateDraftsData(cardData, draftId, numberOfCopies) {
-  const draftIds = getDraftIds();  // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
+  const draftIds = getDraftIds();  // Gets draft ids object since there is a chance the user added, modified, or deleted drafts
   
   let iterationCountDelta = 0;
 
   if (cardData.draftsToDuplicate) { 
-    for (const draftId in cardData.draftsToDuplicate) { // Remove draft selections that have been deleted.
+    for (const draftId in cardData.draftsToDuplicate) { // Removes draft selections that have been deleted
       if (!draftIds[draftId]) { 
         delete cardData.draftsToDuplicate[draftId];
         iterationCountDelta--;
@@ -14,18 +14,18 @@ function updateDraftsData(cardData, draftId, numberOfCopies) {
     }
   }
   
-  cardData.draftIds = draftIds; // Account for updates with currently selected and/or unselected drafts.
+  cardData.draftIds = draftIds; // Accounts for updates with currently selected and/or unselected drafts
 
-  // User has made draft duplication entry.
+  // Draft duplication entry has been made.
   if (draftId && numberOfCopies) {  
     if (!cardData.draftsToDuplicate) cardData.draftsToDuplicate = {};
 
-    // If user did not delete the currently selected draft.
+    // Currently selected draft has not been deleted.
     if (draftIds[draftId]) {
       cardData.draftsToDuplicate[draftId] = numberOfCopies; 
       iterationCountDelta++;  
       
-      // User cannot select the same draft if duplicating multiple drafts.
+      // Cannot select the same draft if duplicating multiple drafts
       delete cardData.draftIds[draftId];
     } 
   }
@@ -41,7 +41,7 @@ function getDraftIds() {
 }
 
 function updateDraftDuplicationInfoAndCreateCopies(cardData) {
-  // Get draft ids object since there is a chance the user added, modified, or deleted drafts.
+  // Gets draft ids object since there is a chance the user added, modified, or deleted drafts
   const draftIds = getDraftIds();  // The getDraftIds function is defined in the Utilities file.
 
   let numberOfDraftsDuplicated = 0;
@@ -55,7 +55,7 @@ function updateDraftDuplicationInfoAndCreateCopies(cardData) {
       createCopies(numberOfCopies, draft); // The createCopies function is defined in the Utilities file.
       numberOfDraftsDuplicated++;
 
-      // Regenerate draft duplication info for the draft just in case the user modified the selected draft.     
+      // Regenerates draft duplication info for the draft just in case the user modified the selected draft     
       cardData.draftDuplicationInfoObj[draftId] = getDraftDuplicationInfo(draftId, cardData.draftsToDuplicate);
     } else {  // Selected draft has been deleted.
       if (!userDeletedAtLeastOneSelectedDraft) userDeletedAtLeastOneSelectedDraft = true; 
@@ -105,14 +105,14 @@ function getDraftDuplicationInfo(draftId, draftsToDuplicate) {
   const draftSubject = template.getSubject();
 
   let draftInfo = "draft";
-  draftInfo += draftSubject.length === 0  ? " \"(no subject)\"" : ` "${draftSubject}"`; // Reflect draft with no subject.;
+  draftInfo += draftSubject.length === 0  ? " \"(no subject)\"" : ` "${draftSubject}"`; // Reflects draft with no subject
 
-  // Reflect starred and important drafts.
+  // Reflects starred and important drafts
   if (starred && !important) draftInfo = `starred ${draftInfo}`;
   else if (!starred && important) draftInfo = `important ${draftInfo}`;
   else if (starred && important) draftInfo = `starred, important ${draftInfo}`;
 
-  // For the draftToDuplicate object, the key is the draft id and the value is the number of copies the user selected for each draft.
+  // For the draftToDuplicate object, the key is the draft id and the value is the number of copies the user selected for the draft.
   if (draftsToDuplicate[draftId] == 1) return `  - ${draftsToDuplicate[draftId]} copy of the ${draftInfo}\n`;
   return `  - ${draftsToDuplicate[draftId]} copies of the ${draftInfo}\n`;
 }
