@@ -17,15 +17,13 @@ function generateNoDraftsCard() {
 }
 
 const noDraftsCard = {
-    name: CardNames.noDraftsCardName,
+    name: "No Drafts Card",
 
     generateHeader: function() { return CardService.newCardHeader().setTitle("You have no Gmail drafts."); },
 
     generateFooterSection: function() {
         // The function generateTextButton is defined in the Utilities file.
-        const refreshButton = generateTextButton("Refresh", CardService.TextButtonStyle.FILLED, 
-         "reloadCard", { "cardName": this.name, "cardData": JSON.stringify({}) });
-        return CardService.newCardSection()
-            .addWidget(refreshButton);
+        return CardService.newCardSection().addWidget(generateTextButton("Refresh", CardService.TextButtonStyle.FILLED, 
+            "reloadCard", { "cardName": this.name, "cardData": JSON.stringify({}) }));
     }
 };

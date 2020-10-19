@@ -4,14 +4,11 @@ function handleStartCardForm(e) {
     if (drafts.length === 0) return goToNoDraftsCard(); 
 
     const { formInputs } = e;
-    const homeCard = HomeCard({ 
+    return generateActionResponse(CardService.newNavigation().pushCard(HomeCard({ 
       setNumberOfDrafts: formInputs.number_of_drafts, 
       iterationCount: 1, 
       draftIds: getDraftIds() // The getDraftIds function is defined in the Utilities file.
-    });
-
-    const navigationToHomeCard = CardService.newNavigation().pushCard(homeCard);
-    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+    })));  // The function generateActionResponse is defined in the Utilities file.
   } catch (error) { return ErrorCard({ error }); }
 }
 
@@ -32,29 +29,20 @@ function iterateHomeCard(e) {
 
     if (parsedCardData.formInputs) parsedCardData.formInputs = undefined; // So that the inputs reset for the next iteration
     
-    const homeCard = HomeCard(parsedCardData);
-    const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
-    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+    return generateActionResponse(CardService.newNavigation().updateCard(HomeCard(parsedCardData)));  // The function generateActionResponse is defined in the Utilities file.
   } catch (error) { return ErrorCard({ error }); }
 }
 
 function resetHomeCard({ parameters } = e) {
-  const { setNumberOfDrafts } = parameters;
-
-  // Data for resetting the home card
-  const homeCardData = {
-    setNumberOfDrafts: Number.parseInt(setNumberOfDrafts), 
-    iterationCount: 1, 
-    draftIds: getDraftIds()  // The getDraftIds function is defined in the Utilities file.
-  };
-
   try { 
     if (drafts.length === 0) return goToNoDraftsCard();
 
-    const homeCard = HomeCard(homeCardData);
-    
-    const navigationToHomeCard = CardService.newNavigation().updateCard(homeCard);
-    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+    const { setNumberOfDrafts } = parameters;
+    return generateActionResponse(CardService.newNavigation().updateCard(HomeCard({
+      setNumberOfDrafts: Number.parseInt(setNumberOfDrafts), 
+      iterationCount: 1, 
+      draftIds: getDraftIds()  // The getDraftIds function is defined in the Utilities file.
+    })));  // The function generateActionResponse is defined in the Utilities file.
   } catch (error) { return ErrorCard({ error }); }
 }
 
@@ -66,20 +54,20 @@ function sendHomeCardFormData({ parameters } = e) {
 
     // The function updateDraftDuplicationInfoandCreateCopies is defined in the Utilities file.
     const { numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft, missingDraftInfo } = updateDraftDuplicationInfoAndCreateCopies(parsedCardData);
-    const successCard = SuccessCard({ homeCardData: parsedCardData, numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft, missingDraftInfo });
-    const navigationToSuccessCard = CardService.newNavigation().pushCard(successCard);
 
-    // The function getNotificationContent is defined in the Utilities file.
-    const notification = CardService.newNotification().setText(getNotificationContent(numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft));  
-    return generateActionResponse(navigationToSuccessCard, notification); // The function generateActionResponse is defined in the Utilities file.
+    // The functions generateActionResponse and getNotificationContent are defined in the Utilities file.
+    return generateActionResponse(CardService.newNavigation().pushCard(
+      SuccessCard({ homeCardData: parsedCardData, numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft, missingDraftInfo })
+    ), CardService.newNotification().setText(getNotificationContent(numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft))); 
   } catch (error) { return ErrorCard({ error }); }
 }
 
 function goBackToStartCard({ parameters } = e) {
   try {
-    const startCard = parameters.setNumberOfDrafts ? StartCard({ setNumberOfDrafts: Number.parseInt(parameters.setNumberOfDrafts) }) : StartCard();
-    const navigationToStartCard = CardService.newNavigation().popToNamedCard(CardNames.startCardName).updateCard(startCard);
-    return generateActionResponse(navigationToStartCard); // The function generateActionResponse is defined in the Utilities file.
+    // The function generateActionResponse is defined in the Utilities file.
+    return generateActionResponse(CardService.newNavigation().popToNamedCard("Start Card").updateCard(
+      parameters.setNumberOfDrafts ? StartCard({ setNumberOfDrafts: Number.parseInt(parameters.setNumberOfDrafts) }) : StartCard()
+    )); 
   } catch (error) { return ErrorCard({ error }); }
 } 
   
@@ -92,22 +80,20 @@ function goBackToHomeCard({ parameters } = e) {
     const iterationCountDelta = updateDraftsData(parsedCardData);
     if (iterationCountDelta !== 0) parsedCardData.iterationCount += iterationCountDelta;
 
-    const homeCard = HomeCard(parsedCardData);
-    const navigationToHomeCard = CardService.newNavigation().popToNamedCard(CardNames.homeCardName).updateCard(homeCard);
-    return generateActionResponse(navigationToHomeCard);  // The function generateActionResponse is defined in the Utilities file.
+    // The function generateActionResponse is defined in the Utilities file.
+    return generateActionResponse(CardService.newNavigation().popToNamedCard("Home Card").updateCard(HomeCard(parsedCardData)));  
   } catch (error) { return ErrorCard({ error }); }
 }  
   
 function goBackToPreviousCard(e) {
-  const navigationToPreviousCard = CardService.newNavigation().popCard();
-  return generateActionResponse(navigationToPreviousCard);  // The generateActionResponse function is defined in the Utilities file.
+  // The generateActionResponse function is defined in the Utilities file.
+  return generateActionResponse(CardService.newNavigation().popCard());  
 }
 
-// Intended to only be invoked in another ui callback function as a helper function
+// Invoked in other ui callback functions as a helper function
 function goToNoDraftsCard() {
-  const noDraftsCard = NoDraftsCard();
-  const navigationToNoDraftsCard = CardService.newNavigation().popToRoot().updateCard(noDraftsCard); 
-  return generateActionResponse(navigationToNoDraftsCard);  // The generateActionResponse function is defined in the Utilities file.
+  // The generateActionResponse function is defined in the Utilities file.
+  return generateActionResponse(CardService.newNavigation().popToRoot().updateCard(NoDraftsCard()));  
 }
 
 function reloadCard({ parameters, formInputs } = e) {
@@ -118,36 +104,33 @@ function reloadCard({ parameters, formInputs } = e) {
     const parsedCardData = JSON.parse(cardData);
     if (formInputs) parsedCardData.formInputs = formInputs;
 
-    // The CardNames object is defined in the Constants file.
-    const { startCardName, homeCardName, successCardName, noDraftsCardName, errorCardName } = CardNames; 
     switch(cardName) {
-      case startCardName:
+      case "Start Card":
         card = StartCard(parsedCardData);
         break;
 
-      case homeCardName:  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
+      case "Home Card":  // Reloading the home card does not reset it. Resetting occurs in the resetHomeCard callback function.
         const iterationCountDelta = updateDraftsData(parsedCardData);
         if (iterationCountDelta !== 0) parsedCardData.iterationCount += iterationCountDelta;
         card = HomeCard(parsedCardData);
         break;
       
-      case successCardName:
+      case "Success Card":
         card = SuccessCard(parsedCardData);
         break;
 
-      case noDraftsCardName:
+      case "No Drafts Card":
         card = NoDraftsCard();
         break;
 
-      case errorCardName:
+      case "Error Card":
         card = ErrorCard(parsedCardData);
         break;
 
       default:  // If the card name is not valid
-        card = ErrorCard({ error: "The Gmail Draft Duplicator cannot reload an unknown card.", prevCardName: startCardName, prevCardData: "{}" }); 
+        card = ErrorCard({ error: "The Gmail Draft Duplicator cannot reload an unknown card.", prevCardName: "Start Card", prevCardData: "{}" }); 
     }
     
-    const reloadNavigation = CardService.newNavigation().updateCard(card);
-    return generateActionResponse(reloadNavigation);  // The generateActionResponse function is defined in the Utilities file.
+    return generateActionResponse(CardService.newNavigation().updateCard(card));  // The generateActionResponse function is defined in the Utilities file.
   } catch (error) { return ErrorCard({ error }); } // For all other errors   
 }

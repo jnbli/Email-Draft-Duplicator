@@ -50,9 +50,7 @@ function updateDraftDuplicationInfoAndCreateCopies(cardData) {
   for (const draftId in cardData.draftsToDuplicate) {
     // The key of draftIds object are the draft ids.
     if (draftIds[draftId]) {  // Selected draft has not been deleted.
-      const numberOfCopies = cardData.draftsToDuplicate[draftId];
-      const draft = GmailApp.getDraft(draftId);
-      createCopies(numberOfCopies, draft); // The createCopies function is defined in the Utilities file.
+      createCopies(cardData.draftsToDuplicate[draftId], GmailApp.getDraft(draftId)); // The createCopies function is defined in the Utilities file.
       numberOfDraftsDuplicated++;
 
       // Regenerates draft duplication info for the draft just in case the user modified the selected draft     
@@ -78,10 +76,9 @@ function createCopies(n, draft) {
   const cc = template.getCc();
   const from = template.getFrom();
   const replyTo = template.getReplyTo();
-  const starred = template.isStarred();
 
-  const thread = template.getThread();
-  const important = thread.isImportant();
+  const starred = template.isStarred();
+  const important = template.getThread().isImportant();
   
   for (let i = 0; i < n; i++) {
     const draft = GmailApp.createDraft(recipient, subject, body, {
@@ -93,10 +90,13 @@ function createCopies(n, draft) {
       replyTo: replyTo
     });
     
-    if (starred) GmailApp.starMessage(draft.getMessage());  // Duplicating starred drafts duplicates the starred status.
-    if (important) GmailApp.markThreadImportant(draft.getMessage().getThread());   // Duplicating drafts marked as important duplicates the mark.
+    const message = draft.getMessage();
+    if (starred) GmailApp.starMessage(message);  // Duplicating starred drafts duplicates the starred status.
+    if (important) GmailApp.markThreadImportant(message.getThread());   // Duplicating drafts marked as important duplicates the mark.
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Helper function that generates draft duplication information for a draft
 function getDraftDuplicationInfo(draftId, draftsToDuplicate) {
@@ -118,9 +118,9 @@ function getDraftDuplicationInfo(draftId, draftsToDuplicate) {
 }
 
 function getNotificationContent(numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft) {
-  if (numberOfDraftsDuplicated === 0) return "Duplication unsuccessful.";
-  else if (userDeletedAtLeastOneSelectedDraft) return "Duplication partially successful.";
-  return "Duplication successful.";
+  if (numberOfDraftsDuplicated === 0) return "Duplication unsuccessful";
+  else if (userDeletedAtLeastOneSelectedDraft) return "Duplication partially successful";
+  return "Duplication successful";
 }
 
 function generateTextButton(text, style, functionName, parameters) {
@@ -129,8 +129,7 @@ function generateTextButton(text, style, functionName, parameters) {
     .setTextButtonStyle(style);
 
   if (functionName) { 
-    const action = CardService.newAction()
-      .setFunctionName(functionName);
+    const action = CardService.newAction().setFunctionName(functionName);
 
     // The setParameters function only takes string keys and values for the parameters.
     if (parameters) action.setParameters(parameters);
