@@ -9,25 +9,21 @@ function generateErrorCard(data) {
     .setName(errorCard.name)
     .setHeader(errorCard.generateHeader())
     .addSection(errorCard.generateMainSection(data))
-    .addSection(errorCard.generateFooterSection(data))
+    .addSection(errorCard.generateFooterSection())
     .build();
 }
 
 const errorCard = {
-  name: CardNames.errorCardName,  // The CardNames object is located in the Constants file.
+  name: "Error Card",
   
   generateHeader: function() { return CardService.newCardHeader().setTitle("An error occurred."); },
   
   generateMainSection: function({ error } = {}) {
-    const errorInfo = CardService.newTextParagraph().setText(error);
-    return CardService.newCardSection()
-      .addWidget(errorInfo);
+    return CardService.newCardSection().addWidget(CardService.newTextParagraph().setText(error));
   },
 
   generateFooterSection: function() {
     // The function generateTextButton is defined in the Utilities file.
-    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, "goBackToPreviousCard");  
-    return CardService.newCardSection()
-      .addWidget(backButton);
+    return CardService.newCardSection().addWidget(generateTextButton("Go Back", CardService.TextButtonStyle.FILLED, "goBackToPreviousCard"));
   }
 }

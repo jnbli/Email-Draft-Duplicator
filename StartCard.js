@@ -20,32 +20,27 @@ function generateStartCard(data) {
 }
 
 const startCard = {
-  name: CardNames.startCardName,  // The CardNames object is located in the Constants file.
+  name: "Start Card",
   
   generateHeader: function() { return CardService.newCardHeader().setTitle("Let's start duplicating your Gmail drafts."); },
 
   // Helper function that generates the form section for the case the user currently has at least 1 Gmail draft(s)
   generateFormSection: function(data) {
     const maxNumberOfDrafts = drafts.length > maxDraftsAtOnce ? maxDraftsAtOnce : drafts.length;
-    const numberOfDraftsDropdownTitle = maxNumberOfDrafts > 1 ? `Select Number of Gmail Drafts to Duplicate (1-${maxNumberOfDrafts})` : `Select Number of Gmail Drafts to Duplicate (${maxNumberOfDrafts})`;
-    
-    const numberOfDraftsDropdown = this.generateNumberOfDraftsDropdown(data, maxNumberOfDrafts, numberOfDraftsDropdownTitle);
     
     // The function generateTextButton is defined in the Utilities file.
-    const nextButton = generateTextButton("Next", CardService.TextButtonStyle.FILLED, 
-    "handleStartCardForm", { "cardName": this.name, "cardData": JSON.stringify(data) });
-
     return CardService.newCardSection()
-      .addWidget(numberOfDraftsDropdown)
-      .addWidget(nextButton);
+      .addWidget(this.generateNumberOfDraftsDropdown(data, maxNumberOfDrafts, 
+        maxNumberOfDrafts > 1 ? `Select Number of Gmail Drafts to Duplicate (1-${maxNumberOfDrafts})` : 
+                                `Select Number of Gmail Drafts to Duplicate (${maxNumberOfDrafts})`))
+      .addWidget(generateTextButton("Next", CardService.TextButtonStyle.FILLED, 
+        "handleStartCardForm", { "cardName": this.name, "cardData": JSON.stringify(data) }));
   },
   
   generateFooterSection: function(data) {
     // The function generateTextButton is defined in the Utilities file.
-    const refreshButton = generateTextButton("Refresh", CardService.TextButtonStyle.TEXT, 
-    "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) });
-    return CardService.newCardSection()
-      .addWidget(refreshButton);
+    return CardService.newCardSection().addWidget(generateTextButton("Refresh", CardService.TextButtonStyle.TEXT, 
+      "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) }));
   },
   
   generateNumberOfDraftsDropdown: function(data, maxNumberOfDrafts, numberOfDraftsDropdownTitle) {

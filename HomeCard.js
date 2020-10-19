@@ -36,7 +36,7 @@ function generateHomeCard(data, numberOfDrafts) {
 }
 
 const homeCard = {
-  name: CardNames.homeCardName, // The CardNames object is located in the Constants file.
+  name: "Home Card",
   
   generateHeader: function({ setNumberOfDrafts } = {}) { return CardService.newCardHeader().setTitle(this.generateHeaderMessage(setNumberOfDrafts, drafts.length)); },
   
@@ -48,14 +48,14 @@ const homeCard = {
 
     // Do not show the header for the selection inputs and selection inputs on the last iteration.
     if (iterationCount <= numberOfDrafts) {
-      const headerForInput = CardService.newTextParagraph().setText(`Gmail Draft (${iterationCount}/${numberOfDrafts})`);
-      formSection.addWidget(headerForInput);
+      formSection.addWidget(CardService.newTextParagraph().setText(`Gmail Draft (${iterationCount}/${numberOfDrafts})`));
 
       const numberOfOptions = drafts.length - iterationCount + 1;
-      const gmailDraftDropdownTitle = numberOfOptions === 1 ? `Select a Gmail Draft (${numberOfOptions} option remaining)` : `Select a Gmail Draft (${numberOfOptions} options remaining)`;
   
       formSection
-        .addWidget(this.generateGmailDraftDropdown(data, gmailDraftDropdownTitle))
+        .addWidget(this.generateGmailDraftDropdown(data, 
+          numberOfOptions === 1 ? `Select a Gmail Draft (${numberOfOptions} option remaining)` : `Select a Gmail Draft (${numberOfOptions} options remaining)`
+        ))
         .addWidget(this.generateNumberOfCopiesDropdown(data));
     } else { formSection.addWidget(draftDuplicationTextParagraph); } // Have draft duplication data text paragraph in the form section for the last iteration.
   
@@ -95,17 +95,17 @@ const homeCard = {
   generateHeaderMessage: function(setNumberOfDrafts, numberOfDrafts) {
     if (setNumberOfDrafts == 1) return `You would like to duplicate ${setNumberOfDrafts} Gmail draft.`;
     else if (setNumberOfDrafts > numberOfDrafts) { 
-      if (numberOfDrafts == 1) return `You would like to duplicate ${setNumberOfDrafts} Gmail drafts, but there is only ${numberOfDrafts} draft available.`; 
-      else { return `You would like to duplicate ${setNumberOfDrafts} Gmail drafts, but there are only ${numberOfDrafts} drafts available.`; } 
+      if (numberOfDrafts == 1) return `You would like to duplicate ${setNumberOfDrafts} Gmail drafts. There is only ${numberOfDrafts} draft available.`; 
+      else { return `You would like to duplicate ${setNumberOfDrafts} Gmail drafts. There are only ${numberOfDrafts} drafts available.`; } 
     }
     else { return `You would like to duplicate ${setNumberOfDrafts} Gmail drafts.` }
   },
   
   generateGmailDraftDropdown: function(data, title) {
     const gmailDraftDropdown = CardService.newSelectionInput()
-    .setFieldName("draft_id")
-    .setType(CardService.SelectionInputType.DROPDOWN)
-    .setTitle(title);
+      .setFieldName("draft_id")
+      .setType(CardService.SelectionInputType.DROPDOWN)
+      .setTitle(title);
 
     // Fills in gmail draft dropdown
     this.generateGmailDraftDropdownItems(gmailDraftDropdown, data);
@@ -115,8 +115,7 @@ const homeCard = {
 
   generateGmailDraftDropdownItems: function(gmailDraftDropdown, { draftIds, formInputs } = {}) {
     for (const draftId in draftIds) { 
-      const draft = GmailApp.getDraft(draftId);
-      const draftMessage = draft.getMessage();
+      const draftMessage = GmailApp.getDraft(draftId).getMessage();
       let draftSubject = draftMessage.getSubject();
     
       // Handles drafts with empty subject
@@ -134,16 +133,16 @@ const homeCard = {
     }
   },
   
-  generateNumberOfCopiesDropdown: function(data) {
+  generateNumberOfCopiesDropdown: function(data) {     
     const numberOfCopiesDropdown = CardService.newSelectionInput()
-        .setFieldName("number_of_copies")
-        .setType(CardService.SelectionInputType.DROPDOWN)
-        .setTitle(`Select Number of Copies (1-${maxDuplicatesPerDraft})`);
-      
-      // Fills in number of copies dropdown
-      this.generateNumberOfCopiesDropdownItems(numberOfCopiesDropdown, data);
-      
-      return numberOfCopiesDropdown;
+      .setFieldName("number_of_copies")
+      .setType(CardService.SelectionInputType.DROPDOWN)
+      .setTitle(`Select Number of Copies (1-${maxDuplicatesPerDraft})`);
+  
+    // Fills in number of copies dropdown
+    this.generateNumberOfCopiesDropdownItems(numberOfCopiesDropdown, data);
+    
+    return numberOfCopiesDropdown;
   },
 
   generateNumberOfCopiesDropdownItems: function(numberOfCopiesDropdown, { formInputs } = {}) {
@@ -159,25 +158,19 @@ const homeCard = {
     const { iterationCount, setNumberOfDrafts } = data;
 
     // Only show the duplicate button on the last iteration.
-    if (iterationCount > numberOfDrafts) {  
-      const duplicateButtonName = numberOfDrafts > 1 ? "Duplicate Drafts" : "Duplicate Draft"; 
-      
+    if (iterationCount > numberOfDrafts) {        
       // The function generateTextButton is defined in the Utilities file.
-      const duplicateButton = generateTextButton(duplicateButtonName, CardService.TextButtonStyle.FILLED, 
-      "sendHomeCardFormData", { "cardName": this.name, "cardData" : JSON.stringify(data) });
-      buttonSet.addButton(duplicateButton);
+      buttonSet.addButton(generateTextButton(numberOfDrafts > 1 ? "Duplicate Drafts" : "Duplicate Draft", 
+        CardService.TextButtonStyle.FILLED, "sendHomeCardFormData", { "cardName": this.name, "cardData" : JSON.stringify(data) }));
     } else {
       // The function generateTextButton is defined in the Utilities file.
-      const nextButton = generateTextButton("Next", CardService.TextButtonStyle.FILLED, 
-      "iterateHomeCard", { "cardName": this.name, "cardData" : JSON.stringify(data) });
-      buttonSet.addButton(nextButton);
+      buttonSet.addButton(generateTextButton("Next", CardService.TextButtonStyle.FILLED, 
+        "iterateHomeCard", { "cardName": this.name, "cardData" : JSON.stringify(data) }));
     }     
 
-    // The function generateTextButton is defined in the Utilities file.
-    const resetButton = generateTextButton("Reset", CardService.TextButtonStyle.TEXT, 
-    "resetHomeCard", { "cardName": this.name, setNumberOfDrafts: setNumberOfDrafts.toString() });                            
-    buttonSet.addButton(resetButton);
-
+    // The function generateTextButton is defined in the Utilities file.                        
+    buttonSet.addButton(generateTextButton("Reset", CardService.TextButtonStyle.TEXT, 
+      "resetHomeCard", { "cardName": this.name, setNumberOfDrafts: setNumberOfDrafts.toString() }));
     return buttonSet;
   },
 
@@ -185,15 +178,10 @@ const homeCard = {
     const { setNumberOfDrafts } = data;
 
     // The function generateTextButton is defined in the Utilities file.
-    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
-    "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() });
-    
-    // The function generateTextButton is defined in the Utilities file.
-    const refreshButton = generateTextButton("Refresh", CardService.TextButtonStyle.FILLED, 
-    "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) });
-      
     return CardService.newButtonSet()
-      .addButton(backButton)
-      .addButton(refreshButton);
+      .addButton(generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
+        "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() }))
+      .addButton(generateTextButton("Refresh", CardService.TextButtonStyle.FILLED, 
+        "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) }));
   }
 };
