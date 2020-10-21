@@ -1,7 +1,7 @@
 // Card that displays when the user successfully duplicated draft(s)
 function SuccessCard(data = {}) {  
   try { return generateSuccessCard(data); } 
-  catch (error) { return ErrorCard({ error, cardName: CardNames.successCardName, cardData: JSON.stringify(data) }); }
+  catch (error) { return ErrorCard({ error }); }
 }
 
 function generateSuccessCard(data) {
@@ -36,12 +36,11 @@ function generateSuccessCard(data) {
 }
 
 const successCard = {
-  name: CardNames.successCardName,  // The CardNames object is located in the Constants file.
+  name: "Success Card",
 
   generateHeader: function(draftsDuplicated, { numberOfDraftsDuplicated } = {}) {
     if (draftsDuplicated) { 
-      const headerTitle = numberOfDraftsDuplicated === 1 ? "The Gmail draft has been duplicated." : "The Gmail drafts have been duplicated."; 
-      return CardService.newCardHeader().setTitle(headerTitle);
+      return CardService.newCardHeader().setTitle(numberOfDraftsDuplicated === 1 ? "The Gmail draft has been duplicated." : "The Gmail drafts have been duplicated.");
     }
 
     // numberOfDraftsDuplicated === 0
@@ -51,34 +50,30 @@ const successCard = {
   generateInfoSection: function(draftsDuplicated, { missingDraftInfo } = {}) {
     let infoParagraphContent = null, infoParagraph = null;
     if (draftsDuplicated) { 
-      infoParagraphContent = this.generateInfoParagraphContent(true, missingDraftInfo);
-      infoParagraph = CardService.newTextParagraph().setText(infoParagraphContent);
-      return CardService.newCardSection().addWidget(infoParagraph);
+      return CardService.newCardSection().addWidget(
+        CardService.newTextParagraph().setText(this.generateInfoParagraphContent(true, missingDraftInfo))
+      );
     } 
 
     // data.numberOfDraftsDuplicated === 0
-    infoParagraphContent = this.generateInfoParagraphContent(false);
-    infoParagraph = CardService.newTextParagraph().setText(infoParagraphContent);
-    return CardService.newCardSection().addWidget(infoParagraph);
+    return CardService.newCardSection().addWidget(
+      CardService.newTextParagraph().setText(this.generateInfoParagraphContent(false))
+    );
   },
 
   generateCongratsSection: function(data) {
-    const successParagraphContent = this.getSuccessParagraphContent(data);
-    const successParagraph = CardService.newTextParagraph().setText(successParagraphContent)
-    return CardService.newCardSection().addWidget(successParagraph);
+    return CardService.newCardSection().addWidget(CardService.newTextParagraph().setText(this.getSuccessParagraphContent(data)));
   },
 
   generateFooterSection: function(data) { return CardService.newCardSection().addWidget(this.generateFooterSectionButtonSet(data)); },
 
   getSuccessParagraphContent: function({ numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft, homeCardData } = {}) {
-    const status = userDeletedAtLeastOneSelectedDraft ? "At least one of your selected drafts has been duplicated." : "Success!";
-    let successParagraphContent = `${status} You have made:\n`;
+    let successParagraphContent = `${userDeletedAtLeastOneSelectedDraft ? "At least one of your selected drafts has been duplicated." : "Success!"} You have made:\n`;
     
     const { draftDuplicationInfoObj } = homeCardData;
     for (const draftId in draftDuplicationInfoObj) successParagraphContent += draftDuplicationInfoObj[draftId];
     
-    const concludingSentence = numberOfDraftsDuplicated === 1 ? "Refresh the drafts panel to see your duplicated draft." : "Refresh the drafts panel to see your duplicated drafts.";
-    successParagraphContent += `\n${concludingSentence}`;
+    successParagraphContent += `\n${numberOfDraftsDuplicated === 1 ? "Refresh the drafts panel to see your duplicated draft." : "Refresh the drafts panel to see your duplicated drafts."}`;
 
     return successParagraphContent;
   },
@@ -93,11 +88,10 @@ const successCard = {
       infoParagraphContent += "Although at least one of your selected drafts was duplicated, " 
       infoParagraphContent += "it is recommended that you avoid deleting any selected drafts until after the duplication has been completed. ";
       infoParagraphContent += "Thank you.";
-    } else { // data.numberOfDraftsDuplicated === 0
+    } else {  // data.numberOfDraftsDuplicated === 0
       infoParagraphContent += "You may have deleted one or more drafts right before initiating the duplication. ";
       infoParagraphContent += "For successful draft duplication, ";
-      infoParagraphContent += "it is recommended that you avoid deleting any selected drafts until after the duplication has been completed. ";
-      infoParagraphContent += "Select at least one new draft before trying again. Thank you.";
+      infoParagraphContent += "it is recommended that you avoid deleting any selected drafts until after the duplication has been completed. Thank you.";
     }
   
     return infoParagraphContent;
@@ -106,18 +100,11 @@ const successCard = {
   generateFooterSectionButtonSet: function(data) {
     const { setNumberOfDrafts } = data;
 
-    // The function generateTextButton is defined in the Utilities file.
-    // Start card info is passed into the goBackToStartCard function callback.
-    const startOverButton = generateTextButton("Start Over", CardService.TextButtonStyle.FILLED, 
-    "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() });
-    
-    // The function generateTextButton is defined in the Utilities file.
-    // Home card info is passed into the goBackToStartCard function callback.
-    const backButton = generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
-    "goBackToHomeCard", { "cardName": this.name, "cardData": JSON.stringify(data) });
-  
+    // The function generateTextButton is defined in the Utilities file.  
     return CardService.newButtonSet()
-      .addButton(startOverButton)
-      .addButton(backButton);
+      .addButton(generateTextButton("Start Over", CardService.TextButtonStyle.FILLED, 
+        "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() }))
+      .addButton(generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
+      "goBackToHomeCard", { "cardName": this.name, "cardData": JSON.stringify(data) }));
   }
 };
