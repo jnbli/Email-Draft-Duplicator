@@ -68,12 +68,12 @@ const successCard = {
   generateFooterSection: function(data) { return CardService.newCardSection().addWidget(this.generateFooterSectionButtonSet(data)); },
 
   getSuccessParagraphContent: function({ numberOfDraftsDuplicated, userDeletedAtLeastOneSelectedDraft, homeCardData } = {}) {
-    let successParagraphContent = `${userDeletedAtLeastOneSelectedDraft ? "At least one of your selected drafts has been duplicated." : "Success!"} You have made:\n`;
+    let successParagraphContent = `${userDeletedAtLeastOneSelectedDraft ? "At least one of the selected drafts has been duplicated." : "Success."} You have made:\n`;
     
     const { draftDuplicationInfoObj } = homeCardData;
     for (const draftId in draftDuplicationInfoObj) successParagraphContent += draftDuplicationInfoObj[draftId];
     
-    successParagraphContent += `\n${numberOfDraftsDuplicated === 1 ? "Refresh the drafts panel to see your duplicated draft." : "Refresh the drafts panel to see your duplicated drafts."}`;
+    successParagraphContent += `\n${numberOfDraftsDuplicated === 1 ? "Refresh the drafts panel to see the duplicated draft." : "Refresh the drafts panel to see the duplicated drafts."}`;
 
     return successParagraphContent;
   },
