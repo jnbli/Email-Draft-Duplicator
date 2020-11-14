@@ -5,8 +5,8 @@
   ],
   "runtimeVersion": "V8",
   "gmail": {
-    "name": "Gmail Draft Duplicator",
-    "logoUrl": "https://raw.githubusercontent.com/jnbli/Gmail-Draft-Duplicator/master/Logo.png",
+    "name": "Email Draft Duplicator",
+    "logoUrl": "https://raw.githubusercontent.com/jnbli/Email-Draft-Duplicator/master/Logo.png",
     "homepageTrigger": {
       "enabled": true,
       "runFunction": "buildAddOn"

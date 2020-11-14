@@ -128,7 +128,7 @@ function reloadCard({ parameters, formInputs } = e) {
         break;
 
       default:  // If the card name is not valid
-        card = ErrorCard({ error: "The Gmail Draft Duplicator cannot reload an unknown card.", prevCardName: "Start Card", prevCardData: "{}" }); 
+        card = ErrorCard({ error: "The Email Draft Duplicator cannot reload an unknown card.", prevCardName: "Start Card", prevCardData: "{}" }); 
     }
     
     return generateActionResponse(CardService.newNavigation().updateCard(card));  // The generateActionResponse function is defined in the Utilities file.
