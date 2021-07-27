@@ -121,12 +121,6 @@ const homeCard = {
       // Handles drafts with empty subject
       if (draftSubject.length === 0) draftSubject = `(no subject)`;
     
-      // Reflects drafts marked as important
-      if (draftMessage.getThread().isImportant()) draftSubject = `► ${draftSubject}`;
-
-      // Reflects starred drafts
-      if (draftMessage.isStarred()) draftSubject = `★ ${draftSubject}`;
-    
       // Retains selected input data
       if (formInputs && draftId == formInputs.draft_id) gmailDraftDropdown.addItem(draftSubject, draftId, true);
       else { gmailDraftDropdown.addItem(draftSubject, draftId, false); }
