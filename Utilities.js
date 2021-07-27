@@ -91,8 +91,8 @@ function createCopies(n, draft) {
     });
     
     const message = draft.getMessage();
-    if (starred) GmailApp.starMessage(message);  // Duplicating starred drafts duplicates the starred status.
-    if (important) GmailApp.markThreadImportant(message.getThread());   // Duplicating drafts marked as important duplicates the mark.
+    // if (starred) GmailApp.starMessage(message);  // Duplicating starred drafts duplicates the starred status.
+    // if (important) GmailApp.markThreadImportant(message.getThread());   // Duplicating drafts marked as important duplicates the mark.
   }
 }
 
