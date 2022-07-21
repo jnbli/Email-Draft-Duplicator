@@ -80,7 +80,7 @@ function createCopies(n, draft) {
     includeAttachments: false
   });
   const inlineNames = body.match(/(?<=src="cid:).*?(?=")/g);
-  const inlineImages = (inlineNames.length == inlineAttachments.length) ? Object.fromEntries(inlineNames.map((name, i) => ([name, inlineAttachments[i]]))) : [];
+  const inlineImages = (inlineNames && inlineAttachments && inlineNames.length == inlineAttachments.length) ? Object.fromEntries(inlineNames.map((name, i) => ([name, inlineAttachments[i]]))) : {};
   const bcc = template.getBcc();
   const cc = template.getCc();
   const from = template.getFrom();
