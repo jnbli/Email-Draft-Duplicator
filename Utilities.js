@@ -71,7 +71,16 @@ function createCopies(n, draft) {
   const recipient = template.getTo();
   const subject = template.getSubject();
   const body = template.getBody();
-  const attachments = template.getAttachments();
+  const attachments = template.getAttachments({
+    includeInlineImages: false,
+    includeAttachments: true
+  });  
+  const inlineAttachments = template.getAttachments({
+    includeInlineImages: true,
+    includeAttachments: false
+  });
+  const inlineNames = body.match(/(?<=src="cid:).*?(?=")/g);
+  const inlineImages = (inlineNames.length == inlineAttachments.length) ? Object.fromEntries(inlineNames.map((name, i) => ([name, inlineAttachments[i]]))) : [];
   const bcc = template.getBcc();
   const cc = template.getCc();
   const from = template.getFrom();
@@ -83,6 +92,7 @@ function createCopies(n, draft) {
   for (let i = 0; i < n; i++) {
     const draft = GmailApp.createDraft(recipient, subject, body, {
       attachments: attachments,
+      inlineImages: inlineImages,
       bcc: bcc,
       cc: cc,
       from: from,
