@@ -104,7 +104,7 @@ const successCard = {
     return CardService.newButtonSet()
       .addButton(generateTextButton("Start Over", CardService.TextButtonStyle.FILLED, 
         "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() }))
-      .addButton(generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
+      .addButton(generateTextButton("Go Back", CardService.TextButtonStyle.OUTLINED, 
       "goBackToHomeCard", { "cardName": this.name, "cardData": JSON.stringify(data) }));
   }
 };

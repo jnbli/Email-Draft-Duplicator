@@ -39,7 +39,7 @@ const startCard = {
   
   generateFooterSection: function(data) {
     // The function generateTextButton is defined in the Utilities file.
-    return CardService.newCardSection().addWidget(generateTextButton("Refresh", CardService.TextButtonStyle.TEXT, 
+    return CardService.newCardSection().addWidget(generateTextButton("Refresh", CardService.TextButtonStyle.OUTLINED, 
       "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) }));
   },
   
