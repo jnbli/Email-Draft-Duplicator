@@ -7,3 +7,7 @@ This is a Gmail add-on that you can use to duplicate email drafts in Gmail. All 
 
 ## Installation Instructions
 You can install the Gmail add-on [here](https://workspace.google.com/marketplace/app/email_draft_duplicator/689570113954).
+
+As of June 13th, 2024 because I, Jonathan Li, edited the addon to make the v1.5.5 update, it became unverified and is limited to 100 users. Google's new verification process is strict and involves effort and cost I am not in a rush to go through with. If the addon reaches over 100 users and you happen to be a user beyond the 100 you will need to create a copy of the addon as a Google Apps Script project and publish just for yourself.
+
+
