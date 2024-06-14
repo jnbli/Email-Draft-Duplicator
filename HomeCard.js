@@ -163,7 +163,7 @@ const homeCard = {
     }     
 
     // The function generateTextButton is defined in the Utilities file.                        
-    buttonSet.addButton(generateTextButton("Reset", CardService.TextButtonStyle.TEXT, 
+    buttonSet.addButton(generateTextButton("Reset", CardService.TextButtonStyle.OUTLINED, 
       "resetHomeCard", { "cardName": this.name, setNumberOfDrafts: setNumberOfDrafts.toString() }));
     return buttonSet;
   },
@@ -173,7 +173,7 @@ const homeCard = {
 
     // The function generateTextButton is defined in the Utilities file.
     return CardService.newButtonSet()
-      .addButton(generateTextButton("Go Back", CardService.TextButtonStyle.TEXT, 
+      .addButton(generateTextButton("Go Back", CardService.TextButtonStyle.OUTLINED, 
         "goBackToStartCard", { "cardName": this.name, "cardData": JSON.stringify(data), "setNumberOfDrafts": setNumberOfDrafts.toString() }))
       .addButton(generateTextButton("Refresh", CardService.TextButtonStyle.FILLED, 
         "reloadCard", { "cardName": this.name, "cardData": JSON.stringify(data) }));
